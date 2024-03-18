@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+
 
 class LoginController extends Controller
 {
@@ -26,7 +28,28 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+
+    protected function authenticated(Request $request, $user)
+    {
+        // Verifica si el usuario está dado de baja
+        if ($user->baja == "0") {
+            Auth::logout(); // Cierra la sesión
+            return redirect()->route('login')->with('error', 'Tu cuenta ha sido desactivada. Por favor, contacta al administrador.');
+        }
+
+        return redirect()->intended($this->redirectPath());
+    }
+
+    //protected $redirectTo = RouteServiceProvider::HOME;
+    protected function redirectTo()
+    {
+        
+        if (auth()->user()->tipo) {
+            return '/PhisqaWarmis';
+        } else {
+            return '/';
+        }
+    }
 
     /**
      * Create a new controller instance.
