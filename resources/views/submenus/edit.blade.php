@@ -1,7 +1,7 @@
 @extends('pisqa')
 
 @section('titulo')
-Editar Menú
+Editar Submenú
 @stop
 
 @section('cuerpo')
@@ -30,61 +30,58 @@ Editar Menú
     <div class="col-md-12 col-sm-12 ">
         <div class="x_panel">
             <div class="x_content">
-            <form method="POST" action="{{ route('submenus.update', $submenu->id) }}" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
+                <form method="POST" action="{{ route('submenus.update', $submenu->id) }}" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
 
-                <div class="row">
-                    <div class="col">
-                        <label for="img">Imagen:</label>
-                        <input type="file" id="img" name="img" class="form-control">
+                    <div class="row">
+                        <div class="col">
+                            <label for="submenu">Nombre del submenú:</label>
+                            <input type="text" id="submenu" name="submenu" value="{{ $submenu->submenu }}" required class="form-control">
+                        </div>
+
+                        <div class="col">
+                            <label for="id_menu">Menú:</label>
+                            <select name="id_menu" id="id_menu" required class="form-control">
+                                @foreach ($menus as $menu)
+                                    <option value="{{ $menu->id }}" {{ $submenu->id_menu == $menu->id ? 'selected' : '' }}>{{ $menu->menu }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col">
+                            <label for="img">Imagen:</label>
+                            <input type="file" id="img" name="img" class="form-control">
+                        </div>
                     </div>
 
-                    <div class="col">
-                        <label for="id_menu">Menú:</label>
-                        <select name="id_menu" id="id_menu" required class="form-control">
-                            @foreach ($menus as $menu)
-                                <option value="{{ $menu->id }}" {{ $submenu->id_menu == $menu->id ? 'selected' : '' }}>{{ $menu->menu }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col">
-                        <label for="submenu">Nombre del submenú:</label>
-                        <input type="text" id="submenu" name="submenu" value="{{ $submenu->submenu }}" required  class="form-control">
-                    </div>
-
-                    <div class="col">
-                        <label for="logo">Logo:</label>
-                        <input type="file" id="logo" name="logo" class="form-control">
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col">
-                        <label for="fondo">Fondo:</label>
-                        <input type="file" id="fondo" name="fondo" class="form-control">
+                    <div class="row">
+                        <div class="col">
+                            <label for="fondo">Peso:</label>
+                            <input type="text" id="peso" name="peso" value="{{ $submenu->peso }}" required class="form-control">
+                        </div>
+                        <div class="col">
+                            <label for="fondo">Precio Compra:</label>
+                            <input type="text" id="precio_compra" name="precio_compra" value="{{ $submenu->precio_compra }}" required class="form-control">
+                        </div>
+                        <div class="col">
+                            <label for="fondo">Precio Venta:</label>
+                            <input type="text" id="precio_venta" name="precio_venta" value="{{ $submenu->precio_venta }}" required class="form-control">
+                        </div>
                     </div>
 
-                    <div class="col">
-                        <label for="detalles">Detalles:</label>
-                        <textarea id="detalles" name="detalles"  class="form-control">{{ $submenu->detalles }}</textarea>
+                    <div class="row">
+                        <div class="col">
+                            <label for="img">Descripción:</label>
+                            <textarea id="descripcion" name="descripcion" required class="form-control">{{ $submenu->descripcion }}</textarea>
+                        </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col">
-                        <label for="precio">Precio:</label>
-                        <input type="number" id="precio" name="precio" value="{{ $submenu->precio }}" required  class="form-control">
-                    </div>
-                </div>
-
-                <input type="hidden" name="baja" id="baja" value="{{ $submenu->baja }}" required>
-                <button class="btn btn-warning" type="submit">Actualizar Submenú</button>
-            </form>
-                
+                    <input type="hidden" name="baja" id="baja" value="{{ $submenu->baja }}" required>
+                    <input type="hidden" name="promocion" id="promocion" value="{{ $submenu->promocion }}" required>
+                    
+                    <button class="btn btn-warning" type="submit">Actualizar Submenú</button>
+                </form>
             </div>
         </div>
     </div>

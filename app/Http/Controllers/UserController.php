@@ -39,32 +39,31 @@ class UserController extends Controller
         
         User::create($request->all());
 
-        return redirect()->route('usuarios.index')
+        return redirect()->route('users.index')
             ->with('success', 'Usuario creado exitosamente.');
     }
 
-    public function edit(User $user)
+    public function edit(User $user, $id)
     {
-        return view('usuarios.edit', compact('user'));
+        $user = User::find($id);
+        return view('users.edit', compact('user'));
     }
 
-    public function update(Request $request, User $user)
-    {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|unique:users',// . $user->id,
-            'celular' => 'required',
-            'direccion' => 'required',
-            'id_mesa' => 'required',
-            'id_cliente' => 'required',
-            'tipo' => 'required',
-            'baja' => 'required',
-        ]);
+    public function update(Request $request, $id){
+        
 
+        if ($request->has('password')) {
+            $request->merge(['password' => bcrypt($request->password)]);
+        } else {
+            $request->request->remove('password');
+        }
+
+        //return $id;
+        $user = User::find($id);
         $user->update($request->all());
+        $user->save();
 
-        return redirect()->route('usuarios.index')
-            ->with('success', 'Usuario actualizado exitosamente.');
+        return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado exitosamente.');
     }
 
     public function destroy(User $user, Request $request)
@@ -77,7 +76,7 @@ class UserController extends Controller
         } else {
             $user->update(['baja' => 1]);
         }
-        return redirect()->route('usuarios.index')
+        return redirect()->route('users.index')
             ->with('success', 'Actualizacion del estado del usuario');
     }
     

@@ -18,42 +18,47 @@
 </div>
           
 <div class="row">
-    <div class="col-md-12 col-sm-12 ">
-        <div class="x_panel">
-            <div class="x_content">
-                <br />
-                <table id="datatable" class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Mesa</th><th>Codigo</th><th>Descripcion</th> <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($mesas as $mesa)
-                        <tr>
-                            <td> {{ $mesa->mesa }} </td>
-                            <td> {{ $mesa->codigo }} </td>
-                            <td> {{ $mesa->descripcion }} </td>
-                            <td>
-                                <form action="{{ route('mesas.destroy', $mesa->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    @if( $mesa->baja == '1' )
-                                    <button type="submit" class="btn btn-success"><i class="fa fa-eye"></i> </button>
-                                    @else
-                                    <button type="submit" class="btn btn-danger"> <i class="fa fa-eye-slash"></i></button>
-                                    @endif
-                                </form>
-                            </td>    
-                            <td>
-                                <a href="{{ route('mesas.edit', $mesa->id) }}" class="btn btn-warning"> <i class="fa fa-edit"></i> </a>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+                @foreach ($mesas as $mesa)
+                <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0 mt-4">
+                        @if( $mesa->baja == '0' )
+                        <div class="custom-block-wrap" style="padding:10px; background-color:#F5C7C7;  -webkit-border-radius: 20px;-moz-border-radius: 20px;border-radius: 20px;" >
+                        @elseif($mesa->ocupado != '0')
+                        <div class="custom-block-wrap" style="padding:10px; background-color:#63F163;  -webkit-border-radius: 20px;-moz-border-radius: 20px;border-radius: 20px;" >
+                        <a href="{{asset('index.php/mesas/'.$mesa->id)}}" class="d-block">
+                        @else
+                        <div class="custom-block-wrap" style="padding:10px; background-color:#E7E7E7;  -webkit-border-radius: 20px;-moz-border-radius: 20px;border-radius: 20px;" >
+                        <a href="{{asset('index.php/mesas/'.$mesa->id)}}" class="d-block">
+                        @endif
+                    
+                            <div class="custom-block">        
+                                <div class="custom-block-body">
+                                    <h5 class="mb-3"> {{$mesa->mesa}} - {{$mesa->codigo}} </h5>
+                                    <p> {{$mesa->descripcion}} </p>
+                                    <hr style="width: 230px;">
+                                    <p class="mb-0"> Mesero: <strong> {{$mesa->mesero}}</strong></p>
+                                    <p class="mb-0"> Cliente: <strong>{{$mesa->cliente}}</strong></p>
+                                    <p class="mb-0"> Comenzales: <strong>{{$mesa->cantidad_comensales}}</strong></p>
+                                    <hr style="width: 230px;">
+                                    <div class="d-flex align-items-center mb-0 ">
+                                    
+                                    <form action="{{ route('mesas.destroy', $mesa->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        @if( $mesa->baja == '1' )
+                                        <button type="submit" class="btn btn-success"><i class="fa fa-eye"></i> </button>
+                                        @else
+                                        <button type="submit" class="btn btn-danger"> <i class="fa fa-eye-slash"></i></button>
+                                        @endif
+                                    </form>
+                                    <a href="{{ route('mesas.edit', $mesa->id) }}" class="btn btn-warning"> <i class="fa fa-edit"></i> </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                @endforeach
+
 </div>
 @stop

@@ -11,7 +11,7 @@ Crear Mesa
     </div>
     <div class="title_rigth">
         <h3>
-            <a href="{{ route('mesas.index') }}" class="btn btn-primary"> <i class="fa fa-backward"></i> </a>
+            <a href="{{ route('usuarios.index') }}" class="btn btn-primary"> <i class="fa fa-backward"></i> </a>
             @if ($errors->any())
                 <div>
                     <strong>Error de validación:</strong>
@@ -74,7 +74,7 @@ Crear Mesa
                         <select name="tipo" id="tipo" required  class="form-control">
                             <option value="administrador">Administrador</option>
                             <option value="mesero">Mesero</option>
-                            <option value="reporte">Reporte</option>
+                            <option value="cajero">Cajero</option>
                         </select>
                     </div>
                 </div>

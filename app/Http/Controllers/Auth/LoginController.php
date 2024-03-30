@@ -29,21 +29,8 @@ class LoginController extends Controller
      * @var string
      */
 
-    protected function authenticated(Request $request, $user)
-    {
-        // Verifica si el usuario está dado de baja
-        if ($user->baja == "0") {
-            Auth::logout(); // Cierra la sesión
-            return redirect()->route('login')->with('error', 'Tu cuenta ha sido desactivada. Por favor, contacta al administrador.');
-        }
-
-        return redirect()->intended($this->redirectPath());
-    }
-
-    //protected $redirectTo = RouteServiceProvider::HOME;
     protected function redirectTo()
-    {
-        
+    {        
         if (auth()->user()->tipo) {
             return '/PhisqaWarmis';
         } else {
@@ -51,11 +38,6 @@ class LoginController extends Controller
         }
     }
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');

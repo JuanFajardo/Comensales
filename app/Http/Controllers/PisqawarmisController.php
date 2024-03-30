@@ -20,8 +20,13 @@ class PisqawarmisController extends Controller
 
     public function detalle($id){
         $dato = Menu::find($id);
-        $menus = Submenu::Where('baja','1')->where('id_menu', $id)->get();
+        $menus = Submenu::Where('baja','1')->where('id_menu', $id)->orderBy('promocion', 'desc')->get();
         return view('pisqa.detalle', compact('menus', 'dato'));
+    }
+
+    public function buscar($id, $buscar){        
+        $menus = Submenu::Where('baja','1')->where('id_menu', $id)->where('submenu', 'like',  $buscar.'%')->get();
+        return $menus;
     }
 
     public function detallePedido($id){

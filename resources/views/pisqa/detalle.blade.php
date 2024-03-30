@@ -8,14 +8,15 @@
 {{ asset('assets/img/'.$dato->fondo) }}
 @stop
 
-
 @section('titulo')
-{{$dato->menu}}
+<!-- {{$dato->menu}} -->
+<input type="text" name="buscar" id="buscar" class="form-control"  >
+<input type="hidden" name="idmenu" id="idmenu" value="{{$dato->id}}">
 @stop
 
 @section('cuerpo')
 
-<div class="row">
+<div class="row" id="cuerpomenu">
     @foreach($menus as $menu)
         <div class="col-md-12 mb-4">
             <div class="custom-list">
@@ -24,7 +25,7 @@
                 </div>
                 <div class="info">
                     <div class="head clearfix">
-                        <h5 class="title float-left"> {{$menu->submenu}} </h5>
+                        <h5 class="title float-left"> {{ strtoupper($menu->submenu) }} </h5>
                         <div class="">
                             <a href="#" onclick="pedido('{{$menu->id}}')" class="" data-toggle="modal" >
                                 <p class="float-right  text-primary" > Bs. {{$menu->precio_venta}} </p>
@@ -40,6 +41,7 @@
     @endforeach
 </div>          
 @stop
+
 @section('script')
 <script>
     $( document ).ready(function() {
@@ -73,7 +75,7 @@
             type: 'GET',
             success: function(response) {
                 var titulo = response.submenu;
-                var precio = response.precio;
+                var precio = response.precio_venta;
                 var img = "{{ asset('assets/img/') }}/"+response.img;
                 var encontrado = false;
                 var idBuscado = id;
@@ -90,8 +92,8 @@
 
                 $('#pedidoImg').attr('src', img);
                 $('#pedidoId').text(id);
-                $('#pedidoTitulo').text(titulo);
-                $('#pedidoPrecio').text(precio);
+                $('#pedidoTitulo').text(titulo.toUpperCase());
+                $('#pedidoPrecio').text(precio + " Bs.");
                 $('#pedidoCantidad').text(precio);
                 $('#pedidoTotal').text(precio);
                 console.log(compras);
@@ -102,11 +104,7 @@
                 console.error(xhr, status, error);
             }
         });
-
-
-
     }
-
 
     function guardar(){
         var json = JSON.stringify(compras);
@@ -126,6 +124,46 @@
         });
     }
 
+
+    $('#buscar').on('input', function() {
+        var dato = $(this).val(); 
+        var idmenu = $('#idmenu').val();
+        var link = "{{asset('index.php/PhisqaBuscar/')}}/"+idmenu+"/"+dato;
+        if (dato.length > 3) {
+            $('#cuerpomenu').html("");
+            $.get(link, function(response) {
+                var principal = "";
+                for(var i=0; i<response.length; i++){
+                    principal = principal + "<div class=\"col-md-12 mb-4\">";
+                    principal = principal + "    <div class=\"custom-list\">";
+                    principal = principal + "        <div class=\"img-holder\">";
+                    principal = principal + "            <img src=\"{{ asset('assets/img/') }}/"+response[i]['img']+"\" >";
+                    principal = principal + "        </div>";
+                    principal = principal + "        <div class=\"info\">";
+                    principal = principal + "            <div class=\"head clearfix\">";
+                    principal = principal + "                <h5 class=\"title float-left\"> "+response[i]['submenu']+" </h5>";
+                    principal = principal + "                <div class=\"\">";
+                    principal = principal + "                    <a href=\"#\" onclick=\"pedido('"+response[i]['id']+"')\" class=\"\" data-toggle=\"modal\" >";
+                    principal = principal + "                        <p class=\"float-right  text-primary\" > Bs. "+response[i]['precio_venta']+"  </p>";
+                    principal = principal + "                    </a>";
+                    principal = principal + "                </div>";
+                    principal = principal + "            </div>";
+                    principal = principal + "            <div class=\" col-md-9\">";
+                    principal = principal + "                <p> "+response[i]['descripcion']+" </p>";
+                    principal = principal + "            </div>";
+                    principal = principal + "        </div>";
+                    principal = principal + "    </div>";
+                    principal = principal + "</div>";
+                }
+                $('#cuerpomenu').html(principal);
+                }, 'json').fail(function(xhr, status, error) {
+                // Manejar errores
+                console.error('Error:', error);
+            });
+
+
+        }
+    });
 
 </script>
 @stop

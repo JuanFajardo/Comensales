@@ -55,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('PhisqaWarmis', [PisqawarmisController::class, 'index']);
     Route::get('PhisqaWarmis/{id}', [PisqawarmisController::class, 'detalle']);
+    Route::get('PhisqaBuscar/{id}/{buscar}', [PisqawarmisController::class, 'buscar']);
     Route::get('PhisqaWarmis/detalle/{id}', [PisqawarmisController::class, 'detallePedido']);
     Route::get('Phisqa/comprasVer', [PisqawarmisController::class, 'comprasVer']);
     Route::post('Phisqa/comprasSet', [PisqawarmisController::class, 'comprasSet']);

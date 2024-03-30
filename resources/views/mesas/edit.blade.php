@@ -1,14 +1,17 @@
 @extends('pisqa')
 
-@section('cuerpo')
+@section('titulo')
+Editar Mesa
+@stop
 
+@section('cuerpo')
 <div class="page-title">
     <div class="title_left">
-        <h3>Edtiar Menú</h3>
+        <h3>Editar Mesa</h3>
     </div>
     <div class="title_rigth">
         <h3>
-            <a href="{{ route('menus.index') }}" class="btn btn-warning"> <i class="fa fa-backward"></i> </a>
+            <a href="{{ route('mesas.index') }}" class="btn btn-warning"> <i class="fa fa-backward"></i> </a>
             @if ($errors->any())
                 <div>
                     <strong>Error de validación:</strong>
@@ -22,54 +25,45 @@
         </h3>
     </div>
 </div>
-          
+
 <div class="row">
-    <div class="col-md-12 col-sm-12 ">
+    <div class="col-md-12 col-sm-12">
         <div class="x_panel">
             <div class="x_content">
-            
-            <form method="POST" action="{{ route('menus.update', $menu->id) }}" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
+                <form method="POST" action="{{ route('mesas.update', $mesa->id) }}" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT') <!-- Esto indica que se usará el método PUT para actualizar la mesa -->
 
-                <div class="row">
-                    <div class="col">
-                        <label for="menu">Nombre del menú:</label>
-                        <input type="text" id="menu" name="menu" value="{{ $menu->menu }}" required  class="form-control">
-                    </div>
-                    <div class="col">
-                        <label for="img">Imagen:</label>
-                        <input type="file" id="img" name="img" class="form-control">
-                    </div>
-                </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="mesa">Nombre de la mesa:</label>
+                            <input type="text" id="mesa" name="mesa" value="{{ $mesa->mesa }}" required class="form-control">
+                        </div>
 
-                <div class="row">
-                    <div class="col">
-                        <label for="img">Logo:</label>
-                        <input type="file" id="logo" name="logo" required class="form-control">
+                        <div class="col">
+                            <label for="codigo">Codigo de la mesa:</label>
+                            <input type="text" id="codigo" name="codigo" value="{{ $mesa->codigo }}" required class="form-control">
+                        </div>
                     </div>
 
-                    <div class="col">
-                        <label for="img">Fondo:</label>
-                        <input type="file" id="fondo" name="fondo" required class="form-control">
+                    <div class="row">
+                        <div class="col">
+                            <label for="descripcion">Descripción:</label>
+                            <textarea id="descripcion" name="descripcion" required class="form-control">{{ $mesa->descripcion }}</textarea>
+                        </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col">
-                        <label for="img">Descripcion:</label>
-                        <textarea id="descripcion" name="descripcion" required class="form-control">{{ $menu->descripcion }}</textarea>
-                    </div>
-                </div>
+                    <!-- Asegúrate de incluir el campo oculto para 'baja' y establecer su valor -->
+                    'id_mesero', 'mesero', 'id_cliente', 'cliente', 'cantidad_comensales', 'ocupado', 'baja',
+                    <input type="hidden" id="baja" name="baja" max="1" value="{{ $mesa->baja }}" required>
+                    <input type="hidden" id="baja" name="baja" max="1" value="{{ $mesa->baja }}" required>
+                    <input type="hidden" id="baja" name="baja" max="1" value="{{ $mesa->baja }}" required>
 
-                <input type="hidden" id="baja" name="baja"  value="{{ $menu->baja }}" required>
-                <br/><br/>
-                <button type="submit" class="btn btn-warning">Actualizar Menú</button>
-            </form>
-
+                    <br/><br/>
+                    <button type="submit" class="btn btn-warning">Actualizar Mesa</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
-
 @stop

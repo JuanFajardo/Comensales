@@ -47,7 +47,10 @@
                             <td>{{ $submenu->submenu }}<br>
                                 <small> {{ $submenu->detalles }}</small>
                             </td>                
-                            <td>{{ $submenu->precio }}</td>
+                            <td>
+                                <span class="badge badge-primary">Compra {{ $submenu->precio_compra }} Bs. </span><br>
+                                <span class="badge badge-success">Venta {{ $submenu->precio_venta }} Bs. </span>
+                            </td>
                             <td>
                                 <form action="{{ route('submenus.destroy', $submenu->id) }}" method="POST">
                                     @csrf

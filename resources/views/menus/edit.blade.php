@@ -28,7 +28,7 @@
         <div class="x_panel">
             <div class="x_content">
             
-            <form method="POST" action="{{ route('menus.update', $menu->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('menus.update', $menu->id) }}"  enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 

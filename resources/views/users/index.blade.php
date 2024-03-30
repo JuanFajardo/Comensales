@@ -20,10 +20,9 @@
                         <thead>
                             <tr>
                                 <th>Nombre</th>
-                                <th>Email</th>
+                                <th>Usuario</th>
                                 <th>Celular</th>
                                 <th>Dirección</th>
-                                <th>Tipo</th>
                                 <th>Activo</th>
                                 <th>Acciones</th>
                             </tr>
@@ -32,7 +31,15 @@
                             @foreach ($users as $user)
                             <tr>
                                 <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
+                                <td>
+                                    @if( $user->tipo == "administrador" )
+                                        <span class="badge badge-primary">Administrador</span>
+                                    @elseif($user->tipo == "mesero" )
+                                        <span class="badge badge-secondary">Mesero</span>
+                                    @elseif($user->tipo == "cajero" )
+                                        <span class="badge badge-info">Cajero</span>
+                                    @endif
+                                    {{ $user->email }}</td>
                                 <td>{{ $user->celular }}</td>
                                 <td>{{ $user->direccion }}</td>
                                 <th>

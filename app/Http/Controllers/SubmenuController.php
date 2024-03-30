@@ -10,7 +10,7 @@ class SubmenuController extends Controller
 {
     public function index()
     {
-        $submenus = Submenu::all();
+        $submenus = Submenu::Where('baja','1')->orderBy('submenu')->get();
         return view('submenus.index', compact('submenus'));
     }
 
@@ -59,6 +59,7 @@ class SubmenuController extends Controller
         return view('submenus.edit', compact('submenu', 'menus'));
     }
 
+    
     public function update(Request $request, Submenu $submenu)
     {
         $request->validate([

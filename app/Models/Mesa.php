@@ -10,6 +10,7 @@ class Mesa extends Model
     use HasFactory;
 
     protected $fillable = [
-        'mesa', 'codigo', 'descripcion', 'baja',
+        //'mesa', 'codigo', 'descripcion', 'baja',
+        'id', 'mesa', 'codigo', 'descripcion', 'id_mesero', 'mesero', 'id_cliente', 'cliente', 'cantidad_comensales', 'ocupado', 'baja',
     ];
 }

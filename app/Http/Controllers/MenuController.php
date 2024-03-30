@@ -64,44 +64,28 @@ class MenuController extends Controller
          return view('menus.edit', compact('menu'));
      }
  
-     // Actualizar un producto
-     public function update(Request $request, Menu $menu)
+     public function update(Request $request,  $id)
      {
-        $request->validate([
-            'img' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'menu' => 'required',
-            'descripcion' => 'required',
-            'logo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'fondo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'baja' => 'required|numeric|min:0|max:1'
-        ]);
-
-
+        $menu = Menu::find($id);
+        
         if ($request->hasFile('img')) {
             $imageName = time() . '_menu.' . $request->img->extension();
-            $request->img->move(public_path('assets/img'), $imageName);
+            $request->img->move(base_path('es/assets/img'), $imageName);
             $menu->img = $imageName;
         }
-
+    
         if ($request->hasFile('logo')) {
             $logoName = time() . '_logo.' . $request->logo->extension();
-            $request->logo->move(public_path('assets/img'), $logoName);
+            $request->logo->move(base_path('es/assets/img'), $logoName);
             $menu->logo = $logoName;
         }
-
+    
         if ($request->hasFile('fondo')) {
             $fondoName = time() . '_fondo.' . $request->fondo->extension();
-            $request->fondo->move(public_path('assets/img'), $fondoName);
+            $request->fondo->move(base_path('es/assets/img'), $fondoName);
             $menu->fondo = $fondoName;
         }
-
-        $menu->id_menu = $request->id_menu;
-        $menu->submenu = $request->submenu;
-        $menu->baja = $request->baja;
-        $menu->save();
-         
-        $menu->update($request->all());
-         
+        $menu->update($request->except(['img', 'logo', 'fondo']));
         return redirect()->route('menus.index')->with('success','Menu actualizado correctamente');
      }
  
