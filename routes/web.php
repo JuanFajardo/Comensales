@@ -56,9 +56,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('PhisqaWarmis', [PisqawarmisController::class, 'index']);
     Route::get('PhisqaWarmis/{id}', [PisqawarmisController::class, 'detalle']);
     Route::get('PhisqaBuscar/{id}/{buscar}', [PisqawarmisController::class, 'buscar']);
+
     Route::get('PhisqaWarmis/detalle/{id}', [PisqawarmisController::class, 'detallePedido']);
+
+    Route::get('PhisqaSession/getMesa', [PisqawarmisController::class, 'getMesa']);
+    Route::get('PhisqaSession/setMesa/{id}', [PisqawarmisController::class, 'setMesa']);
     Route::get('Phisqa/comprasVer', [PisqawarmisController::class, 'comprasVer']);
     Route::post('Phisqa/comprasSet', [PisqawarmisController::class, 'comprasSet']);
+
+    Route::post('Phisqa/Actualizar', [PisqawarmisController::class, 'actualizarPedido'])->name('pisqa.actualizarPedido');
+    Route::put('Phisqa/Mesa/{id}', [PisqawarmisController::class, 'actualizarMesa'])->name('mesas.cambio');
+    Route::put('Phisqa/Mesadato/{id}', [PisqawarmisController::class, 'actualizarMesaDato'])->name('mesas.cambiodato');
+
+    Route::get('Phisqa/comanda/{id}', [PisqawarmisController::class, 'comanda'])->name('mesas.comanda');
+    
+    Route::delete('Phisqa/{id}/{ruta}', [PisqawarmisController::class, 'destroy'])->name('pisqa.destroy');
+    Route::get('factura', [PisqawarmisController::class, 'factura'])->name('pisqa.factura');
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });

@@ -14,6 +14,7 @@
 <input type="hidden" name="idmenu" id="idmenu" value="{{$dato->id}}">
 @stop
 
+
 @section('cuerpo')
 
 <div class="row" id="cuerpomenu">
@@ -45,7 +46,6 @@
 @section('script')
 <script>
     $( document ).ready(function() {
-        
         $.ajax({
             url: "{{asset('index.php/Phisqa/comprasVer')}}",
             type: 'GET',
@@ -59,16 +59,72 @@
         });
     });
 
+    /// Funcion que multiplica el boton menos o mas para sacar el total
+    function pedidoTotal(cantidad, tipo){
+        var precio = parseInt( $('#pedidoPrecioText').val() )
+        var id  = $('#pedidoId').val();
+        var total =  (precio * cantidad)
+        $('#pedidoTotal').text("Total "+ total + " Bs.");
+        for (var i = 0; i < compras.length; i++) {
+            if (compras[i].id === id) { 
+                compras[i].cantidad = cantidad;
+                compras[i].total = total;
+                break;
+            }
+        }
+    }
+
+    ////// Boton mas del pedido
     $('#idMas').on('click', function() {
         var numero = $('#pedidoCantidad').val();
-        $('#pedidoCantidad').val( parseInt(numero) + parseInt(1) );
+        var cantidad = parseInt(numero) + parseInt(1)
+        $('#pedidoCantidad').val( cantidad );
+        pedidoTotal(cantidad, 'mas');
     });
-
+    ////// Boton menos del pedido
     $('#idMenos').on('click', function() {
         var numero = $('#pedidoCantidad').val();
-        $('#pedidoCantidad').val(parseInt(numero) - parseInt(1) );
+        if( parseInt(numero) > 0 ){
+            var cantidad = parseInt(numero) - parseInt(1);
+            $('#pedidoCantidad').val( cantidad );
+            pedidoTotal(cantidad, 'menos');
+        }
     });
     
+    ////// Guardar la compra de cada producto por el controlador en el carrito se vera el resuemn y gestion de todo
+    function guardar(){
+        //alert(compras)
+        var json = JSON.stringify(compras);
+        var token = $('meta[name="csrf-token"]').attr('content'); // Obtener el token CSRF
+            $.ajax({
+                url: "{{asset('index.php/Phisqa/comprasSet')}}",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                json: json,
+                _token: token
+            },
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+        $('#exampleModalLong').modal('hide');
+        $('#pedidoId').val("");
+        $('#pedidoCantidad').val("0");
+    }
+
+    ///// Cancelar pedido
+    function cancelar(){
+        $('#exampleModalLong').modal('hide');
+        //var id  = $('#pedidoId').val();
+        $('#pedidoId').val("");
+        $('#pedidoCantidad').val("0");        
+    }
+
+    ///Hacer pedido abrir modal de producto
     function pedido(id){
         $.ajax({
             url: "{{asset('index.php/PhisqaWarmis/detalle/')}}/"+id,
@@ -85,19 +141,16 @@
                         break; 
                     }
                 }
-
                 if (!encontrado) {
                     compras.push({ id:id , titulo:titulo, img:img, cantidad:0, precio:precio, total:0 } );
                 }
-
                 $('#pedidoImg').attr('src', img);
-                $('#pedidoId').text(id);
+                $('#pedidoId').val(id);
                 $('#pedidoTitulo').text(titulo.toUpperCase());
-                $('#pedidoPrecio').text(precio + " Bs.");
-                $('#pedidoCantidad').text(precio);
-                $('#pedidoTotal').text(precio);
+                $('#pedidoPrecio').text("Precio "+ precio + " Bs.");
+                $('#pedidoPrecioText').val(precio);
+                $('#pedidoTotal').text("Total ");
                 console.log(compras);
-
                 $('#exampleModalLong').modal('show');
             },
             error: function(xhr, status, error) {
@@ -106,25 +159,7 @@
         });
     }
 
-    function guardar(){
-        var json = JSON.stringify(compras);
-        $.ajax({
-            url: "{{asset('index.php/Phisqa/comprasSet')}}",
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                json: json 
-            },
-            success: function(response) {
-                console.log(response);
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
-    }
-
-
+    ////// funcion buscar producto
     $('#buscar').on('input', function() {
         var dato = $(this).val(); 
         var idmenu = $('#idmenu').val();
@@ -160,8 +195,6 @@
                 // Manejar errores
                 console.error('Error:', error);
             });
-
-
         }
     });
 

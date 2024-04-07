@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Mesa;
+use App\Models\Cliente;
+use App\Models\Ventadetalle;
 
 class MesaController extends Controller
 {
@@ -19,9 +21,12 @@ class MesaController extends Controller
     }
 
     public function show($id){
-        $mesas = Mesa::Where('id', '!=', $id)->get();
+        
+        $mesas = Mesa::Where('id', '!=', $id)->where('baja','1')->get();
+        $clientes = Cliente::Where('baja','1')->get();
         $mesa = Mesa::find($id);
-        return view('mesas.show', compact('mesas', 'mesa'));
+        $ventas = Ventadetalle::Where('id_mesa', $id)->where('ocupado', $mesa->ocupado)->get();
+        return view('mesas.show', compact('mesas', 'mesa', 'ventas', 'clientes'));
     }
 
     // Guardar una nueva mesa

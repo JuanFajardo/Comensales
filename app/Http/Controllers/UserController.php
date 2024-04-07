@@ -31,15 +31,12 @@ class UserController extends Controller
             'baja' => 'required',
         ]);
 
-        //return $request->all();
-        
         $request['password'] = Hash::make($request->password) ;
         $request['id_mesa'] = 0;
         $request['id_cliente'] = 0;
         
         User::create($request->all());
-
-        return redirect()->route('users.index')
+        return redirect()->route('usuarios.index')
             ->with('success', 'Usuario creado exitosamente.');
     }
 
@@ -63,7 +60,8 @@ class UserController extends Controller
         $user->update($request->all());
         $user->save();
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado exitosamente.');
+        return redirect()->route('usuarios.index')
+                ->with('success', 'Usuario actualizado exitosamente.');
     }
 
     public function destroy(User $user, Request $request)
@@ -76,7 +74,7 @@ class UserController extends Controller
         } else {
             $user->update(['baja' => 1]);
         }
-        return redirect()->route('users.index')
+        return redirect()->route('usuarios.index')
             ->with('success', 'Actualizacion del estado del usuario');
     }
     

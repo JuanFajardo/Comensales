@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
 
     <title>Phisqa Warmis - @yield('title')</title>
 
@@ -63,10 +63,8 @@
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                       <a class="dropdown-item"  href="{{asset('index.php/logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-sign-out pull-right"></i> Cerrar Sesion</a>
                         <form id="logout-form" action="{{asset('index.php/logout')}}" method="POST" class="d-none">
-                          @csrf </form>
-
-
-
+                          @csrf 
+                        </form>
                     </div>
                   </li>
                 </ul>
@@ -125,7 +123,6 @@
                 </div>
               </div>
             </div>
-
             <div class="row">
               <div class="col-md-12">
                 <div class="x_panel">
@@ -133,13 +130,48 @@
                 </div>
               </div>
             </div>
-            
-
           </div>
         </div>
-
       </div>
     </div>
+
+        <!-- Cambiar pedido -->
+        <div class="modal fade" id="pedidoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Cambiar Pedido</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                <form autocomplete="off" action="{{ route('pisqa.actualizarPedido') }}" method="POST" >
+                                    @csrf
+                                    <div class="team-wrapper text-center">
+                                        <div class="form-group">
+                                            <label for="exampleSelect1">Cantidad :</label>
+                                            <input type="text" class="form-control" name="cantidad" id="cantidad">
+                                            <input type="hidden" name="id_mesa" id="id_mesa" value="">
+                                            <input type="hidden" name="id_venta" id="id_venta" value="">
+                                            <input type="hidden" name="ruta" id="ruta" value="">
+                                            <button type="submit" class="btn btn-warning"> Actualizar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @yield('cambiomesa')
+        
 
     <!-- JS -->
     <script src="{{asset('assets/vendors/jquery/dist/jquery.min.js')}}"></script>

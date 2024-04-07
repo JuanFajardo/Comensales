@@ -53,8 +53,6 @@ Editar Mesa
                         </div>
                     </div>
 
-                    <!-- Asegúrate de incluir el campo oculto para 'baja' y establecer su valor -->
-                    'id_mesero', 'mesero', 'id_cliente', 'cliente', 'cantidad_comensales', 'ocupado', 'baja',
                     <input type="hidden" id="baja" name="baja" max="1" value="{{ $mesa->baja }}" required>
                     <input type="hidden" id="baja" name="baja" max="1" value="{{ $mesa->baja }}" required>
                     <input type="hidden" id="baja" name="baja" max="1" value="{{ $mesa->baja }}" required>
