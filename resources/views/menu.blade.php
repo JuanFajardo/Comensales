@@ -20,7 +20,8 @@
       </li>
       <li><a><i class="fa fa-home"></i> Cajero <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
-        <li><a href="{{asset('index.php/mesas')}}">Mesas</a></li>
+          <li><a href="{{asset('index.php/mesas')}}">Mesas</a></li>
+          <li><a href="{{asset('index.php/PhisqaWarmis')}}" target="_blank">Cajero</a></li>
         </ul>
       </li>
       <li><a><i class="fa fa-bar-chart-o"></i> Reporte<span class="fa fa-chevron-down"></span></a>
