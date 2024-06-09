@@ -11,7 +11,7 @@ Editar Usuario
     </div>
     <div class="title_rigth">
         <h3>
-            <a href="{{ route('usuarios.index') }}" class="btn btn-primary"> <i class="fa fa-backward"></i> </a>
+            <a href="{{ route('usuarios.index') }}" class="btn btn-warning"> <i class="fa fa-backward"></i> </a>
             @if ($errors->any())
                 <div>
                     <strong>Error de validación:</strong>
@@ -31,7 +31,7 @@ Editar Usuario
         <div class="x_panel">
             <div class="x_content">
 
-                <form method="POST" action="{{ route('usuarios.store') }}" enctype="multipart/form-data">
+                
                 <form method="POST" action="{{ route('usuarios.update', $user->id) }}"  enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -43,26 +43,26 @@ Editar Usuario
 
                         <div class="col">
                             <label for="password">Contraseña</label>
-                            <input type="text" id="password" name="password" value="" required class="form-control">
+                            <input type="text" id="password" name="password" value=""  class="form-control">
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col">
                             <label for="name">Nombre Completo</label>
-                            <input type="text" id="name" name="name" value="{{ $user->name }}" required class="form-control">
+                            <input type="text" id="name" name="name" value="{{ $user->name }}"  class="form-control">
                         </div>
 
                         <div class="col">
                             <label for="celular">Celular</label>
-                            <input type="text" id="celular" name="celular" value="{{ $user->celular }}" required class="form-control">
+                            <input type="text" id="celular" name="celular" value="{{ $user->celular }}"  class="form-control">
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col">
                             <label for="direccion">Direccion</label>
-                            <input type="text" id="direccion" name="direccion" value="{{ $user->direccion }}" required class="form-control">
+                            <input type="text" id="direccion" name="direccion" value="{{ $user->direccion }}"  class="form-control">
                         </div>
 
                         <div class="col">
@@ -79,7 +79,7 @@ Editar Usuario
                     <input type="hidden" id="id_cliente" name="id_cliente" value="{{ $user->id_cliente }}" required>
                     <input type="hidden" id="baja" name="baja" value="{{ $user->baja }}" required>
                     <br/><br/>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-warning">Guardar Cambios</button>
                 </form>
             </div>
         </div>

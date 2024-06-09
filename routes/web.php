@@ -14,35 +14,27 @@ Auth::routes();
 /*
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('register', 'Auth\RegisterController@register');
-
-// Rutas de inicio de sesión
+//// Rutas de inicio de sesión
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
-
-// Rutas de restablecimiento de contraseña
+//// Rutas de restablecimiento de contraseña
 Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
 Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
-
-// Rutas de verificación de correo electrónico
+//// Rutas de verificación de correo electrónico
 Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
 Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
 Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
 */
 
-
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/', function () {
-        
         if (auth()->user()->tipo == "mesero") {
             return  redirect('/PhisqaWarmis');
-        } else {
-            return  redirect('/');
         }
-        //return view('pisqa');
     });
 
     Route::resource('usuarios', UserController::class);
@@ -73,5 +65,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('Phisqa/{id}/{ruta}', [PisqawarmisController::class, 'destroy'])->name('pisqa.destroy');
     Route::get('factura', [PisqawarmisController::class, 'factura'])->name('pisqa.factura');
 
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Auth::routes();
+    
 });

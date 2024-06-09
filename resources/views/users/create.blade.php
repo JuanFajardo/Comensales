@@ -7,7 +7,7 @@ Crear Mesa
 @section('cuerpo')
 <div class="page-title">
     <div class="title_left">
-        <h3>Crear Mesa</h3>
+        <h3>Nuevo Usuario</h3>
     </div>
     <div class="title_rigth">
         <h3>
@@ -26,12 +26,6 @@ Crear Mesa
     </div>
 </div>
 
-
-<!--  
-'email', 'password', 
-'name', 'celular', 'direccion', 'tipo' 
-'id_mesa', 'id_cliente',  -->
-          
 <div class="row">
     <div class="col-md-12 col-sm-12 ">
         <div class="x_panel">
@@ -78,15 +72,12 @@ Crear Mesa
                         </select>
                     </div>
                 </div>
-                            
-                	
-
 
                 <input type="hidden" id="id_mesa" name="id_mesa"  max="0" value="0" required>
                 <input type="hidden" id="id_cliente" name="id_cliente"  max="0" value="0" required>
                 <input type="hidden" id="baja" name="baja"  max="1" value="1" required>
                 <br/><br/>
-                <button type="submit" class="btn btn-primary">Crear Mesa</button>
+                <button type="submit" class="btn btn-primary">Crear Usuario</button>
             </form>
                 
             </div>

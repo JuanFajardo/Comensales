@@ -1,18 +1,24 @@
 <?php
 
 namespace Database\Seeders;
-
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
+
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        User::create([
+            'name' => 'bett0',
+            'email' => 'bett0',
+            'password' => \Hash::make('123456'),
+            'tipo' => 'administrador',
+            'celular' => '77889944', 
+            'direccion' => 'Calle Falsa 123',
+            'id_mesa' => 1,
+            'id_cliente' => 1,
+            'baja' => 1,
+        ]);
     }
 }

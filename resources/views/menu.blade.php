@@ -6,6 +6,7 @@
       <li><a><i class="fa fa-user"></i>Adm. Usuarios<span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="{{asset('index.php/usuarios')}}">Usuario</a></li>
+          <li><a href="{{asset('index.php/PhisqaWarmis')}}">Menu</a></li>
         </ul>
       </li>
       <li><a><i class="fa fa-shopping-cart"></i> Adm. Productos<span class="fa fa-chevron-down"></span></a>
