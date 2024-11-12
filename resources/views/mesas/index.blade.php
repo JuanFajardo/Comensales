@@ -41,6 +41,7 @@
                                     <p class="mb-0"> Mesero: <strong> {{$mesa->mesero}}</strong></p>
                                     <p class="mb-0"> Cliente: <strong>{{$mesa->cliente}}</strong></p>
                                     <p class="mb-0"> Comenzales: <strong>{{$mesa->cantidad_comensales}}</strong></p>
+                                    
                                     <hr style="width: 230px;">
                                     <div class="d-flex align-items-center mb-0 ">
                                     
@@ -54,6 +55,13 @@
                                         <button type="submit" class="btn btn-danger"> <i class="fa fa-eye-slash"></i></button>
                                         @endif             
                                     </form>
+                                        @if($mesa->ocupado != '0')
+                                        <a href="{{ route('mesas.liberar', $mesa->id) }}" 
+                                            class="btn btn-primary liberar-mesa" 
+                                            data-mesa-id="{{ $mesa->id }}">
+                                                <i class="fa fa-hand-paper-o"></i> Liberar 
+                                            </a>
+                                         @endif
                                     </div>
                                 </div>
                             </div>
@@ -61,5 +69,19 @@
                     </div>
                 </div>
                 @endforeach
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var buttons = document.querySelectorAll('.liberar-mesa');
+                    buttons.forEach(function(button) {
+                        button.addEventListener('click', function(event) {
+                            event.preventDefault(); 
+                            var mesaId = this.getAttribute('data-mesa-id');
+                            if (confirm('¿Estás seguro de que quieres liberar esta mesa?')) {
+                                window.location.href = this.href;
+                            }
+                        });
+                    });
+                });
+                </script>
 </div>
 @stop

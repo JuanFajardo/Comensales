@@ -9,31 +9,17 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\PisqawarmisController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VentaController;
 
 Auth::routes();
-/*
-Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-Route::post('register', 'Auth\RegisterController@register');
-//// Rutas de inicio de sesión
-Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('login', 'Auth\LoginController@login');
-Route::post('logout', 'Auth\LoginController@logout')->name('logout');
-//// Rutas de restablecimiento de contraseña
-Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
-//// Rutas de verificación de correo electrónico
-Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
-Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
-Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
-*/
 
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/', function () {
         if (auth()->user()->tipo == "mesero") {
             return  redirect('/PhisqaWarmis');
+        }else{
+            return view('pisqa');
         }
     });
 
@@ -44,6 +30,12 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('clientes', ClienteController::class);
     Route::resource('submenus', SubmenuController::class);
     Route::resource('productos', ProductoController::class);
+    Route::resource('ventas', VentaController::class);
+
+    Route::get('reporte', [VentaController::class, 'reporteGet'])->name('ventas.reporteGet');
+    Route::post('reporte', [VentaController::class, 'reportePost'])->name('ventas.reportePost');
+
+    Route::get('librerarmesa/{id}', [MesaController::class, 'liberar'])->name('mesas.liberar');
 
     Route::get('PhisqaWarmis', [PisqawarmisController::class, 'index']);
     Route::get('PhisqaWarmis/{id}', [PisqawarmisController::class, 'detalle']);
@@ -61,11 +53,10 @@ Route::middleware(['auth'])->group(function () {
     Route::put('Phisqa/Mesadato/{id}', [PisqawarmisController::class, 'actualizarMesaDato'])->name('mesas.cambiodato');
 
     Route::get('Phisqa/comanda/{id}', [PisqawarmisController::class, 'comanda'])->name('mesas.comanda');
+    //Route::get('Phisqa/pagar/{id}/{tipo}', [PisqawarmisController::class, 'pagar'])->name('mesas.pagar');
+    Route::post('Phisqa/pagar/{id}/{tipo}', [PisqawarmisController::class, 'pagar'])->name('mesas.pagar');
     
     Route::delete('Phisqa/{id}/{ruta}', [PisqawarmisController::class, 'destroy'])->name('pisqa.destroy');
     Route::get('factura', [PisqawarmisController::class, 'factura'])->name('pisqa.factura');
 
-    //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Auth::routes();
-    
 });

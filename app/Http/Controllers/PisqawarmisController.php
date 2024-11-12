@@ -9,6 +9,7 @@ use App\Models\Menu;
 use App\Models\Submenu;
 use App\Models\Cliente;
 use App\Models\Mesa;
+use App\Models\Venta;
 use App\Models\Ventadetalle;
 use App\Models\Producto;
 
@@ -40,8 +41,6 @@ class PisqawarmisController extends Controller
         $dato = Submenu::find($id);
         return $dato;
     }
-
-    
 
     public function getMesa(){
         //"cliente":"Juan Fajardo, 123456789","id":"1","id_mesa":1,"mesa":"Mesa 01, m1","id_cliente":1,"comenzales":"100"}*/
@@ -104,34 +103,12 @@ class PisqawarmisController extends Controller
     public function comprasSet(Request $request){
         $datos = json_decode($request->json, true)[0];
         $idproducto = $datos['id'];
-        /*
-        "json": "[{"id":"4","titulo":"Cerveza Potosina en lata","img":"http://192.168.1.200/pisqa/es/assets/img/1711763567_submenu.jpg","cantidad":0,"precio":"19","total":0}]",
-        *////Almacen 
-        /* 'id_menu','id_submenu','id_producto','precio_compra','precio_venta','fecha_peticion','fecha_entrega','cantidad_entrada','cantidad_salida','observacion'];
-
-        Compra
-        compra detalle
-            id_venta
-            "id_producto": "4",
-            "id_menu": xxxx,
-            "titulo": "Cerveza Potosina en lata",
-            "cantidad": 5,
-            "precio": "19",
-            "total": 95
-            ------------
-            'id_mesa', 
-            'mesa', 
-            'id_mesero', 
-            'mesero', 
-            'id_cliente', 
-            'cliente', 
-            'cantidad_comensales',
-        */
+       
         $producto = Submenu::find($idproducto);// $idproducto );
         $mesa = Mesa::find( Session::get('id_mesa') );
-        //return $producto;
-        //return Session::all();
-        //return $mesa;
+        
+        $ip = $request->ip();
+
         $venta = new Ventadetalle();
         $venta->id_venta   = 0;
         $venta->id_producto= $producto->id;
@@ -147,8 +124,9 @@ class PisqawarmisController extends Controller
         $venta->mesero     = Auth::user()->name;
         $venta->id_cliente = $mesa->id_cliente;
         $venta->cliente    = $mesa->cliente;
-        $venta->cantidad_comensales = $mesa->cantidad_comensales;
+        $venta->cantidad_comensales = (isset($mesa) && is_object($mesa)) ? ($mesa->cantidad_comensales ?? 0) : 0;
         $venta->ocupado    = $mesa->ocupado;
+        $venta->ip         = $ip;
 
         $venta->fecha_pago = '1900-01-01 01:01:01';
         $venta->eliminacion_comentario = '';
@@ -161,15 +139,19 @@ class PisqawarmisController extends Controller
     public function factura(){
         $menus = Menu::Where('baja','1')->get();
         $mesas = Mesa::Where('baja','1')->get();
-        $clientes = Cliente::Where('baja','1')->get();
-
-        $ventas = Ventadetalle::Where('id_mesa', Session::get('id_mesa'))->where('ocupado', Session::get('ocupado'))->orderBy('titulo', 'asc')->get();
-        return view('pisqa.factura', compact('ventas', 'menus', 'mesas', 'clientes'));
         
+        $clientes = Cliente::Where('baja','1')->get();
+        $ventas = Ventadetalle::Where('id_mesa', Session::get('id_mesa'))
+                              //->where('ocupado', Session::get('id_cliente'))
+                              ->where('fecha_pago', 'like', '1900-01-01%')
+                              ->orderBy('titulo', 'asc')->get();
+        /*echo Session::get('ocupado')."\n\n";
+        echo $mesas."\n\n";
+        return $ventas;*/
+        return view('pisqa.factura', compact('ventas', 'menus', 'mesas', 'clientes'));
     }
 
     public function destroy($id, $ruta){
-        //return ;
         $phisqa = Ventadetalle::find($id);
         if (!$phisqa) {
             return redirect()->back()->with('error', 'El recurso no existe.');
@@ -197,11 +179,8 @@ class PisqawarmisController extends Controller
     }
 
     public function actualizarMesa(Request $request, $id){
-        //$viejo = $id;
-        //$nuevo = $request->all();
         $viejo = Mesa::find($id);
         $nuevo = Mesa::find( $request->mesa );
-        //return $nuevo;
 
         $nuevo->id_mesero   = $viejo->id_mesero;
         $nuevo->mesero      = $viejo->mesero;
@@ -242,8 +221,76 @@ class PisqawarmisController extends Controller
     public function comanda($id){
         $datos = explode(';', $id);
         $mesa = Mesa::find($datos[0]);
-        $ventas = Ventadetalle::Where('id_mesa', $datos[0])->where('ocupado', $datos[1])->get();
+        //$ventas = Ventadetalle::Where('id_mesa', $datos[0])->where('ocupado', $datos[1])->get();
+        $ventas = Ventadetalle::Where('id_mesa', $datos[0])->where('fecha_pago', '1900-01-01 01:01:01.000')->get();
         return view('pisqa.comanda',compact('mesa', 'ventas'));
+    }
+
+    public function pagar($id, $tipo, Request $request){
+        
+        $cadena = json_encode( $request->all() ); 
+        if (stripos($cadena, 'producto' ) == false) {
+            echo "La cadena contiene la palabra 'producto'.";
+        
+            // Obtener los detalles de la mesa
+            $mesa = Mesa::find($id);
+            // Obtener los detalles de ventas de la mesa que aún no han sido pagados
+            $ventasDetalles = Ventadetalle::where('id_mesa', $id)
+                                        ->where('fecha_pago', '1900-01-01 01:01:01.000')
+                                        ->get();
+
+            $totalVenta = Ventadetalle::where('id_mesa', $id)
+                                        ->where('fecha_pago', '1900-01-01 01:01:01.000')
+                                        ->sum('total');
+            if ($ventasDetalles->isEmpty()) {
+                return response()->json(['message' => 'No hay ventas pendientes para esta mesa.']);
+            }
+
+            // Obtener datos del mesero y cajero desde la sesión
+            $id_cajero = \Auth()->user()->id;
+            $cajero = \Auth()->user()->name;
+            $id_mesero = $ventasDetalles->first()->id_mesero;
+            $mesero = $ventasDetalles->first()->mesero;
+            $fechaPago = now();
+
+            // Crear un nuevo registro en la tabla 'ventas'
+            $venta = Venta::create([
+                'fecha_pedido' => $ventasDetalles->first()->created_at,
+                'fecha_pago' => $fechaPago,
+                'id_mesero' => $id_mesero,
+                'mesero' => $mesero,
+                'id_cajero' => $id_cajero,
+                'cajero' => $cajero,
+                'tipo_pago' => $tipo,
+                'comensales' => $mesa->cantidad_comensales, 
+                'total' => $totalVenta, 
+                'ip'=> $request->ip(),
+            ]);
+
+            // Actualizar los detalles de la venta en 'ventadetalles'
+            foreach ($ventasDetalles as $detalle) {
+                $detalle->update([
+                    'id_venta' => $venta->id, 
+                    'tipo_pago' => $tipo, //Efectivo o tareta
+                    'fecha_pago' => $fechaPago, 
+                ]);
+            }
+
+            $mesa->update([
+                'ocupado' => 'no',  
+                'id_mesero' => '0',  
+                'mesero' => '0',  
+                'id_cliente' => '0',  
+                'cliente' => '0',  
+                'cantidad_comensales' => '0',  
+                'ocupado' => '0',  
+            ]);
+        }else{
+            echo "Descontar por separado";
+        }
+        $ventas = $ventasDetalles;
+        
+        return view('pisqa.pago',compact('mesa', 'ventas', 'venta'));
 
     }
 

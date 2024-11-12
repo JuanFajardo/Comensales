@@ -25,8 +25,21 @@ class Ventadetalle extends Model
         'cliente',
         'cantidad_comensales',
         'ocupado',
+
+        'pago_cantidad',
+        'pago_costo',
+
+        'tipo_pago',
+
+        'ip',
         'fecha_pago',
         'eliminacion_comentario',
         'eliminacion',
     ];
+
+    protected $table = 'ventadetalles';
+
+    public function venta(){
+        return $this->belongsTo(Venta::class, 'id_venta');
+    }
 }

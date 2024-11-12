@@ -10,18 +10,16 @@ class SubmenuController extends Controller
 {
     public function index()
     {
-        $submenus = Submenu::Where('baja','1')->orderBy('submenu')->get();
+        $submenus = Submenu::OrderBy('submenu')->get();
         return view('submenus.index', compact('submenus'));
     }
 
-    public function create()
-    {
+    public function create(){
         $menus = Menu::Where('baja','1')->get();
         return view('submenus.create', compact('menus'));
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         
         $request->validate([
             'img' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
@@ -53,16 +51,14 @@ class SubmenuController extends Controller
         return redirect()->route('submenus.index')->with('success', 'Submenú creado correctamente');
     }
 
-    public function edit(Submenu $submenu)
-    {
+    public function edit(Submenu $submenu){
         $menus = Menu::all();
         return view('submenus.edit', compact('submenu', 'menus'));
     }
-
     
-    public function update(Request $request, Submenu $submenu)
-    {
+    public function update(Request $request, Submenu $submenu){
         $request->validate([
+            'img' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
             'id_menu' => 'required',
             'submenu' => 'required',
             'descripcion' => 'required',
@@ -92,9 +88,7 @@ class SubmenuController extends Controller
         return redirect()->route('submenus.index')->with('success', 'Submenú actualizado correctamente');
     }
 
-    public function destroy(Submenu $submenu)
-    {   
-        //$producto->delete();
+    public function destroy(Submenu $submenu){   
         if ($submenu->baja == 1) {
             $submenu->update(['baja' => 0]);
         } else {

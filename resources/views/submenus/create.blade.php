@@ -61,7 +61,7 @@ Crear Submenú
                     </div>
                     <div class="col">
                         <label for="fondo">Precio Compra:</label>
-                        <input type="text" id="precio_compra" name="precio_compra" required class="form-control">
+                        <input type="text" id="precio_compra" name="precio_compra" value="0" required class="form-control">
                     </div>
                     <div class="col">
                         <label for="fondo">Precio Venta:</label>

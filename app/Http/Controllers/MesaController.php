@@ -9,27 +9,25 @@ use App\Models\Ventadetalle;
 
 class MesaController extends Controller
 {
-    // Mostrar todos las mesas
     public function index(){
         $mesas = Mesa::all();
         return view('mesas.index', compact('mesas'));
     }
 
-    // Mostrar el formulario para crear una nueva mesa
     public function create(){
         return view('mesas.create');
     }
 
     public function show($id){
-        
         $mesas = Mesa::Where('id', '!=', $id)->where('baja','1')->get();
         $clientes = Cliente::Where('baja','1')->get();
         $mesa = Mesa::find($id);
-        $ventas = Ventadetalle::Where('id_mesa', $id)->where('ocupado', $mesa->ocupado)->get();
+        $ventas = Ventadetalle::Where('id_mesa', $id)
+                                ->where('fecha_pago', 'like', '1900-01-01%')
+                                ->get();
         return view('mesas.show', compact('mesas', 'mesa', 'ventas', 'clientes'));
     }
 
-    // Guardar una nueva mesa
     public function store(Request $request)
     {
         $request['baja']= 1;
@@ -57,6 +55,8 @@ class MesaController extends Controller
         return view('mesas.edit', compact('mesa'));
     }
 
+    
+
     // Actualizar una mesa
     public function update(Request $request, Mesa $mesa)
     {
@@ -83,5 +83,20 @@ class MesaController extends Controller
             $mesa->update(['baja' => 1]);
         }
         return redirect()->route('mesas.index')->with('success', 'Estado de la Mesa actualizado correctamente');
+    }
+
+    // Librerar Mesa
+    public function liberar($id)
+    {
+        $mesa = Mesa::find($id);
+        $mesa->id_mesero = 0;
+        $mesa->mesero = "0";
+        $mesa->id_cliente = 0;
+        $mesa->cliente = "0";
+        $mesa->cantidad_comensales = "0";
+        $mesa->ocupado = "0";
+        $mesa->save();
+        
+        return redirect()->action([MesaController::class, 'index']);
     }
 }

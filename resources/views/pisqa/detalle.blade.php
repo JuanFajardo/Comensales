@@ -26,15 +26,15 @@
                 </div>
                 <div class="info">
                     <div class="head clearfix">
-                        <h5 class="title float-left"> {{ strtoupper($menu->submenu) }} </h5>
+                        <h3 class="title float-left" style="font-size:20px;"> {{ strtoupper($menu->submenu) }} </h3>
                         <div class="">
                             <a href="#" onclick="pedido('{{$menu->id}}')" class="" data-toggle="modal" >
-                                <p class="float-right  text-primary" > Bs. {{$menu->precio_venta}} </p>
+                                <p class="float-right text-primary" > <b style="font-size:20px; color:yellow;">Bs. {{$menu->precio_venta}}</b>  </p>
                             </a>
                         </div>
                     </div>
                     <div class=" col-md-9">
-                        <p>{{$menu->descripcion}}</p>
+                        <p>  {{$menu->descripcion}}  </p>
                     </div>
                 </div>
             </div>

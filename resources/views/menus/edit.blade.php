@@ -46,19 +46,19 @@
                 <div class="row">
                     <div class="col">
                         <label for="img">Logo:</label>
-                        <input type="file" id="logo" name="logo" required class="form-control">
+                        <input type="file" id="logo" name="logo"  class="form-control">
                     </div>
 
                     <div class="col">
                         <label for="img">Fondo:</label>
-                        <input type="file" id="fondo" name="fondo" required class="form-control">
+                        <input type="file" id="fondo" name="fondo"  class="form-control">
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col">
                         <label for="img">Descripcion:</label>
-                        <textarea id="descripcion" name="descripcion" required class="form-control">{{ $menu->descripcion }}</textarea>
+                        <textarea id="descripcion" name="descripcion"  class="form-control">{{ $menu->descripcion }}</textarea>
                     </div>
                 </div>
 

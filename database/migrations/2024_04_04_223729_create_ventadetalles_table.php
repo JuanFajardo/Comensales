@@ -27,7 +27,13 @@ class CreateVentadetallesTable extends Migration
             $table->string('cliente');
             $table->integer('cantidad_comensales');
             $table->string('ocupado');
+            $table->string('ip');
             
+            $table->string('pago_cantidad');    //Cuantoas personas pagara
+            $table->string('pago_costo');       //cuanto de dinero pagara
+
+            $table->string('tipo_pago');
+
             $table->dateTime('fecha_pago');
             $table->string('eliminacion_comentario');
             $table->string('eliminacion');

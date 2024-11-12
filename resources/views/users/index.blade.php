@@ -31,7 +31,7 @@
                             @foreach ($users as $user)
                             <tr>
                                 <td>{{ $user->name }}</td>
-                                <td>
+                                <td>{{ $user->email }}<br>
                                     @if( $user->tipo == "administrador" )
                                         <span class="badge badge-primary">Administrador</span>
                                     @elseif($user->tipo == "mesero" )
@@ -39,7 +39,7 @@
                                     @elseif($user->tipo == "cajero" )
                                         <span class="badge badge-info">Cajero</span>
                                     @endif
-                                    {{ $user->email }}</td>
+                                </td>
                                 <td>{{ $user->celular }}</td>
                                 <td>{{ $user->direccion }}</td>
                                 <th>

@@ -1,7 +1,7 @@
 <div width="200px">
     <div style="text-align: center; font-family: Calibri; font-size:10px;">
     PHISQA CAFE PUB RESTAURANTE<br>
-    <b>COMANDA </b><br>
+    <b>Pago  Nro. {{$venta->id}}</b><br>
     --------------------------
     </div>
     <div style="text-align: left;">
@@ -44,7 +44,6 @@
     --------------------------
     <div style="text-align: center; font-family: Calibri; font-size:10px;">
     <br>
-    <br>
-    
+    <b>Servicio Pagado</b> <br>
     </div>
 </div>

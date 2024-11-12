@@ -15,6 +15,16 @@ class CreateVentasTable extends Migration
     {
         Schema::create('ventas', function (Blueprint $table) {
             $table->id();
+            $table->dateTime('fecha_pedido');
+            $table->dateTime('fecha_pago');
+            $table->integer('id_mesero');
+            $table->string('mesero');
+            $table->integer('id_cajero');
+            $table->string('cajero');
+            $table->string('comensales');
+            $table->string('total');
+            $table->string('ip');
+            $table->string('tipo_pago');
             $table->timestamps();
         });
     }
