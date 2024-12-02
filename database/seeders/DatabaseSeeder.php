@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'bett0',
             'email' => 'bett0',
-            'password' => \Hash::make('123456'),
+            'password' => \Hash::make('123'),
             'tipo' => 'administrador',
             'celular' => '77889944', 
             'direccion' => 'Calle Falsa 123',

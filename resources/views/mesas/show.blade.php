@@ -192,13 +192,12 @@
                             <td>
                                 <div class="row"> 
                                     <div class="col">
-                                        <input type="checkbox" name="producto_{{ $venta->id }}" value="1">
+                                        <input type="checkbox" name="productos[{{ $venta->id }}][producto]" value="1">
                                     </div>
                                     <div class="col">
-                                        <input type="number" name="cantidad_{{ $venta->id }}" 
-                                        value="{{ $venta->cantidad }}" 
-                                        min="1" max="{{ $venta->cantidad }}" 
-                                        class="form-control">
+                                        <input type="hidden" name="productos[{{ $venta->id }}][precio]" value="{{ $venta->precio }}">
+                                        <input type="hidden" name="productos[{{ $venta->id }}][codigo]" value="{{ $venta->id }}">
+                                        <input type="number" name="productos[{{ $venta->id }}][cantidad]"  value="{{ $venta->cantidad }}"  min="1" max="{{ $venta->cantidad }}"  class="form-control">
                                     </div>
                                 </div>
                             </td>

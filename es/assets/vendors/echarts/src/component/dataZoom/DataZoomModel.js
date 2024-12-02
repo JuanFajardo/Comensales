@@ -276,9 +276,6 @@ define(function(require) {
          * @private
          */
         _isSeriesHasAllAxesTypeOf: function (seriesModel, axisType) {
-            // FIXME
-            // 需要series的xAxisIndex和yAxisIndex都首先自动设置上。
-            // 例如series.type === scatter时。
 
             var is = true;
             eachAxisDim(function (dimNames) {

@@ -90,7 +90,6 @@
                                     <div class="col-md-4">
                                         <h6 class="section-secondary-title">Cantidad:</h6>   
                                         <div class="form-group">
-                                        
                                             <input type="hidden" id="pedidoPrecioText">
                                             <input type="hidden" id="pedidoId">
                                             <input type="text" class="form-control" id="pedidoCantidad" value="0" aria-describedby="emailHelp" placeholder="0">
@@ -109,8 +108,10 @@
                 </div>
 		      </div>
 		      <div class="modal-footer mt-0">
-		        <button type="button" class="btn btn-secondary" onclick="cancelar()" >Cancelar</button>
-		        <button type="button" class="btn btn-primary" onclick="guardar()">Guardar</button>
+                <button type="button" class="btn btn-secondary" onclick="cancelar()" >Cancelar</button>
+                <input type="text" value="" class="form-control" name="comentario_pedido" id="comentario_pedido" placeholder="Sin pedido especial">
+		        <button type="button" class="btn btn-secondary" onclick="guardar('llevar')" >Llevar</button>
+		        <button type="button" class="btn btn-primary" onclick="guardar('mesa')">Mesa</button>
 		      </div>
 		    </div>
 		  </div>
@@ -122,7 +123,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Mesa</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Elegir Mesa</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -227,6 +228,7 @@
         var mesa = $('#mesa').val();
         var cliente = $('#cliente').val();
         var comensales = $('#comensales').val();
+        
         if ( cliente.length < 1 ){
             cliente = "0";
             comensales = "0";

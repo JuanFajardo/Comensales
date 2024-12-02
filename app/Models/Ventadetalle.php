@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ventadetalle extends Model
 {
     use HasFactory;
+    protected $table = 'ventadetalles';
     protected $fillable = [
         'id_venta',
         'id_producto',
@@ -31,13 +32,16 @@ class Ventadetalle extends Model
 
         'tipo_pago',
 
+        'tipo_pedido',
+        'comentario_pedido',
+
         'ip',
         'fecha_pago',
         'eliminacion_comentario',
         'eliminacion',
     ];
 
-    protected $table = 'ventadetalles';
+   
 
     public function venta(){
         return $this->belongsTo(Venta::class, 'id_venta');
