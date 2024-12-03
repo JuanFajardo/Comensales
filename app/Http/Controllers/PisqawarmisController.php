@@ -130,7 +130,7 @@ class PisqawarmisController extends Controller
 
         // Corregido
         $venta->tipo_pedido = $request->tipo_pedido;
-        $venta->comentario_pedido = $datos['comentario_pedido'];
+        $venta->comentario_pedido = $request->comentario_pedido;
 
         $venta->fecha_pago = '1900-01-01 01:01:01';
         $venta->eliminacion_comentario = '';

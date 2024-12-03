@@ -64,14 +64,12 @@
         var precio = parseInt( $('#pedidoPrecioText').val() )
         var id  = $('#pedidoId').val();
         var total =  (precio * cantidad)
-        var comentario_pedido = $('#comentario_pedido').val(); 
-
+        
         $('#pedidoTotal').text("Total "+ total + " Bs.");
         for (var i = 0; i < compras.length; i++) {
             if (compras[i].id === id) { 
                 compras[i].cantidad = cantidad;
                 compras[i].total = total;
-                compras[i].comentario_pedido = comentario_pedido;
                 break;
             }
         }
@@ -99,10 +97,9 @@
     function guardar(tipo_pedido) {
         // Crear el JSON de las compras
         var json = JSON.stringify(compras);
-        
         // Obtener el token CSRF
         var token = $('meta[name="csrf-token"]').attr('content');
-        
+        var comentario_pedido = $('#comentario_pedido').val(); 
         // Realizar la solicitud AJAX
         $.ajax({
             url: "{{asset('index.php/Phisqa/comprasSet')}}",
@@ -111,6 +108,7 @@
             data: {
                 json: json,
                 tipo_pedido: tipo_pedido, // Agregar el tipo de pedido al envío
+                comentario_pedido:comentario_pedido,
                 _token: token
             },
             success: function(response) {
@@ -120,18 +118,15 @@
                 console.error(error); // Manejar errores
             }
         });
-        // Limpiar el modal y los campos
         $('#exampleModalLong').modal('hide');
         $('#pedidoId').val("");
         $('#comentario_pedido').val("");
         $('#pedidoCantidad').val("0");
     }
     
-
     ///// Cancelar pedido
     function cancelar(){
         $('#exampleModalLong').modal('hide');
-        //var id  = $('#pedidoId').val();
         $('#pedidoId').val("");
         $('#comentario_pedido').val("");
         $('#pedidoCantidad').val("0");        
@@ -148,7 +143,6 @@
                 var img = "{{ asset('assets/img/') }}/"+response.img;
                 var encontrado = false;
                 var idBuscado = id;
-                
                 for (var i = 0; i < compras.length; i++) {
                     if (compras[i].id === idBuscado) {
                         encontrado = true; 

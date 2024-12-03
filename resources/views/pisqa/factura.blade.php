@@ -29,8 +29,15 @@
             @foreach($ventas as $venta)
                 <tr>
                     <td> {{$venta->mesa}} </td>
-                    <td> {{$venta->mesero}} </td>
-                    <td> {{$venta->titulo}} <br><small>{{$venta->comentario_pedido}}</small></td>
+                    <td> 
+                        {{$venta->mesero}} <br>
+                        @if  ($venta->tipo_pedido == "mesa")
+                        <small class="badge badge-warning"><b>{{$venta->tipo_pedido}}</b></small>
+                        @else
+                        <small class="badge badge-secondary"><b>{{$venta->tipo_pedido}}</b></small>
+                        @endif
+                    </td>
+                    <td> {{$venta->titulo}} <br> <small class="badge badge-info"><b>{{$venta->comentario_pedido}}</b></small></td>
                     <td> {{$venta->cantidad}} Cant.  {{$venta->precio}} Bs. </td>
                     <td> {{$venta->total}} Bs. </td>
                     <?php $total = $total  + $venta->total; ?>

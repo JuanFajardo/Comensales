@@ -183,28 +183,37 @@
                         <th> Acciones </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody><?php $total = $cant = 0; ?>
                     @foreach($ventas as $venta)
+                        <?php $total = $total  + $venta->total; $cant = $cant + $venta->cantidad; ?>
                         <tr>
                             <td>{{ $venta->mesa }}</td>
-                            <td>{{ $venta->mesero }}</td>
-                            <td>{{ strtoupper($venta->titulo) }}</td>
+                            <td>
+                                {{ $venta->mesero }}<br>
+                                @if  ($venta->tipo_pedido == "mesa")
+                                    <small class="badge badge-warning"><b>{{$venta->tipo_pedido}}</b></small>
+                                @else
+                                    <small class="badge badge-secondary"><b>{{$venta->tipo_pedido}}</b></small>
+                                @endif
+                            </td>
+                            <td>
+                                {{ strtoupper($venta->titulo) }}<br>
+                                <small class="badge badge-info">{{$venta->comentario_pedido}}</small>
+                            </td>
                             <td>
                                 <div class="row"> 
-                                    <div class="col">
-                                        <input type="checkbox" name="productos[{{ $venta->id }}][producto]" value="1">
-                                    </div>
                                     <div class="col">
                                         <input type="hidden" name="productos[{{ $venta->id }}][precio]" value="{{ $venta->precio }}">
                                         <input type="hidden" name="productos[{{ $venta->id }}][codigo]" value="{{ $venta->id }}">
                                         <input type="number" name="productos[{{ $venta->id }}][cantidad]"  value="{{ $venta->cantidad }}"  min="1" max="{{ $venta->cantidad }}"  class="form-control">
                                     </div>
+                                    <div class="col">
+                                        <input type="checkbox" name="productos[{{ $venta->id }}][producto]" value="1">
+                                    </div>
                                 </div>
                             </td>
-                            <td>{{ $venta->precio }} Bs.</td>
-                            <td>{{ $venta->total }} Bs.</td>
-
-                            <?php $total = $total  + $venta->total; $cant = $cant + $venta->cantidad; ?>
+                            <td>{{ $venta->precio }} Bs. </td>
+                            <td>{{ $venta->total }} Bs. </td>
                             <td> 
                                 <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#pedidoModal" onclick="actualizarPedido('{{$venta->id_mesa}}', '{{$venta->id}}')" > <b><i class="fa fa-edit" ></i></b> </a>
                                 <script>
@@ -226,7 +235,7 @@
                     @endforeach
                         <tr>
                             <th colspan="3">TOTAL</th>
-                            <th colspan="3"> {{$cant}}  </th>
+                            <th colspan="2"> {{$cant}}  </th>
                             <th> {{$total}} Bs. </th>
                         </tr>
                 </tbody>
