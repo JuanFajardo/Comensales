@@ -115,6 +115,8 @@ class PisqawarmisController extends Controller
         $venta->id_menu    = $producto->id_menu;
         $venta->id_submenu = $producto->id;
         $venta->titulo     = $producto->submenu;
+        $venta->tipo_comanda= $producto->tipo_comanda;
+        
         $venta->cantidad   = $datos['cantidad'];
         $venta->precio     = $datos['precio'];
         $venta->total      = ($datos['cantidad'] * $datos['precio']);
@@ -221,9 +223,13 @@ class PisqawarmisController extends Controller
 
     public function comanda($id){
         $datos = explode(';', $id);
+        
         $mesa = Mesa::find($datos[0]);
-        $ventas = Ventadetalle::Where('id_mesa', $datos[0])->where('fecha_pago', '1900-01-01 01:01:01.000')->get();
-        return view('pisqa.comanda',compact('mesa', 'ventas'));
+        $ventas = Ventadetalle::Where('id_mesa', $datos[0])->where('fecha_pago', '1900-01-01 01:01:01.000')
+                                ->where('tipo_comanda', $datos[1])
+                                ->get();
+        $comanda = $datos[1];
+        return view('pisqa.comanda',compact('mesa', 'ventas', 'comanda'));
     }
 
     

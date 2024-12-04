@@ -56,8 +56,12 @@ Crear Submenú
 
                 <div class="row">
                     <div class="col">
-                        <label for="fondo">Peso:</label>
-                        <input type="text" id="peso" name="peso" required class="form-control">
+                        <label for="tipo_comanda">Tipo Comanda:</label>
+                        <select name="tipo_comanda" id="tipo_comanda" class="form-control">
+                            <option value="comida">Comida</option>
+                            <option value="bebida">Bebida</option>
+                            <option value="postre">Postre</option>
+                        </select>
                     </div>
                     <div class="col">
                         <label for="fondo">Precio Compra:</label>

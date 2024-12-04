@@ -15,6 +15,8 @@ class CreateVentadetallesTable extends Migration
             $table->integer('id_menu');
             $table->integer('id_submenu');
             $table->string('titulo')->comment('producto es el nombre');
+            $table->string('tipo_comanda');
+            
             $table->integer('cantidad');
             $table->float('precio', 6,2);
             $table->float('total', 6,2);

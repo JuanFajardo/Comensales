@@ -1,7 +1,7 @@
 <div width="200px">
     <div style="text-align: center; font-family: Calibri; font-size:10px;">
     PHISQA CAFE PUB RESTAURANTE<br>
-    <b>COMANDA </b><br>
+    <b>COMANDA {{strtouppergit ($comanda)}} </b><br>
     --------------------------
     </div>
     <div style="text-align: left;">

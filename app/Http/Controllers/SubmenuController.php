@@ -40,7 +40,7 @@ class SubmenuController extends Controller
         $submenu->id_menu = $request->id_menu;
         $submenu->submenu = $request->submenu;
         $submenu->descripcion = $request->descripcion;
-        $submenu->peso = $request->peso;
+        $submenu->tipo_comanda = $request->tipo_comanda;
         $submenu->precio_compra = $request->precio_compra;
         $submenu->precio_venta = $request->precio_venta;
         $submenu->promocion = $request->promocion;
@@ -62,7 +62,6 @@ class SubmenuController extends Controller
             'id_menu' => 'required',
             'submenu' => 'required',
             'descripcion' => 'required',
-            'peso' => 'required|numeric',
             'precio_compra' => 'required|numeric',
             'precio_venta' => 'required|numeric',
             'promocion' => 'required|in:0,1',
@@ -78,7 +77,7 @@ class SubmenuController extends Controller
         $submenu->id_menu = $request->id_menu;
         $submenu->submenu = $request->submenu;
         $submenu->descripcion = $request->descripcion;
-        $submenu->peso = $request->peso;
+        $submenu->tipo_comanda = $request->tipo_comanda;
         $submenu->precio_compra = $request->precio_compra;
         $submenu->precio_venta = $request->precio_venta;
         $submenu->promocion = $request->promocion;

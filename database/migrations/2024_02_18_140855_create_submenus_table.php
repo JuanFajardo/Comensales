@@ -19,7 +19,9 @@ class CreateSubmenusTable extends Migration
             $table->unsignedInteger('id_menu');
             $table->string('submenu');
             $table->text('descripcion');
-            $table->float('peso', 6,2);
+            //$table->float('peso', 6,2);
+            $table->string('tipo_comanda');
+            
             $table->float('precio_compra', 6,2);
             $table->float('precio_venta', 6,2);
             $table->integer('promocion')->default(0); // Valor 0 o 1 para que este en primera lista

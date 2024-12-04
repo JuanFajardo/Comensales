@@ -43,9 +43,13 @@
                                     Sin imagen
                                 @endif
                             </td>
-                            <td>{{ $submenu->menu->menu }}</td>
+                            <td>
+                                {{ $submenu->menu->menu }}<br>
+                                <small class="badge badge-info"><b>{{$submenu->tipo_comanda}}</b></small>
+
+                            </td>
                             <td>{{ $submenu->submenu }}<br>
-                                <small> {{ $submenu->detalles }}</small>
+                                <small> {{ $submenu->descripcion }}</small>
                             </td>                
                             <td>
                                 <span class="badge badge-primary">Compra {{ $submenu->precio_compra }} Bs. </span><br>

@@ -58,5 +58,4 @@ Route::middleware(['auth'])->group(function () {
     
     Route::delete('Phisqa/{id}/{ruta}', [PisqawarmisController::class, 'destroy'])->name('pisqa.destroy');
     Route::get('factura', [PisqawarmisController::class, 'factura'])->name('pisqa.factura');
-
 });

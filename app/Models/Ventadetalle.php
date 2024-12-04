@@ -15,6 +15,7 @@ class Ventadetalle extends Model
         'id_menu',
         'id_submenu',
         'titulo',
+        'tipo_comanda',
         'cantidad',
         'precio',
         'total',

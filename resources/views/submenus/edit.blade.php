@@ -57,8 +57,13 @@ Editar Submenú
 
                     <div class="row">
                         <div class="col">
-                            <label for="fondo">Peso:</label>
-                            <input type="text" id="peso" name="peso" value="{{ $submenu->peso }}" required class="form-control">
+                            <label for="tipo_comanda">Tipo Comanda:</label>
+                            <select name="tipo_comanda" id="tipo_comanda" class="form-control">
+                                <option value="comida" {{ $submenu->tipo_comanda == 'comida' ? 'selected' : '' }}>Comida</option>
+                                <option value="bebida" {{ $submenu->tipo_comanda == 'bebida' ? 'selected' : '' }}>Bebida</option>
+                                <option value="postre" {{ $submenu->tipo_comanda == 'postre' ? 'selected' : '' }}>Postre</option>
+                            </select>
+
                         </div>
                         <div class="col">
                             <label for="fondo">Precio Compra:</label>
