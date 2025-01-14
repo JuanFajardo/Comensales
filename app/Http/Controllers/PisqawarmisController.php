@@ -234,6 +234,24 @@ class PisqawarmisController extends Controller
 
     
     public function pagar($id, $tipo, Request $request){
+        return $request->all();
+
+        /*
+        {   "_token":"0Bho8YUBZPMZEMm7yx1b3ufXZWG4RbkAJSVhP0zp",
+            "productos":{
+                "3":{"precio":"15","codigo":"3","cantidad":"1","producto":"1"},
+                "4":{"precio":"15","codigo":"4","cantidad":"2"},
+                "5":{"precio":"15","codigo":"5","cantidad":"3"},
+                "6":{"precio":"15","codigo":"6","cantidad":"1"},
+                "7":{"precio":"15","codigo":"7","cantidad":"2"},
+                "8":{"precio":"15","codigo":"8","cantidad":"2"},
+                "9":{"precio":"15","codigo":"9","cantidad":"10"},
+                "10":{"precio":"15","codigo":"10","cantidad":"7"},
+                "11":{"precio":"15","codigo":"11","cantidad":"2"}
+                }
+        }
+        */
+
         // Obtener los detalles de la mesa
         $mesa = Mesa::find($id);
         $venta = "";
