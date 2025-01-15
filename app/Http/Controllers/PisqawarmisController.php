@@ -221,15 +221,43 @@ class PisqawarmisController extends Controller
         return redirect()->route('mesas.show', ['mesa'=> $id]);
     }
 
+    /*
     public function comanda($id){
         $datos = explode(';', $id);
-        
         $mesa = Mesa::find($datos[0]);
+
+        if ($datos[1] =="comanda" ){
+            $ventas = Ventadetalle::Where('id_mesa', $datos[0])->where('fecha_pago', '1900-01-01 01:01:01.000')
+                                ->get();
+        }else{
         $ventas = Ventadetalle::Where('id_mesa', $datos[0])->where('fecha_pago', '1900-01-01 01:01:01.000')
                                 ->where('tipo_comanda', $datos[1])
                                 ->get();
+        }
+        
         $comanda = $datos[1];
         return view('pisqa.comanda',compact('mesa', 'ventas', 'comanda'));
+    }*/
+
+    public function comanda($id)
+    {
+        [$mesaId, $tipoComanda] = explode(';', $id);
+
+        $mesa = Mesa::find($mesaId);
+        if (!$mesa) {
+            return redirect()->back()->with('error', 'Mesa no encontrada.');
+        }
+        $query = Ventadetalle::where('id_mesa', $mesaId)
+            ->where('fecha_pago', '1900-01-01 01:01:01.000');
+        if ($tipoComanda !== 'comanda') {
+            $query->where('tipo_comanda', $tipoComanda);
+        }
+        $ventas = $query->get();
+        return view('pisqa.comanda', [
+            'mesa' => $mesa,
+            'ventas' => $ventas,
+            'comanda' => $tipoComanda,
+        ]);
     }
 
     
@@ -255,7 +283,6 @@ class PisqawarmisController extends Controller
         // Obtener los detalles de la mesa
         $mesa = Mesa::find($id);
         $venta = "";
-        
         $productos = $request->productos;
             /*(
                 [producto] => 1

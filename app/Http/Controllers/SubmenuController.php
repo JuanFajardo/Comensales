@@ -33,8 +33,6 @@ class SubmenuController extends Controller
         $imageName = time() . '_submenu.' . $request->img->extension();
         $request->img->move(base_path('es\assets\img'), $imageName);
 
-        //return $request->all();
-
         $submenu = new Submenu();
         $submenu->img = $imageName;
         $submenu->id_menu = $request->id_menu;
@@ -47,7 +45,6 @@ class SubmenuController extends Controller
         $submenu->baja = $request->baja;
         $submenu->save();
         
-        //return $submenu;
         return redirect()->route('submenus.index')->with('success', 'Submenú creado correctamente');
     }
 
@@ -58,7 +55,6 @@ class SubmenuController extends Controller
     
     public function update(Request $request, Submenu $submenu){
         $request->validate([
-            'img' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
             'id_menu' => 'required',
             'submenu' => 'required',
             'descripcion' => 'required',
@@ -69,6 +65,9 @@ class SubmenuController extends Controller
         ]);
 
         if ($request->hasFile('img')) {
+            $request->validate([
+                'img' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
             $imageName = time() . '_submenu.' . $request->img->extension();
             $request->img->move(public_path('assets/img'), $imageName);
             $submenu->img = $imageName;
