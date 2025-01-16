@@ -67,12 +67,11 @@
                 <div class="col-md-6">
                     <label for="mesa">Opciones:</label><br>
                     <a href="{{asset('index.php/mesas')}}" class="btn btn-success"> <b><i class="fa fa-backward"></i></b> </a>
-                    <a href="" class="btn btn-default"  data-toggle="modal" data-target="#mesaModal" > <b><i class="fa fa-edit" ></i> Cliente / Comenzales </b> </a>
-                    
+                    <a href="" class="btn btn-default"  data-toggle="modal" data-target="#mesaModal" > <b><i class="fa fa-edit" ></i> Cliente / Comenzales </b> </a>                    
                     <a href="{{asset('index.php/Phisqa/comanda/'.$mesa->id.';comida')}}" target="_blank" class="btn btn-default" > <b><i class="fa fa-print" ></i> Comida</b> </a>
                     <a href="{{asset('index.php/Phisqa/comanda/'.$mesa->id.';bebida')}}" target="_blank" class="btn btn-default" > <b><i class="fa fa-print" ></i> Bebida</b> </a>
                     <a href="{{asset('index.php/Phisqa/comanda/'.$mesa->id.';postre')}}" target="_blank" class="btn btn-default" > <b><i class="fa fa-print" ></i> Postre</b> </a>
-
+                    <a href="{{asset('index.php/Phisqa/comanda/'.$mesa->id.';comanda')}}" target="_blank" class="btn btn-default" > <b><i class="fa fa-print" ></i> Comanda</b> </a>
                     <script>
                         function confirmarAccion() {
                             return confirm('¿Estás seguro de que deseas continuar con el pago?');

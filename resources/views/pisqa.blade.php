@@ -16,8 +16,9 @@
     <link href="{{asset('assets/vendors/nprogress/nprogress.css')}}" rel="stylesheet">
     <link href="{{asset('assets/vendors/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet">
     <link href="{{asset('assets/build/css/custom.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
 
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script> -->
 
   </head>
 
@@ -175,7 +176,6 @@
 
         @yield('cambiomesa')
         
-
     <!-- JS -->
     <script src="{{asset('assets/vendors/jquery/dist/jquery.min.js')}}"></script>
     <script src="{{asset('assets/vendors/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
@@ -195,5 +195,8 @@
     <script src="{{asset('assets/vendors/moment/min/moment.min.js')}}"></script>
     <script src="{{asset('assets/vendors/bootstrap-daterangepicker/daterangepicker.js')}}"></script>
     <script src="{{asset('assets/build/js/custom.min.js')}}"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+    @yield('script')
   </body>
 </html>

@@ -16,7 +16,7 @@
                             {{ $message }}
                         </div>
                     @endif
-                    <table class="table">
+                    <table id="tablaPisqa" class="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th>Nombre</th>
@@ -67,4 +67,33 @@
         </div>
     </div>
 </div>
+@stop
+
+
+@section('script')
+    <script>
+        $(document).ready(function(){
+            $('#tablaPisqa').DataTable({
+                "order": [[ 0, 'asc']],
+                "language": {
+                    "bDeferRender": true,
+                    "sEmtpyTable": "No ay registros",
+                    "decimal": ",",
+                    "thousands": ".",
+                    "lengthMenu": "Mostrar _MENU_ ",
+                    "zeroRecords": "No se encontro nada,  lo siento",
+                    "info": "Mostrar paginas [_PAGE_] de [_PAGES_]",
+                    "infoEmpty": "No ay entradas permitidas",
+                    "search": "Buscar ",
+                    "infoFiltered": "(Busqueda de _MAX_ registros en total)",
+                    "oPaginate":{
+                        "sLast":"Final",
+                        "sFirst":"Principio",
+                        "sNext":"Siguiente",
+                        "sPrevious":"Anterior"
+                    }
+                }
+            });
+        });
+    </script>
 @stop
