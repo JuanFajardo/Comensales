@@ -26,7 +26,6 @@
                             <th>Fecha</th>
                             <th>Mesero</th>
                             <th>Cajero</th>
-                            <th>Comensales</th>
                             <th>Total</th>
                             <th>Acción</th>
                         </tr>
@@ -37,8 +36,7 @@
                             <td>{{ $dato->fecha_pago }}</td>
                             <td>{{ $dato->mesero }}</td>
                             <td>{{ $dato->cajero }}</td>
-                            <td>{{ $dato->comensales }}</td>
-                            <td>{{ $dato->total }}</td>
+                            <td>{{ $dato->total }} Bs</td>
                             <td>
                                 <a href="javascript:void(0);" class="mostrar-detalles btn btn-primary" data-id="{{ $dato->id }}"> <i class="fa fa-eye"></i> </a>
                             </td>

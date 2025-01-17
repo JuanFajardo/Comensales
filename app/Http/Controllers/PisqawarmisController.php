@@ -262,131 +262,100 @@ class PisqawarmisController extends Controller
 
     
     public function pagar($id, $tipo, Request $request){
-        return $request->all();
-
-        /*
-        {   "_token":"0Bho8YUBZPMZEMm7yx1b3ufXZWG4RbkAJSVhP0zp",
-            "productos":{
-                "3":{"precio":"15","codigo":"3","cantidad":"1","producto":"1"},
-                "4":{"precio":"15","codigo":"4","cantidad":"2"},
-                "5":{"precio":"15","codigo":"5","cantidad":"3"},
-                "6":{"precio":"15","codigo":"6","cantidad":"1"},
-                "7":{"precio":"15","codigo":"7","cantidad":"2"},
-                "8":{"precio":"15","codigo":"8","cantidad":"2"},
-                "9":{"precio":"15","codigo":"9","cantidad":"10"},
-                "10":{"precio":"15","codigo":"10","cantidad":"7"},
-                "11":{"precio":"15","codigo":"11","cantidad":"2"}
-                }
-        }
-        */
-
         // Obtener los detalles de la mesa
+        
         $mesa = Mesa::find($id);
         $venta = "";
         $productos = $request->productos;
-            /*(
-                [producto] => 1
-                [precio] => 15
-                [codigo] => 1
-                [cantidad] => 1
-            )*/
-        $ids = [];
-        $totalVenta = 0;
-
-        $cantidadTotal  =  count($productos);
+        //return $productos;
+        //{"6":{"precio":"35","codigo":"6","cantidad":"5"},"7":{"precio":"25","codigo":"7","cantidad":"4"},"13":{"precio":"10","codigo":"13","cantidad":"2"},"14":{"precio":"10","codigo":"14","cantidad":"2"},"15":{"precio":"10","codigo":"15","cantidad":"1","producto":"1"}}
         $cantidadContar = 0; 
-
-        foreach($productos as $producto){
-            if( isset($producto['producto'] )){
-                array_push($ids, $producto['codigo']);
-                $totalVenta =  $totalVenta + ($producto['cantidad']  * $producto['precio']);
-                $cantidadContar = $cantidadContar + 1;
+        $pedidoSeparado = [];
+        $idsActualizados = []; // Para almacenar los IDs de los registros actualizados
+        $idsNuevos = []; // Para almacenar los IDs de los nuevos registros
+        $totalVenta = 0;
+        foreach ($productos as $producto) {
+            if (isset($producto['producto'])) {
+                $cantidadContar++;
+                $codigoId = $producto['codigo'];
+                $datos = Ventadetalle::find($codigoId);
+                $totalVenta = $totalVenta + ($producto['precio'] * $producto['producto']);
+                if ($datos) {
+                    // Guardar el ID del registro actualizado
+                    $idsActualizados[] = $datos->id;
+        
+                    // Actualizar los datos existentes
+                    $datos->cantidad = $datos->cantidad - $producto['producto'];
+                    $datos->total = $datos->total - ($datos->precio * $producto['producto']);
+                    $datos->save();
+        
+                    // Crear un nuevo registro basado en el actual
+                    $nuevoDetalle = $datos->replicate(); // Clonar el registro actual
+                    $nuevoDetalle->cantidad = $producto['producto']; // Establecer la nueva cantidad
+                    $nuevoDetalle->total = $datos->precio * $producto['producto']; // Calcular el nuevo total
+                    $nuevoDetalle->fecha_pago = now(); // Fecha actual de pago
+                    $nuevoDetalle->save();
+                    
+                    // Guardar el ID del nuevo registro
+                    $idsNuevos[] = $nuevoDetalle->id;
+        
+                    // Agregar el nuevo detalle al array de separados
+                    $pedidoSeparado[] = $nuevoDetalle;
+                }
             }
         }
         
-        // Obtener los detalles de ventas de la mesa que aún no han sido pagados
-        $ventasDetalles = Ventadetalle::where('id_mesa', $id)
-                                    ->where('fecha_pago', '1900-01-01 01:01:01.000')
-                                    ->whereIn('id', $ids)
-                                    ->get();
-                                        
-        // Obtener datos del mesero y cajero desde la sesión
-        $id_cajero  = \Auth()->user()->id;
-        $cajero     = \Auth()->user()->name;
-        $id_mesero  = $ventasDetalles->first()->id_mesero;
-        $mesero     = $ventasDetalles->first()->mesero;
-        $fechaPago  = now();
-                            
-        // Crear un nuevo registro en la tabla 'ventas'
-        $venta = Venta::create([
-            'fecha_pedido'  => $ventasDetalles->first()->created_at,
-            'fecha_pago'    => $fechaPago,
-            'id_mesero'     => $id_mesero,
-            'mesero'        => $mesero,
-            'id_cajero'     => $id_cajero,
-            'cajero'        => $cajero,
-            'tipo_pago'     => $tipo,   //Efectivo o tareta
-            'comensales'    => $mesa->cantidad_comensales,
-            'total'         => $totalVenta, 
-            'ip'            => $request->ip(),
-        ]);
-
-        foreach ($ventasDetalles as $detalle) {
-            Detalle::create([
-                'id_venta'  => $venta->id,
-
-                'id_producto'=> $detalle->id_producto,
-                'id_menu'   => $detalle->id_menu,
-                'id_submenu'=> $detalle->id_submenu,
-                'titulo'    => $detalle->titulo,
-                
-                'cantidad'  => $detalle->cantidad,
-                'precio'    => $detalle->precio,
-                'total'     => $detalle->total,
-
-                'id_mesa'   => $detalle->id_mesa,
-                'mesa'      => $detalle->mesa,
-
-                'id_mesero' => $detalle->id_mesero,
-                'mesero'    => $detalle->mesero,
-
-                'id_cliente'=> $detalle->id_cliente,
-                'cliente'   => $detalle->cliente,
-
-                'cantidad_comensales' => $detalle->cantidad_comensales,
-                
-                'ip'        => $request->ip(),
-
-                'tipo_pago' => $tipo,
-                'fecha_pago'=> $fechaPago,
-            ]);
+        //return $pedidoSeparado;
+        if( $cantidadContar != 0){
+            $ventasDetalles = collect($pedidoSeparado);
         }
-
-        // Actualizar los detalles de la venta en 'ventadetalles'
-        foreach ($ventasDetalles as $detalle) {
-            $detalle->update([
-
-                'id_venta' => $venta->id, 
-                'tipo_pago' => $tipo, //Efectivo o tareta
-                'fecha_pago' => $fechaPago, 
-
+               
+        
+            // Obtener datos del mesero y cajero desde la sesión
+            $id_cajero  = \Auth()->user()->id;
+            $cajero     = \Auth()->user()->name;
+            $id_mesero  = $ventasDetalles->first()->id_mesero;
+            $mesero     = $ventasDetalles->first()->mesero;
+            $fechaPago  = now();
+                                
+            // Crear un nuevo registro en la tabla 'ventas'
+            $venta = Venta::create([
+                'fecha_pedido'  => $ventasDetalles->first()->created_at,
+                'fecha_pago'    => $fechaPago,
+                'id_mesero'     => $id_mesero,
+                'mesero'        => $mesero,
+                'id_cajero'     => $id_cajero,
+                'cajero'        => $cajero,
+                'tipo_pago'     => $tipo,   //Efectivo o tareta
+                'comensales'    => $mesa->cantidad_comensales,
+                'total'         => $totalVenta, 
+                'ip'            => $request->ip(),
             ]);
-        }
-    
-        // Si envian todos los productospara pagar
-        if( $cantidadTotal ==  $cantidadContar ){
-            $mesa->update([
-                'ocupado' => 'no',
-                'id_mesero' => '0',
-                'mesero' => '0',
-                'id_cliente' => '0',
-                'cliente' => '0',
-                'cantidad_comensales' => '0',
-                'ocupado' => '0',
-            ]);
-        }
 
-        //$ventas = $ventasDetalles;
+            // Actualizar los detalles de la venta en 'ventadetalles'
+            foreach ($ventasDetalles as $detalle) {
+                $detalle->update([
+
+                    'id_venta' => $venta->id, 
+                    'tipo_pago' => $tipo, //Efectivo o tareta
+                    'fecha_pago' => $fechaPago, 
+
+                ]);
+            }
+        
+            // Si envian todos los productospara pagar
+            if( $cantidadContar == 0){
+                $mesa->update([
+                    'ocupado' => 'no',
+                    'id_mesero' => '0',
+                    'mesero' => '0',
+                    'id_cliente' => '0',
+                    'cliente' => '0',
+                    'cantidad_comensales' => '0',
+                    'ocupado' => '0',
+                ]);
+            }
+        $ventas = $ventasDetalles;
         return view('pisqa.pago',compact('mesa', 'ventas', 'venta'));
     }
 
