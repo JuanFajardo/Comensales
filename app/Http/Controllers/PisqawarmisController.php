@@ -303,8 +303,14 @@ class PisqawarmisController extends Controller
         //return $pedidoSeparado;
         if( $cantidadContar != 0){
             $ventasDetalles = collect($pedidoSeparado);
+        }else{
+            foreach ($productos as $producto) {
+                $idsNuevos[] = $codigoId = $producto['codigo'];
+                $ventasDetalles = Ventadetalle::whereIn('id', $idsNuevos)->get();
+                $totalVenta = Ventadetalle::sum('total')->Where('id', $idsNuevos); 
+            }
         }
-
+        
             // Obtener datos del mesero y cajero desde la sesión
             $id_cajero  = \Auth()->user()->id;
             $cajero     = \Auth()->user()->name;
