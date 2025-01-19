@@ -27,7 +27,6 @@
                         <tr>
                             <th>Cliente</th>
                             <th>NIT</th>
-                            <th>Tipo</th>
                             <th>Extra</th>
                             <th>Baja</th>
                             <th>Acción</th>
@@ -36,9 +35,16 @@
                     <tbody>
                         @foreach ($clientes as $cliente)
                         <tr>
-                            <td>{{ $cliente->cliente }}</td>
+                            <td>{{ $cliente->cliente }}<br>
+                                @if( $cliente->tipo == "especial")
+                                    <p class="badge badge-info">{{ $cliente->tipo }}</p>
+                                @else
+                                    <p class="badge badge-success">{{ $cliente->tipo }}</p>
+                                @endif
+                                
+                            </td>
                             <td>{{ $cliente->nit }}</td>
-                            <td>{{ $cliente->tipo }}</td>
+                            
                             <td>{{ $cliente->extra }}</td>
                             <td>
                                 <form action="{{ route('clientes.destroy', $cliente->id) }}" method="POST">

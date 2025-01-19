@@ -262,8 +262,6 @@ class PisqawarmisController extends Controller
 
     
     public function pagar($id, $tipo, Request $request){
-        // Obtener los detalles de la mesa
-        
         $mesa = Mesa::find($id);
         $venta = "";
         $productos = $request->productos;
@@ -276,29 +274,26 @@ class PisqawarmisController extends Controller
         $totalVenta = 0;
         foreach ($productos as $producto) {
             if (isset($producto['producto'])) {
+                $cantidad = $producto['producto'];
                 $cantidadContar++;
                 $codigoId = $producto['codigo'];
                 $datos = Ventadetalle::find($codigoId);
-                $totalVenta = $totalVenta + ($producto['precio'] * $producto['producto']);
+                $totalVenta = $totalVenta + ($producto['precio'] * $cantidad);
                 if ($datos) {
                     // Guardar el ID del registro actualizado
                     $idsActualizados[] = $datos->id;
-        
                     // Actualizar los datos existentes
-                    $datos->cantidad = $datos->cantidad - $producto['producto'];
-                    $datos->total = $datos->total - ($datos->precio * $producto['producto']);
+                    $datos->cantidad = $datos->cantidad - $cantidad;
+                    $datos->total = $datos->total - ($datos->precio * $cantidad);
                     $datos->save();
-        
                     // Crear un nuevo registro basado en el actual
                     $nuevoDetalle = $datos->replicate(); // Clonar el registro actual
-                    $nuevoDetalle->cantidad = $producto['producto']; // Establecer la nueva cantidad
-                    $nuevoDetalle->total = $datos->precio * $producto['producto']; // Calcular el nuevo total
+                    $nuevoDetalle->cantidad = $cantidad; // Establecer la nueva cantidad
+                    $nuevoDetalle->total = $datos->precio * $cantidad; // Calcular el nuevo total
                     $nuevoDetalle->fecha_pago = now(); // Fecha actual de pago
                     $nuevoDetalle->save();
-                    
                     // Guardar el ID del nuevo registro
                     $idsNuevos[] = $nuevoDetalle->id;
-        
                     // Agregar el nuevo detalle al array de separados
                     $pedidoSeparado[] = $nuevoDetalle;
                 }
@@ -309,15 +304,15 @@ class PisqawarmisController extends Controller
         if( $cantidadContar != 0){
             $ventasDetalles = collect($pedidoSeparado);
         }
-               
-        
+
             // Obtener datos del mesero y cajero desde la sesión
             $id_cajero  = \Auth()->user()->id;
             $cajero     = \Auth()->user()->name;
             $id_mesero  = $ventasDetalles->first()->id_mesero;
-            $mesero     = $ventasDetalles->first()->mesero;
-            $fechaPago  = now();
-                                
+            $mesero     = $ventasDetalles->first()->mesero;    
+            $clinte     = Cliente::find($ventasDetalles->first()->id_cliente);
+            
+            $fechaPago  = now();                    
             // Crear un nuevo registro en la tabla 'ventas'
             $venta = Venta::create([
                 'fecha_pedido'  => $ventasDetalles->first()->created_at,
@@ -326,7 +321,10 @@ class PisqawarmisController extends Controller
                 'mesero'        => $mesero,
                 'id_cajero'     => $id_cajero,
                 'cajero'        => $cajero,
-                'tipo_pago'     => $tipo,   //Efectivo o tareta
+                'cliente'       => $clinte->cliente ,
+                'id_cliente'    => $clinte->id,
+                'pago'          => $clinte->tipo,
+                'tipo_pago'     => $clinte->tipo == "normal" ?  $tipo : "Sin pago",   //Efectivo o tareta
                 'comensales'    => $mesa->cantidad_comensales,
                 'total'         => $totalVenta, 
                 'ip'            => $request->ip(),

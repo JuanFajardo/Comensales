@@ -32,6 +32,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('productos', ProductoController::class);
     Route::resource('ventas', VentaController::class);
 
+    Route::get('Cierre', [VentaController::class, 'cierre'])->name('ventas.cierre');
+
     Route::get('reporte', [VentaController::class, 'reporteGet'])->name('ventas.reporteGet');
     Route::post('reporte', [VentaController::class, 'reportePost'])->name('ventas.reportePost');
 

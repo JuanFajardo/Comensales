@@ -125,6 +125,7 @@
                 <tbody><?php $total = $cant = 0; ?>
                     @foreach($ventas as $venta)
                         <?php $total = $total  + $venta->total; $cant = $cant + $venta->cantidad; ?>
+                        @if( $venta->cantidad > 0 )
                         <tr>
                             <td>
                                 <b>  {{ $venta->mesero }} </b>  <br>
@@ -183,6 +184,7 @@
                                 </script>
                             </td>        
                         </tr>
+                        @endif
                     @endforeach
                         <tr>
                             <th colspan="3">TOTAL</th>

@@ -1,18 +1,20 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Venta;
 use App\Models\Menu;
 use App\Models\Mesa;
 use App\Models\User;
 use App\Models\Ventadetalle;
+use Illuminate\Support\Facades\DB;
 
 class VentaController extends Controller
 {
     public function index(){
-        $datos = Venta::paginate(10);;
+        $datos = Venta::Where('cierre', '--')->get();
         return view('venta.index', compact('datos'));
     }
 
@@ -35,9 +37,8 @@ class VentaController extends Controller
         $fechaFinal = $request->input('fecha_final');
         $usuarioId = $request->input('usuario');
 
-        // Consultar las ventas según los filtros
         $ventas = VentaDetalle::join('ventas', 'ventas.id', '=', 'ventadetalles.id_venta')
-            ->join('users', 'users.id', '=', 'ventas.id_cajero')  // Cambiamos 'user' a 'users' para reflejar el plural correcto
+            ->join('users', 'users.id', '=', 'ventas.id_cajero')
             ->select(
                 'ventadetalles.*', 
                 'ventas.*', 
@@ -48,7 +49,7 @@ class VentaController extends Controller
             $ventas->where('users.id', '=', $usuarioId);
         }
         $ventas = $ventas->get();
-        return view('venta.reporte', compact('ventas', 'fechaInicio', 'fechaFinal', ));
+        return view('venta.reporte', compact('ventas', 'fechaInicio', 'fechaFinal'));
     }
 
     public function reporteGet(){
@@ -62,4 +63,42 @@ class VentaController extends Controller
         return view('venta.index', compact('datos'));        
     }
 
+    public function cierre(){
+        $id = Venta::max('id_cierre') + 1;
+        $datos = Venta::where('cierre', '--')->get();
+        
+        $cajero = auth()->user()->name; // Nombre del cajero actual
+        $fecha = date('Y-m-d'); // Fecha actual
+
+        // Sumas según las condiciones
+        $sumaEfectivoNormal = Venta::Where('cierre', '--')
+            ->where('pago', 'normal')
+            ->where('tipo_pago', 'efectivo')
+            ->sum('total');
+
+        $sumaTarjetaNormal = Venta::Where('cierre', '--')
+            ->where('pago', 'normal')
+            ->where('tipo_pago', 'tarjeta')
+            ->sum('total');
+
+        $sumaEspecialSinPago = Venta::where('cierre', '--')
+            ->where('pago', 'especial')
+            ->where('tipo_pago', 'Sin pago')
+            ->groupBy('cliente')
+            ->select('cliente', DB::raw('SUM(total) as total'))
+            ->get();
+        foreach ($datos as $venta) {
+            $venta->fecha_cierre = $fecha;
+            $venta->cierre = $cajero;
+            $venta->id_cierre = $id;
+            $venta->save();
+        }
+        return view('venta.cierre', [
+            'id' => $id,
+            'cajero' => $cajero,
+            'sumaEfectivoNormal' => $sumaEfectivoNormal,
+            'sumaTarjetaNormal' => $sumaTarjetaNormal,
+            'sumaEspecialSinPago' => $sumaEspecialSinPago,
+        ]);
+    }
 }

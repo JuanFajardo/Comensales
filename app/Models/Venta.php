@@ -11,14 +11,24 @@ class Venta extends Model
     protected $fillable = [
             'fecha_pedido',
             'fecha_pago',
+            
             'id_mesero',
             'mesero',
             'id_cajero',
             'cajero',
-            'tipo_pago',
+
+            'cliente',
+            'id_cliente',
+            'pago',
+
+            'cierre',
+            'fecha_cierre',
+            'id_cierre',
+                        
             'comensales',
             'total',
-            'ip'
+            'ip',
+            'tipo_pago'
     ];
     protected $table = 'ventas';
 

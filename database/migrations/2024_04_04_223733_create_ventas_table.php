@@ -17,10 +17,20 @@ class CreateVentasTable extends Migration
             $table->id();
             $table->dateTime('fecha_pedido');
             $table->dateTime('fecha_pago');
+            
             $table->integer('id_mesero');
             $table->string('mesero');
             $table->integer('id_cajero');
             $table->string('cajero');
+
+            $table->string('cliente');
+            $table->integer('id_cliente');
+            $table->string('pago');
+
+            $table->string('cierre')->default('--')->nullable();
+            $table->string('fecha_cierre')->default('--')->nullable();
+            $table->integer('id_cierre')->default('0')->nullable();
+                        
             $table->string('comensales');
             $table->string('total');
             $table->string('ip');
