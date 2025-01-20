@@ -306,7 +306,9 @@ class PisqawarmisController extends Controller
             foreach ($productos as $producto) {
                 $idsNuevos[] = $codigoId = $producto['codigo'];
                 $ventasDetalles = Ventadetalle::whereIn('id', $idsNuevos)->get();
-                $totalVenta = Ventadetalle::sum('total')->Where('id', $idsNuevos); 
+                //$totalVenta = Ventadetalle::sum('total')->Where('id', $idsNuevos); 
+                $totalVenta = Ventadetalle::whereIn('id', $idsNuevos)->sum('total');
+
             }
         }
         
