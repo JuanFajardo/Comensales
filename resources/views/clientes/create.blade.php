@@ -34,6 +34,7 @@ Crear Cliente
             <div class="x_content">
             <form method="POST" action="{{ route('clientes.store') }}" enctype="multipart/form-data">
                 @csrf
+                
                 <div class="row">
                     <div class="col">
                         <label for="cliente">Nombre del cliente:</label>

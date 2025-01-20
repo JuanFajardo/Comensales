@@ -19,7 +19,7 @@ class ClienteController extends Controller
     {
         return view('clientes.create');
     }
-
+    
     // Guardar un nuevo cliente
     public function store(Request $request)
     {

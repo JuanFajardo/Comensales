@@ -1,14 +1,13 @@
 @extends('pisqa')
 
 @section('cuerpo')
-
 <div class="page-title">
     <div class="title_left">
-        <h3>Edtiar Menú</h3>
+        <h3>Edtiar Cliente</h3>
     </div>
     <div class="title_rigth">
         <h3>
-            <a href="{{ route('menus.index') }}" class="btn btn-warning"> <i class="fa fa-backward"></i> </a>
+            <a href="{{ route('clientes.index') }}" class="btn btn-warning"> <i class="fa fa-backward"></i> </a>
             @if ($errors->any())
                 <div>
                     <strong>Error de validación:</strong>
@@ -28,48 +27,47 @@
         <div class="x_panel">
             <div class="x_content">
             
-            <form method="POST" action="{{ route('menus.update', $menu->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('clientes.update', $cliente->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
                 <div class="row">
                     <div class="col">
-                        <label for="menu">Nombre del menú:</label>
-                        <input type="text" id="menu" name="menu" value="{{ $menu->menu }}" required  class="form-control">
+                        <label for="cliente">Nombre del cliente:</label>
+                        <input type="text" id="cliente" name="cliente" value="{{ $cliente->cliente }}" required  class="form-control">
                     </div>
+
                     <div class="col">
-                        <label for="img">Imagen:</label>
-                        <input type="file" id="img" name="img" class="form-control">
+                        <label for="nit">NIT:</label>
+                        <input type="text" id="nit" name="nit" value="{{ $cliente->nit }}" required  class="form-control">
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col">
-                        <label for="img">Logo:</label>
-                        <input type="file" id="logo" name="logo" required class="form-control">
+                        <label for="tipo">Tipo:</label>
+                        <select id="tipo" name="tipo" required class="form-control">
+                            <option value="normal" {{ $cliente->tipo == 'normal' ? 'selected' : '' }}>Normal</option>
+                            <option value="especial" {{ $cliente->tipo == 'especial' ? 'selected' : '' }}>Especial</option>
+                        </select>
                     </div>
 
                     <div class="col">
-                        <label for="img">Fondo:</label>
-                        <input type="file" id="fondo" name="fondo" required class="form-control">
+                        <label for="extra">Extra:</label>
+                        <input type="text" id="extra" name="extra" value="{{ $cliente->extra }}" class="form-control">
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col">
-                        <label for="img">Descripcion:</label>
-                        <textarea id="descripcion" name="descripcion" required class="form-control">{{ $menu->descripcion }}</textarea>
-                    </div>
-                </div>
 
-                <input type="hidden" id="baja" name="baja"  value="{{ $menu->baja }}" required>
+
+
+                
                 <br/><br/>
-                <button type="submit" class="btn btn-warning">Actualizar Menú</button>
+                <button type="submit" class="btn btn-warning">Actualizar Cliente</button>
             </form>
 
             </div>
         </div>
     </div>
 </div>
-
 @stop
