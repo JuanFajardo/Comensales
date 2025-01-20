@@ -39,7 +39,9 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item" style="color:white;">
                   @if (Session::has('mesa') ) 
-                    {{ trim(explode(",", Session::get('mesa') )[0]) }}
+                    {{ trim(explode(",", Session::get('mesa') )[0]) }} <b>| </b>
+                    {{ trim(explode(" ", Session::get('cliente') )[0]) }} <b>| </b>
+                    {{ trim(explode(" ", Session::get('comenzales') )[0]) }}
                   @else
                     Sin Mesa
                   @endif
@@ -135,7 +137,7 @@
                                 <form autocomplete="off" id="seleccionMesa">
                                     <div class="team-wrapper text-center">
                                         <div class="form-group">
-                                            <label for="exampleSelect1">Mesas:</label>
+                                            <label for="exampleSelect1">Mesa:</label>
                                             <input type="text" class="form-control" name="mesa" id="mesa" list="lista_mesa" >
                                             <datalist id="lista_mesa">
                                                 @foreach($mesas as $mesa)
@@ -150,7 +152,7 @@
                                     </div>
                                     <div class="team-wrapper text-center">
                                         <div class="form-group">
-                                            <label for="exampleSelect1">Clientes:</label>
+                                            <label for="exampleSelect1">Cliente:</label>
                                             <input type="text" class="form-control" name="cliente" id="cliente" list="lista_cliente" >
                                             <datalist id="lista_cliente">
                                                 @foreach($clientes as $cliente)

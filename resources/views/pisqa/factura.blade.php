@@ -26,7 +26,9 @@
             </tr>
         </thead>
         <tbody><?php $total = 0; ?>
+            
             @foreach($ventas as $venta)
+                @if( $venta->cantidad > 0)
                 <tr>
                     <td> {{$venta->mesa}} </td>
                     <td> 
@@ -43,7 +45,9 @@
                     <?php $total = $total  + $venta->total; ?>
                     
                 </tr>
+                @endif
             @endforeach
+            
                 <tr>
                     <td>&nbsp;</td>
                     <td colspan="3">TOTAL</td>

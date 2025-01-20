@@ -95,6 +95,10 @@
     
     ////// Guardar la compra de cada producto por el controlador en el carrito se vera el resuemn y gestion de todo
     function guardar(tipo_pedido) {
+        if ($('#pedidoCantidad').val() == "0") {
+            alert("El pedido debe ser mayor a 0");
+            return;
+        }
         // Crear el JSON de las compras
         var json = JSON.stringify(compras);
         // Obtener el token CSRF

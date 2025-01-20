@@ -148,7 +148,6 @@ class PisqawarmisController extends Controller
         
         $clientes = Cliente::Where('baja','1')->get();
         $ventas = Ventadetalle::Where('id_mesa', Session::get('id_mesa'))
-                              //->where('ocupado', Session::get('id_cliente'))
                               ->where('fecha_pago', 'like', '1900-01-01%')
                               ->orderBy('titulo', 'asc')->get();
         return view('pisqa.factura', compact('ventas', 'menus', 'mesas', 'clientes'));
