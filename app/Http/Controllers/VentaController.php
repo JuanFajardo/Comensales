@@ -65,6 +65,14 @@ class VentaController extends Controller
 
     public function cierre(){
         $id = Venta::max('id_cierre') + 1;
+
+        $mesas = Mesa::where('id_mesero', '!=', '0')->count();
+        if( $mesas!=0 )
+                return "<script>
+                    alert('Existe una mesa que no cerró.');
+                    window.location.href = '" . asset('index.php/ventas') . "';
+                        </script>";
+
         $datos = Venta::where('cierre', '--')->get();
         
         $cajero = auth()->user()->name; // Nombre del cajero actual
