@@ -220,24 +220,6 @@ class PisqawarmisController extends Controller
         return redirect()->route('mesas.show', ['mesa'=> $id]);
     }
 
-    /*
-    public function comanda($id){
-        $datos = explode(';', $id);
-        $mesa = Mesa::find($datos[0]);
-
-        if ($datos[1] =="comanda" ){
-            $ventas = Ventadetalle::Where('id_mesa', $datos[0])->where('fecha_pago', '1900-01-01 01:01:01.000')
-                                ->get();
-        }else{
-        $ventas = Ventadetalle::Where('id_mesa', $datos[0])->where('fecha_pago', '1900-01-01 01:01:01.000')
-                                ->where('tipo_comanda', $datos[1])
-                                ->get();
-        }
-        
-        $comanda = $datos[1];
-        return view('pisqa.comanda',compact('mesa', 'ventas', 'comanda'));
-    }*/
-
     public function comanda($id)
     {
         [$mesaId, $tipoComanda] = explode(';', $id);
@@ -311,8 +293,7 @@ class PisqawarmisController extends Controller
 
             }
         }
-        
-            // Obtener datos del mesero y cajero desde la sesión
+        // Obtener datos del mesero y cajero desde la sesión
             $id_cajero  = \Auth()->user()->id;
             $cajero     = \Auth()->user()->name;
             $id_mesero  = $ventasDetalles->first()->id_mesero;
@@ -320,7 +301,7 @@ class PisqawarmisController extends Controller
             $clinte     = Cliente::find($ventasDetalles->first()->id_cliente);
             
             $fechaPago  = now();                    
-            // Crear un nuevo registro en la tabla 'ventas'
+        // Crear un nuevo registro en la tabla 'ventas'
             $venta = Venta::create([
                 'fecha_pedido'  => $ventasDetalles->first()->created_at,
                 'fecha_pago'    => $fechaPago,
@@ -336,8 +317,7 @@ class PisqawarmisController extends Controller
                 'total'         => $totalVenta, 
                 'ip'            => $request->ip(),
             ]);
-
-            // Actualizar los detalles de la venta en 'ventadetalles'
+        // Actualizar los detalles de la venta en 'ventadetalles'
             foreach ($ventasDetalles as $detalle) {
                 $detalle->update([
 
@@ -347,8 +327,7 @@ class PisqawarmisController extends Controller
 
                 ]);
             }
-        
-            // Si envian todos los productospara pagar
+        // Si envian todos los productospara pagar
             if( $cantidadContar == 0){
                 $mesa->update([
                     'ocupado' => 'no',

@@ -26,12 +26,14 @@
                 <th>Importe</th>
             </tr><?php $total=0; ?>
             @foreach($ventas as $venta)
-            <tr><?php $total= $total + $venta->precio; ?>
-                <td>{{ strtoupper( $venta->titulo) }}</td>
-                <td>{{$venta->cantidad}}</td>
-                <td>{{$venta->precio}}</td>
-                <td>{{$venta->total}}</td>
-            </tr>
+                @if( $venta->cantidad > 0)
+                    <tr><?php $total= $total + $venta->total; ?>
+                        <td>{{ strtoupper( $venta->titulo) }}</td>
+                        <td>{{$venta->cantidad}}</td>
+                        <td>{{$venta->precio}}</td>
+                        <td>{{$venta->total}}</td>
+                    </tr>
+                @endif
             @endforeach
             <tr>
                 <td>&nbsp;</td>
