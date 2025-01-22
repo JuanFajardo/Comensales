@@ -107,9 +107,8 @@
         <hr style="width: 100%px;">
 
         <form action="{{ route('mesas.pagar', ['id' => $mesa->id, 'tipo' => 'efectivo']) }}" method="POST">
-
-        <button type="submit" class="btn btn-success"> <i class="fa fa-file-pdf-o"></i> Pagar en Efectivo</button>
-        <button type="submit" formaction="{{ route('mesas.pagar', ['id' => $mesa->id, 'tipo' => 'tarjeta']) }}" class="btn btn-primary"> <i class="fa fa-file-pdf-o"></i> Pagar con Tarjeta</button>
+            <button type="submit" class="btn btn-success"> <i class="fa fa-file-pdf-o"></i> Pagar en Efectivo</button>
+            <button type="submit" formaction="{{ route('mesas.pagar', ['id' => $mesa->id, 'tipo' => 'tarjeta']) }}" class="btn btn-primary"> <i class="fa fa-file-pdf-o"></i> Pagar con Tarjeta</button>
             @csrf
             <table class="table table-striped">
                 <thead>
@@ -129,16 +128,13 @@
                         <tr>
                             <td>
                                 <b>  {{ $venta->mesero }} </b>  <br>
-                                
-                                
                                 @if  ($venta->tipo_comanda == "comida")
-                                <small class="badge badge-success"><b>{{$venta->tipo_comanda}}</b></small>
+                                    <small class="badge badge-success"><b>{{$venta->tipo_comanda}}</b></small>
                                 @elseif($venta->tipo_comanda == "bebida")
-                                <small class="badge badge-primary"><b> {{$venta->tipo_comanda}}</b></small>
+                                    <small class="badge badge-primary"><b> {{$venta->tipo_comanda}}</b></small>
                                 @elseif($venta->tipo_comanda == "postre")
-                                <small class="badge badge-info"><b>{{$venta->tipo_comanda}}</b></small>
+                                    <small class="badge badge-info"><b>{{$venta->tipo_comanda}}</b></small>
                                 @endif
-
 
                                 @if  ($venta->tipo_pedido == "mesa")
                                     <small class="badge badge-warning"><b>{{$venta->tipo_pedido}}</b></small>
@@ -156,10 +152,19 @@
                                     <div class="col">
                                         <input type="hidden" name="productos[{{ $venta->id }}][precio]" value="{{ $venta->precio }}">
                                         <input type="hidden" name="productos[{{ $venta->id }}][codigo]" value="{{ $venta->id }}">
-                                        <input type="number" name="productos[{{ $venta->id }}][cantidad]"  value="{{ $venta->cantidad }}"  min="1" max="{{ $venta->cantidad }}"  class="form-control">
+                                        <input 
+                                            type="number" 
+                                            name="productos[{{ $venta->id }}][cantidad]"  
+                                            value="{{ $venta->cantidad }}"  
+                                            class="form-control cantidad-input" 
+                                            data-checkbox="checkbox-{{ $venta->id }}">
                                     </div>
                                     <div class="col">
-                                        <input type="checkbox" name="productos[{{ $venta->id }}][producto]" value="1">
+                                        <input 
+                                            type="checkbox" 
+                                            id="checkbox-{{ $venta->id }}" 
+                                            name="productos[{{ $venta->id }}][producto]" 
+                                            value="{{ $venta->cantidad }}">
                                     </div>
                                 </div>
                             </td>
@@ -167,7 +172,6 @@
                             <td>{{ $venta->total }} Bs. </td>
                             <td> 
                                 <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#pedidoModal" onclick="actualizarPedido('{{$venta->id_mesa}}', '{{$venta->id}}')" > <b><i class="fa fa-edit" ></i></b> </a>
-                                
                                 <script>
                                     function confirmDelete(event) {
                                         if (confirm("¿Estás seguro de elimnar el pedido?")) {
@@ -193,7 +197,6 @@
                         </tr>
                 </tbody>
             </table>
-
             <button type="submit" class="btn btn-success" onclick="return confirmarAccion();"> <i class="fa fa-file-pdf-o"></i> Pagar en Efectivo</button>
             <button type="submit" onclick="return confirmarAccion();" formaction="{{ route('mesas.pagar', ['id' => $mesa->id, 'tipo' => 'tarjeta']) }}" class="btn btn-primary"> <i class="fa fa-file-pdf-o"></i> Pagar con Tarjeta</button>
         </form>
@@ -201,4 +204,23 @@
         <hr style="width: 100%px;">
     </div>                        
 </div>
+@stop
+
+@section('script')
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const cantidadInputs = document.querySelectorAll('.cantidad-input');
+    cantidadInputs.forEach(input => {
+        input.addEventListener('input', (event) => {
+            const cantidadValue = event.target.value;
+            const checkboxId = event.target.dataset.checkbox;
+            const checkbox = document.getElementById(checkboxId);
+
+            if (checkbox) {
+                checkbox.value = cantidadValue;
+            }
+        });
+    });
+});
+</script>
 @stop
