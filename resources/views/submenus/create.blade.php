@@ -79,7 +79,7 @@ Crear Submenú
                 <div class="row">
                     <div class="col">
                         <label for="img">Descripcion:</label>
-                        <textarea id="descripcion" name="descripcion" required class="form-control"></textarea>
+                        <textarea id="descripcion" name="descripcion" class="form-control"></textarea>
                     </div>
                 </div>
 

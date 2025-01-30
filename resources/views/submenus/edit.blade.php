@@ -78,7 +78,7 @@ Editar Submenú
                     <div class="row">
                         <div class="col">
                             <label for="img">Descripción:</label>
-                            <textarea id="descripcion" name="descripcion" required class="form-control">{{ $submenu->descripcion }}</textarea>
+                            <textarea id="descripcion" name="descripcion" class="form-control">{{ $submenu->descripcion }}</textarea>
                         </div>
                     </div>
 

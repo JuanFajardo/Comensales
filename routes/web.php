@@ -55,7 +55,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('Phisqa/Mesadato/{id}', [PisqawarmisController::class, 'actualizarMesaDato'])->name('mesas.cambiodato');
 
     Route::get('Phisqa/comanda/{id}', [PisqawarmisController::class, 'comanda'])->name('mesas.comanda');
-    //Route::get('Phisqa/pagar/{id}/{tipo}', [PisqawarmisController::class, 'pagar'])->name('mesas.pagar');
     Route::post('Phisqa/pagar/{id}/{tipo}', [PisqawarmisController::class, 'pagar'])->name('mesas.pagar');
     
     Route::delete('Phisqa/{id}/{ruta}', [PisqawarmisController::class, 'destroy'])->name('pisqa.destroy');

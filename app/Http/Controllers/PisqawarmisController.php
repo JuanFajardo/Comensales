@@ -240,6 +240,32 @@ class PisqawarmisController extends Controller
             'comanda' => $tipoComanda,
         ]);
     }
+    /*
+    public function comanda($id)
+    {
+        [$mesaId, $tipoComanda] = explode(';', $id);
+
+        $mesa = Mesa::find($mesaId);
+        if (!$mesa) {
+            return redirect()->back()->with('error', 'Mesa no encontrada.');
+        }
+
+        $query = Ventadetalle::where('id_mesa', $mesaId)
+            ->where('fecha_pago', '1900-01-01 01:01:01.000');
+
+        if ($tipoComanda !== 'comanda') {
+            $query->where('tipo_comanda', $tipoComanda);
+        }
+        $ventas = $query->get();
+        $data = [
+            'mesa' => $mesa,
+            'ventas' => $ventas,
+            'comanda' => $tipoComanda,
+        ];
+        $pdf = Pdf::loadView('pisqa.comanda', $data);
+        $pdf->setPaper([0, 0, 80, 0], 'portrait');
+        return $pdf->stream('comanda.pdf');
+    }*/
 
     
     public function pagar($id, $tipo, Request $request){

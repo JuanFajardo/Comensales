@@ -88,14 +88,22 @@ class MesaController extends Controller
     // Librerar Mesa
     public function liberar($id)
     {
-        $mesa = Mesa::find($id);
-        $mesa->id_mesero = 0;
-        $mesa->mesero = "0";
-        $mesa->id_cliente = 0;
-        $mesa->cliente = "0";
-        $mesa->cantidad_comensales = "0";
-        $mesa->ocupado = "0";
-        $mesa->save();
+        $detalles = Ventadetalle::Where("id_mesa",$id)
+        ->Where("fecha_pago","1900-01-01 01:01:01")
+        ->Where("tipo_pago","NO")
+        ->Where("cantidad",">","0")->count();
+        
+
+        if($detalles == 0){
+            $mesa = Mesa::find($id);
+            $mesa->id_mesero = 0;
+            $mesa->mesero = "0";
+            $mesa->id_cliente = 0;
+            $mesa->cliente = "0";
+            $mesa->cantidad_comensales = "0";
+            $mesa->ocupado = "0";
+            $mesa->save();
+        }
         
         return redirect()->action([MesaController::class, 'index']);
     }
