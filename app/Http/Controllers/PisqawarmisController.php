@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Menu;
 use App\Models\Submenu;
 use App\Models\Cliente;
@@ -219,7 +220,7 @@ class PisqawarmisController extends Controller
         $mesa->save();
         return redirect()->route('mesas.show', ['mesa'=> $id]);
     }
-
+    /*
     public function comanda($id)
     {
         [$mesaId, $tipoComanda] = explode(';', $id);
@@ -239,8 +240,8 @@ class PisqawarmisController extends Controller
             'ventas' => $ventas,
             'comanda' => $tipoComanda,
         ]);
-    }
-    /*
+    }*/
+    
     public function comanda($id)
     {
         [$mesaId, $tipoComanda] = explode(';', $id);
@@ -263,9 +264,9 @@ class PisqawarmisController extends Controller
             'comanda' => $tipoComanda,
         ];
         $pdf = Pdf::loadView('pisqa.comanda', $data);
-        $pdf->setPaper([0, 0, 80, 0], 'portrait');
+        $pdf->setPaper('portrait');
         return $pdf->stream('comanda.pdf');
-    }*/
+    }
 
     
     public function pagar($id, $tipo, Request $request){

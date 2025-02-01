@@ -10,7 +10,6 @@
             padding: 0;
         }
         .ticket {
-            width: 80mm; 
             margin: 0 auto;
             padding: 5px;
             box-sizing: border-box;
@@ -60,7 +59,7 @@
             <div class="separator"></div>
         </div>
         <div>
-            <table>
+            <table border="1">
                 <tr>
                     <th>Descripcion</th>
                     <th>Cant.</th>
