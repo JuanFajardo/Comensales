@@ -9,6 +9,11 @@
         <a href="{{asset('index.php/Cierre')}}" id="cierre" class="btn btn-warning">
             <i class="fa fa-unlock-alt"></i> Cerrar Caja
         </a>
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#miModal">
+    Pasar datos
+</button>
+
         <h3>
             @if (session('success'))
             <div>
@@ -71,6 +76,44 @@
 @stop
 
 @section('script')
+
+<div class="modal fade" id="miModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Registro del Día</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="totalDia">Total del día</label>
+                        <input type="number" class="form-control" id="totalDia" placeholder="Ingrese el total del día">
+                    </div>
+                    <div class="form-group">
+                        <label for="adelantoDia">Adelanto del día</label>
+                        <input type="number" class="form-control" id="adelantoDia" placeholder="Ingrese el adelanto del día">
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcionAdelanto">Descripción del adelanto</label>
+                        <textarea class="form-control" id="descripcionAdelanto" rows="2" placeholder="Descripción del adelanto"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="comentario">Comentario</label>
+                        <textarea class="form-control" id="comentario" rows="3" placeholder="Ingrese un comentario"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function(){
         $('#tablaPisqa').DataTable({

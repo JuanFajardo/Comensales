@@ -12,7 +12,8 @@
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "laravel/ui": "^3.4"
+        "laravel/ui": "^3.4",
+        "mike42/escpos-php": "^2.2"
     },
     "require-dev": {
         "enlightn/enlightn": "^1.26",
