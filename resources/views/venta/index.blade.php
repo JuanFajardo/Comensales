@@ -89,20 +89,24 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="totalDia">Total del día</label>
-                        <input type="number" class="form-control" id="totalDia" placeholder="Ingrese el total del día">
+                        <label for="efectivo">Total del día efectivo</label>
+                        <input type="number" class="form-control" id="efectivo" name="efectivo" placeholder="Ingrese el total del día efectivo">
                     </div>
                     <div class="form-group">
-                        <label for="adelantoDia">Adelanto del día</label>
-                        <input type="number" class="form-control" id="adelantoDia" placeholder="Ingrese el adelanto del día">
+                        <label for="tarjet">Total del día Tarjeta - QR</label>
+                        <input type="number" class="form-control" id="tarjet" name="tarjet" placeholder="Ingrese el total del día Tarjeta - QR">
+                    </div>
+                    <div class="form-group">
+                        <label for="adelanto">Adelanto del día</label>
+                        <input type="number" class="form-control" id="adelanto" name="adelanto" placeholder="Ingrese el adelanto del día">
                     </div>
                     <div class="form-group">
                         <label for="descripcionAdelanto">Descripción del adelanto</label>
-                        <textarea class="form-control" id="descripcionAdelanto" rows="2" placeholder="Descripción del adelanto"></textarea>
+                        <textarea class="form-control" id="descripcionAdelanto" name="descripcionAdelanto" rows="2" placeholder="Descripción del adelanto"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="comentario">Comentario</label>
-                        <textarea class="form-control" id="comentario" rows="3" placeholder="Ingrese un comentario"></textarea>
+                        <textarea class="form-control" id="comentario" name="comentario" rows="3" placeholder="Ingrese un comentario"></textarea>
                     </div>
                 </form>
             </div>
