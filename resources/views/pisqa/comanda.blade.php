@@ -5,7 +5,7 @@
     <style>
         body {
             font-family: Calibri, sans-serif;
-            font-size: 10px;
+            font-size: 14px;
             margin: 0;
             padding: 0;
         }
@@ -43,7 +43,7 @@
         <div class="center">
             PHISQA CAFE PUB RESTAURANTE<br>
             <b>{{ strtoupper($comanda) }}</b>
-            <div class="separator"></div>
+            
         </div>
         <div>
             <table>
@@ -59,7 +59,7 @@
             <div class="separator"></div>
         </div>
         <div>
-            <table border="1">
+            <table border="0">
                 <tr>
                     <th>Descripcion</th>
                     <th>Cant.</th>
@@ -83,7 +83,7 @@
                     <td class="total">{{ $total }}</td>
                 </tr>
             </table>
-            <div class="separator"></div>
+            
         </div>
         <div class="center">
             <br/><br/>

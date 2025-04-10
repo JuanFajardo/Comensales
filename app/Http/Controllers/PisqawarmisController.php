@@ -263,9 +263,8 @@ class PisqawarmisController extends Controller
             'ventas' => $ventas,
             'comanda' => $tipoComanda,
         ];
-        $pdf = Pdf::loadView('pisqa.comanda', $data);
-        $pdf->setPaper('portrait');
-        return $pdf->stream('comanda.pdf');
+        
+        return view('pisqa.comanda', $data);
     }
 
     
