@@ -8,7 +8,6 @@
             font-size: 10px;
             margin: 0;
             padding: 0;
-            width: 80mm; /* Ancho de la impresora térmica */
         }
         .ticket {
             width: 100%;
@@ -83,7 +82,6 @@
                     <td class="total">{{ $total }}</td>
                 </tr>
             </table>
-            <div class="separator"></div>
         </div>
         <div class="center">
             <br>

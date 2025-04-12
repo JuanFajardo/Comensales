@@ -172,20 +172,57 @@
                             <td>{{ $venta->total }} Bs. </td>
                             <td> 
                                 <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#pedidoModal" onclick="actualizarPedido('{{$venta->id_mesa}}', '{{$venta->id}}')" > <b><i class="fa fa-edit" ></i></b> </a>
-                                <script>
-                                    function confirmDelete(event) {
-                                        if (confirm("¿Estás seguro de elimnar el pedido?")) {
-                                            document.getElementById('bett0').submit();
-                                        } else {
-                                            event.preventDefault();
-                                        }
-                                    }                
-                                    function actualizarPedido(mesa, venta){
-                                        $('#id_mesa').val(mesa);
-                                        $('#id_venta').val(venta);
-                                        $('#ruta').val('mesa');
-                                    }
-                                </script>
+
+                                
+                                <a href="#" class="btn btn-danger" onclick="openDeleteModal('{{$venta->id}}')"> <b><i class="fa fa-trash"></i></b> </a>
+
+
+                                <div id="deleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmar eliminación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Por favor, indica la razón para eliminar el pedido:</p>
+                <form id="deleteForm" action="/ruta-de-eliminacion" method="POST">
+                    @csrf
+                    <!-- ID del pedido oculto -->
+                    <input type="hidden" id="pedidoId" name="pedidoId">
+                    
+                    <!-- Campo para la razón -->
+                    <div class="form-group">
+                        <label for="razon">Razón de eliminación</label>
+                        <textarea class="form-control" id="razon" name="razon" rows="3" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-danger" form="deleteForm">Confirmar eliminación</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openDeleteModal(pedidoId) {
+        // Establece el ID del pedido en el campo oculto del formulario
+        document.getElementById('pedidoId').value = pedidoId;
+
+        // Abre el modal
+        $('#deleteModal').modal('show');
+    }
+
+    function actualizarPedido(mesa, venta) {
+        $('#id_mesa').val(mesa);
+        $('#id_venta').val(venta);
+        $('#ruta').val('mesa');
+    }
+</script>
                             </td>        
                         </tr>
                         @endif

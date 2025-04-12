@@ -220,28 +220,7 @@ class PisqawarmisController extends Controller
         $mesa->save();
         return redirect()->route('mesas.show', ['mesa'=> $id]);
     }
-    /*
-    public function comanda($id)
-    {
-        [$mesaId, $tipoComanda] = explode(';', $id);
-
-        $mesa = Mesa::find($mesaId);
-        if (!$mesa) {
-            return redirect()->back()->with('error', 'Mesa no encontrada.');
-        }
-        $query = Ventadetalle::where('id_mesa', $mesaId)
-            ->where('fecha_pago', '1900-01-01 01:01:01.000');
-        if ($tipoComanda !== 'comanda') {
-            $query->where('tipo_comanda', $tipoComanda);
-        }
-        $ventas = $query->get();
-        return view('pisqa.comanda', [
-            'mesa' => $mesa,
-            'ventas' => $ventas,
-            'comanda' => $tipoComanda,
-        ]);
-    }*/
-    
+       
     public function comanda($id)
     {
         [$mesaId, $tipoComanda] = explode(';', $id);
@@ -324,8 +303,8 @@ class PisqawarmisController extends Controller
             $cajero     = \Auth()->user()->name;
             $id_mesero  = $ventasDetalles->first()->id_mesero;
             $mesero     = $ventasDetalles->first()->mesero;    
-            $clinte     = Cliente::find($ventasDetalles->first()->id_cliente);
-            
+            $clinte     = Cliente::find($mesa->id_cliente);
+                     
             $fechaPago  = now();                    
         // Crear un nuevo registro en la tabla 'ventas'
             $venta = Venta::create([
