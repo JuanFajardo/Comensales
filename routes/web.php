@@ -31,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('submenus', SubmenuController::class);
     Route::resource('productos', ProductoController::class);
     Route::resource('ventas', VentaController::class);
+    Route::post('registro', [VentaController::class, 'registro'])->name('ventas.registro');
 
     Route::get('Cierre', [VentaController::class, 'cierre'])->name('ventas.cierre');
 

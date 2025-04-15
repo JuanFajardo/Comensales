@@ -49,7 +49,7 @@
             <table>
                 <tr>
                     <td>Fecha: {{ date('d/m/Y') }}</td>
-                    <td>Mesa: {{ $mesa->codigo }}</td>
+                    <td> {{ $mesa->mesa }} - {{ $mesa->descripcion }} </td>
                 </tr>
                 <tr>
                     <td>Hora: {{ date('H:i') }}</td>

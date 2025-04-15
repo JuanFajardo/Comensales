@@ -86,8 +86,9 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <form action="{{ route('ventas.registro') }}" method="POST">
+                @csrf
             <div class="modal-body">
-                <form>
                     <div class="form-group">
                         <label for="efectivo">Total del día efectivo</label>
                         <input type="number" class="form-control" id="efectivo" name="efectivo" placeholder="Ingrese el total del día efectivo">
@@ -108,12 +109,12 @@
                         <label for="comentario">Comentario</label>
                         <textarea class="form-control" id="comentario" name="comentario" rows="3" placeholder="Ingrese un comentario"></textarea>
                     </div>
-                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary">Guardar</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
             </div>
+            </form>
         </div>
     </div>
 </div>

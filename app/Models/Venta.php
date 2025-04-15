@@ -28,7 +28,15 @@ class Venta extends Model
             'comensales',
             'total',
             'ip',
-            'tipo_pago'
+            'tipo_pago', 
+
+            'registro',
+            'registro_efectivo',
+            'registro_tarjeta',
+            'adelanto_efectivo',
+            'adelanto',
+            'comentario'
+
     ];
     protected $table = 'ventas';
 

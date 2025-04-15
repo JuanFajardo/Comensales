@@ -124,9 +124,10 @@
                 <tbody><?php $total = $cant = 0; ?>
                     @foreach($ventas as $venta)
                         <?php $total = $total  + $venta->total; $cant = $cant + $venta->cantidad; ?>
-                        @if( $venta->cantidad > 0 )
+                        
+                        @if( $venta->cantidad != 0 )
                         <tr>
-                            <td>
+                            <td> 
                                 <b>  {{ $venta->mesero }} </b>  <br>
                                 @if  ($venta->tipo_comanda == "comida")
                                     <small class="badge badge-success"><b>{{$venta->tipo_comanda}}</b></small>
@@ -141,11 +142,16 @@
                                 @else
                                     <small class="badge badge-secondary"><b>{{$venta->tipo_pedido}}</b></small>
                                 @endif
-                                    
                             </td>
-                            <td>
+                            <td> 
+
                                 {{ strtoupper($venta->titulo) }}<br>
                                 <small class="badge badge-info">{{$venta->comentario_pedido}}</small>
+
+                                @if( strlen($venta->eliminacion_comentario) > 0)
+                                    <small class="badge badge-danger">{{$venta->eliminacion_comentario}}</small>
+                                @endif
+
                             </td>
                             <td>
                                 <div class="row"> 
@@ -171,58 +177,25 @@
                             <td>{{ $venta->precio }} Bs. </td>
                             <td>{{ $venta->total }} Bs. </td>
                             <td> 
+                                @if( strlen($venta->eliminacion_comentario) == 0)
                                 <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#pedidoModal" onclick="actualizarPedido('{{$venta->id_mesa}}', '{{$venta->id}}')" > <b><i class="fa fa-edit" ></i></b> </a>
-
-                                
                                 <a href="#" class="btn btn-danger" onclick="openDeleteModal('{{$venta->id}}')"> <b><i class="fa fa-trash"></i></b> </a>
+                               
+                                <script>
+                                    function openDeleteModal(pedidoId) {
+                                        // Establece el ID del pedido en el campo oculto del formulario
+                                        document.getElementById('pedidoId').value = pedidoId;
 
-
-                                <div id="deleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Confirmar eliminación</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Por favor, indica la razón para eliminar el pedido:</p>
-                <form id="deleteForm" action="/ruta-de-eliminacion" method="POST">
-                    @csrf
-                    <!-- ID del pedido oculto -->
-                    <input type="hidden" id="pedidoId" name="pedidoId">
-                    
-                    <!-- Campo para la razón -->
-                    <div class="form-group">
-                        <label for="razon">Razón de eliminación</label>
-                        <textarea class="form-control" id="razon" name="razon" rows="3" required></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-danger" form="deleteForm">Confirmar eliminación</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    function openDeleteModal(pedidoId) {
-        // Establece el ID del pedido en el campo oculto del formulario
-        document.getElementById('pedidoId').value = pedidoId;
-
-        // Abre el modal
-        $('#deleteModal').modal('show');
-    }
-
-    function actualizarPedido(mesa, venta) {
-        $('#id_mesa').val(mesa);
-        $('#id_venta').val(venta);
-        $('#ruta').val('mesa');
-    }
-</script>
+                                        // Abre el modal
+                                        $('#deleteModal').modal('show');
+                                    }
+                                    function actualizarPedido(mesa, venta) {
+                                        $('#id_mesa').val(mesa);
+                                        $('#id_venta').val(venta);
+                                        $('#ruta').val('mesa');
+                                    }
+                                </script>
+                                @endif
                             </td>        
                         </tr>
                         @endif
@@ -241,6 +214,42 @@
         <hr style="width: 100%px;">
     </div>                        
 </div>
+
+
+<div id="deleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmar eliminación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <p>Por favor, indica la razón para eliminar el pedido:</p>
+                
+                <form id="deleteForm" action="{{ route('mesas.destroy', ['mesa' => '1']) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    
+                    <input type="hidden" id="pedidoId" name="pedidoId">
+                    <input type="hidden" id="mesaId" name="mesaId" value="{{$mesa->id}}">
+                    
+                    <div class="form-group">
+                        <label for="razon">Razón de eliminación</label>
+                        <textarea class="form-control" id="razon" name="razon" rows="3" required></textarea>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-danger" form="deleteForm">Confirmar eliminación</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @stop
 
 @section('script')

@@ -76,15 +76,6 @@ class MesaController extends Controller
         return redirect()->route('mesas.index')->with('success', 'Mesa actualizada correctamente');
     }
 
-    public function destroy(Mesa $mesa){
-        if ($mesa->baja == 1) {
-            $mesa->update(['baja' => 0]);
-        } else {
-            $mesa->update(['baja' => 1]);
-        }
-        return redirect()->route('mesas.index')->with('success', 'Estado de la Mesa actualizado correctamente');
-    }
-
     // Librerar Mesa
     public function liberar($id)
     {
@@ -106,5 +97,29 @@ class MesaController extends Controller
         }
         
         return redirect()->action([MesaController::class, 'index']);
+    }
+
+    public function destroy(Request $request){
+        //"_method":"DELETE",
+        // "pedidoId":"77","mesaId":"1","razon":"Eliminar"}
+        $detalle = Ventadetalle::find( $request->pedidoId );
+
+        
+        $detalle->update(
+            [   
+                'cantidad' => -1,
+                'precio' => 0,
+                'total' => 0,
+
+                'pago_cantidad' => 0,
+                'pago_costo' => 0,
+
+                'eliminacion_comentario' => $request->razon,
+                'eliminacion' => date('Y-m-d H:i:s'),
+            ]
+        );
+        
+        return redirect()->route('mesas.show', $request->mesaId )->with('success', 'Pedido eliminado ');
+
     }
 }

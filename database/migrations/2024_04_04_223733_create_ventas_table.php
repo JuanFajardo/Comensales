@@ -35,6 +35,16 @@ class CreateVentasTable extends Migration
             $table->string('total');
             $table->string('ip');
             $table->string('tipo_pago');
+
+            $table->string('registro')->nullable();
+            $table->float('registro_efectivo', 6,2)->nullable();
+            $table->float('registro_tarjeta', 6,2)->nullable();
+            $table->float('adelanto_efectivo', 6,2)->nullable();
+            $table->string('adelanto')->nullable();
+            $table->string('comentario')->nullable();
+
+
+
             $table->timestamps();
         });
     }

@@ -85,3 +85,11 @@
                 </script>
 </div>
 @stop
+
+@section('script')
+<script>
+    setTimeout(function() {
+        location.reload();
+    }, 60000); // 60000 milisegundos = 1 minuto
+</script>
+@stop

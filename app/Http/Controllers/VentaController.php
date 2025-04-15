@@ -109,4 +109,39 @@ class VentaController extends Controller
             'sumaEspecialSinPago' => $sumaEspecialSinPago,
         ]);
     }
+
+    public function registro(Request $request){
+        echo "ss";
+        
+        return $request->all();
+
+        $venta = new Venta();
+
+        $venta->fecha_pedido = date('Y-m-d H:i:s');
+        $venta->fecha_pago =  date('Y-m-d H:i:s');
+            
+        $venta->id_mesero = auth()->user()->id;
+        $venta->mesero =  auth()->user()->name;
+        $venta->id_cajero = auth()->user()->id;
+        $venta->cajero = auth()->user()->name;
+
+        $venta->cliente = "0";
+        $venta->id_cliente = 0;
+        $venta->pago = "0";
+
+                                
+        $venta->comensales = 0;
+        $venta->total = 0;
+        $venta->ip = $request->ip();
+        $venta->tipo_pago = "0";
+        
+        $venta->registro = date('Y-m-d H:i:s');
+        $venta->registro_efectivo = $request->efectivo;
+        $venta->registro_tarjeta = $request->tarjet;
+        $venta->adelanto_efectivo = $request->adelanto;
+        $venta->adelanto = $request->descripcionAdelanto;
+        $venta->comentario = $request->comentario;
+        $venta->save();
+
+    }
 }
