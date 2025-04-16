@@ -5,7 +5,7 @@
     <style>
         body {
             font-family: Calibri, sans-serif;
-            font-size: 10px;
+            font-size: 13px;
             margin: 0;
             padding: 0;
         }
@@ -50,11 +50,11 @@
             <table>
                 <tr>
                     <td>Fecha: {{ date('d/m/Y') }}</td>
-                    <td>Mesa: {{ $mesa->codigo }}</td>
+                    <td>{{ $mesa->mesa }} - {{ $mesa->descripcion }}</td>
                 </tr>
                 <tr>
                     <td>Hora: {{ date('H:i') }}</td>
-                    <td>Cliente: {{ $mesa->cliente }}</td>
+                    <td> &nbsp;</td>
                 </tr>
             </table>
             <div class="separator"></div>
@@ -69,13 +69,15 @@
                 </tr>
                 <?php $total = 0; ?>
                 @foreach($ventas as $venta)
-                    <tr>
-                        <?php $total += $venta->total; ?>
-                        <td>{{ strtoupper($venta->titulo) }}</td>
-                        <td>{{ $venta->cantidad }}</td>
-                        <td>{{ $venta->precio }}</td>
-                        <td>{{ $venta->total }}</td>
-                    </tr>
+                    @if( $venta->eliminacion_comentario == "")
+                        <tr>
+                            <?php $total += $venta->total; ?>
+                            <td>{{ strtoupper($venta->titulo) }}</td>
+                            <td>{{ $venta->cantidad }}</td>
+                            <td>{{ $venta->precio }}</td>
+                            <td>{{ $venta->total }}</td>
+                        </tr>
+                    @endif
                 @endforeach
                 <tr>
                     <td colspan="3" class="total">TOTAL Bs.</td>
