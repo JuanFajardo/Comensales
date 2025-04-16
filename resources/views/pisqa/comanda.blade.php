@@ -68,7 +68,7 @@
                 </tr>
                 <?php $total = 0; ?>
                 @foreach($ventas as $venta)
-                    @if($venta->cantidad > 0)
+                    @if($venta->cantidad > 0 && $venta->eliminacion_comentario == "")
                         <tr>
                             <?php $total += $venta->total; ?>
                             <td>{{ strtoupper($venta->titulo) }}</td>

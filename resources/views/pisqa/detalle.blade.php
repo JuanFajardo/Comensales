@@ -100,7 +100,8 @@
             return;
         }
         // Crear el JSON de las compras
-        var json = JSON.stringify(compras);
+        var ultimoElemento = [ compras[compras.length - 1] ];
+        var json = JSON.stringify(  ultimoElemento );
         // Obtener el token CSRF
         var token = $('meta[name="csrf-token"]').attr('content');
         var comentario_pedido = $('#comentario_pedido').val(); 
@@ -127,6 +128,7 @@
         $('#comentario_pedido').val("");
         $('#pedidoCantidad').val("0");
     }
+
     
     ///// Cancelar pedido
     function cancelar(){
@@ -147,6 +149,7 @@
                 var img = "{{ asset('assets/img/') }}/"+response.img;
                 var encontrado = false;
                 var idBuscado = id;
+                
                 for (var i = 0; i < compras.length; i++) {
                     if (compras[i].id === idBuscado) {
                         encontrado = true; 
@@ -156,13 +159,13 @@
                 if (!encontrado) {
                     compras.push({ id:id , titulo:titulo, img:img, cantidad:0, precio:precio, total:0 } );
                 }
+
                 $('#pedidoImg').attr('src', img);
                 $('#pedidoId').val(id);
                 $('#pedidoTitulo').text(titulo.toUpperCase());
                 $('#pedidoPrecio').text("Precio "+ precio + " Bs.");
                 $('#pedidoPrecioText').val(precio);
                 $('#pedidoTotal').text("Total ");
-                //console.log(compras);
                 $('#exampleModalLong').modal('show');
             },
             error: function(xhr, status, error) {
