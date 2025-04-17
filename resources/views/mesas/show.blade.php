@@ -78,7 +78,7 @@
                         }
                     </script>
                 </div>
-
+                 <!-- Cambiar Mesa-->       
                 <div class="col-md-6">
                     <div class="row">
                     <form action="{{ route('mesas.cambio', $mesa->id) }}" method="POST">

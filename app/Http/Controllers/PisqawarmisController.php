@@ -182,6 +182,7 @@ class PisqawarmisController extends Controller
     }
 
     public function actualizarMesa(Request $request, $id){
+        //return $request->all();
         $viejo = Mesa::find($id);
         $nuevo = Mesa::find( $request->mesa );
 
@@ -197,7 +198,7 @@ class PisqawarmisController extends Controller
         $viejo->mesero      = "0";
         $viejo->id_cliente  = "0";
         $viejo->cliente     = "0";
-        $viejo->cantidad_comensales = "0";;
+        $viejo->cantidad_comensales = "0";
         $viejo->ocupado     = "0";
         $viejo->save();
 
@@ -303,7 +304,7 @@ class PisqawarmisController extends Controller
             $cajero     = \Auth()->user()->name;
             $id_mesero  = $ventasDetalles->first()->id_mesero;
             $mesero     = $ventasDetalles->first()->mesero;    
-            $clinte     = Cliente::find($mesa->id_cliente);
+            $clinte     = Cliente::find( $mesa->id_cliente );
                      
             $fechaPago  = now();                    
         // Crear un nuevo registro en la tabla 'ventas'
@@ -314,7 +315,7 @@ class PisqawarmisController extends Controller
                 'mesero'        => $mesero,
                 'id_cajero'     => $id_cajero,
                 'cajero'        => $cajero,
-                'cliente'       => $clinte->cliente ,
+                'cliente'       => $clinte->cliente,
                 'id_cliente'    => $clinte->id,
                 'pago'          => $clinte->tipo,
                 'tipo_pago'     => $clinte->tipo == "normal" ?  $tipo : "Sin pago",   //Efectivo o tareta
