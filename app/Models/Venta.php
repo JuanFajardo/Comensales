@@ -47,4 +47,20 @@ class Venta extends Model
     public function usuario(){
         return $this->belongsTo(User::class, 'id_user');
     }
+
+    public function mesa()
+    {
+        return $this->belongsTo(Mesa::class, 'id_mesa');
+    }
+
+    public function mesero()
+    {
+        return $this->belongsTo(Mesero::class, 'id_mesero');
+    }
+
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class, 'id_cliente');
+    }
+
 }

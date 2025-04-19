@@ -59,8 +59,32 @@ class VentaController extends Controller
         return view('reporte.index', compact('meseros', 'mesas', 'menus'));
     }
 
-    public function reportePost(){
-        return view('venta.index', compact('datos'));        
+    public function reportePost(Request $request){
+        $reporteTipo = $request->input('reporte_tipo');
+
+        // Variable para almacenar las ventas obtenidas
+        $ventas = [];
+    
+        if ($reporteTipo === 'diario') {
+            // Obtener las ventas del día actual
+            $hoy = now()->startOfDay(); // Inicio del día
+            $manana = now()->addDay()->startOfDay(); // Inicio del día siguiente
+            $ventas = Venta::whereBetween('fecha_pedido', [$hoy, $manana])->get();
+            $fechaInicio = date('Y-m-d');
+            $fechaFinal = date('Y-m-d');
+        } elseif ($reporteTipo === 'personalizado') {
+            // Obtener las ventas entre dos fechas proporcionadas
+            $fechaInicio = $request->input('fecha_inicio');
+            $fechaFinal = $request->input('fecha_final');
+    
+            if ($fechaInicio && $fechaFinal) {
+                $ventas = Venta::whereBetween('fecha_pedido', [$fechaInicio, $fechaFinal])->get();
+            } else {
+                return redirect()->back()->with('error', 'Debe seleccionar ambas fechas para el reporte personalizado.');
+            }
+        }
+
+        return view('reporte.reporte', compact('ventas', 'fechaInicio', 'fechaFinal'));        
     }
 
     public function cierre(){

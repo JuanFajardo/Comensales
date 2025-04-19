@@ -43,8 +43,6 @@ class CreateVentasTable extends Migration
             $table->string('adelanto')->default('')->nullable();
             $table->string('comentario')->default('')->nullable();
 
-
-
             $table->timestamps();
         });
     }

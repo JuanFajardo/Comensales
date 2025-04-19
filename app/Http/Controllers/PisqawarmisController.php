@@ -103,42 +103,62 @@ class PisqawarmisController extends Controller
 
     public function comprasSet(Request $request){
         //return $request->all();
+        
         $datos = json_decode($request->json, true)[0];
         $idproducto = $datos['id'];
-    
+
         $producto = Submenu::find($idproducto);
         $mesa = Mesa::find(Session::get('id_mesa'));
         $ip = $request->ip();
-
-        $venta = new Ventadetalle();
-        $venta->id_venta   = 0;
-        $venta->id_producto= $producto->id;
-        $venta->id_menu    = $producto->id_menu;
-        $venta->id_submenu = $producto->id;
-        $venta->titulo     = $producto->submenu;
-        $venta->tipo_comanda= $producto->tipo_comanda;
         
-        $venta->cantidad   = $datos['cantidad'];
-        $venta->precio     = $datos['precio'];
-        $venta->total      = ($datos['cantidad'] * $datos['precio']);
-        $venta->id_mesa    = $mesa->id;
-        $venta->mesa       = $mesa->mesa;
-        $venta->id_mesero  = Auth::id();
-        $venta->mesero     = Auth::user()->name;
-        $venta->id_cliente = $mesa->id_cliente;
-        $venta->cliente    = $mesa->cliente;
-        $venta->cantidad_comensales = (isset($mesa) && is_object($mesa)) ? ($mesa->cantidad_comensales ?? 0) : 0;
-        $venta->ocupado    = $mesa->ocupado;
-        $venta->ip         = $ip;
+        $agregar = Ventadetalle::Where('id_producto', '=', $idproducto)
+                                ->where('id_mesa', '=', $mesa->id)
+                                ->where('mesa', '=', $mesa->mesa)
+                                ->where('ocupado', '=', $mesa->ocupado)
+                                ->first();
+        $venta = "";
+        if( $agregar ){
+            $cantidad   = ( $agregar->cantidad + $datos['cantidad']  );
+            $precio     = $agregar->precio;
 
-        // Corregido
-        $venta->tipo_pedido = $request->tipo_pedido;
-        $venta->comentario_pedido = $request->comentario_pedido;
+            $venta = Ventadetalle::find( $agregar->id );
+            $venta->cantidad   = $cantidad;
+            $venta->total      = ($cantidad * $precio);
+            $venta->id_mesero  = Auth::id();
+            $venta->mesero     = Auth::user()->name;
+            $venta->ip         = $ip;
+            $venta->save();
+        }else{
+            $venta = new Ventadetalle();
+            $venta->id_venta   = 0;
+            $venta->id_producto= $producto->id;
+            $venta->id_menu    = $producto->id_menu;
+            $venta->id_submenu = $producto->id;
+            $venta->titulo     = $producto->submenu;
+            $venta->tipo_comanda= $producto->tipo_comanda;
+            
+            $venta->cantidad   = $datos['cantidad'];
+            $venta->precio     = $datos['precio'];
+            $venta->total      = ($datos['cantidad'] * $datos['precio']);
+            $venta->id_mesa    = $mesa->id;
+            $venta->mesa       = $mesa->mesa;
+            $venta->id_mesero  = Auth::id();
+            $venta->mesero     = Auth::user()->name;
+            $venta->id_cliente = $mesa->id_cliente;
+            $venta->cliente    = $mesa->cliente;
+            $venta->cantidad_comensales = (isset($mesa) && is_object($mesa)) ? ($mesa->cantidad_comensales ?? 0) : 0;
+            $venta->ocupado    = $mesa->ocupado;
+            $venta->ip         = $ip;
 
-        $venta->fecha_pago = '1900-01-01 01:01:01';
-        $venta->eliminacion_comentario = '';
-        $venta->eliminacion = '';
-        $venta->save();
+            // Corregido
+            $venta->tipo_pedido = $request->tipo_pedido;
+            $venta->comentario_pedido = $request->comentario_pedido;
+
+            $venta->fecha_pago = '1900-01-01 01:01:01';
+            $venta->eliminacion_comentario = '';
+            $venta->eliminacion = '';
+            $venta->save();
+        }
 
         return $venta;
     }
@@ -182,7 +202,6 @@ class PisqawarmisController extends Controller
     }
 
     public function actualizarMesa(Request $request, $id){
-        //return $request->all();
         $viejo = Mesa::find($id);
         $nuevo = Mesa::find( $request->mesa );
 

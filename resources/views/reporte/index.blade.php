@@ -16,11 +16,9 @@
     </div>
 </div>
 
-<form action="{{ route('ventas.store') }}"  method="POST">
+<form action="{{ route('ventas.reportePost') }}" method="POST">
     @csrf
-
     <div class="row">
-
         <div class="col-md-3">
             <label for="fecha_inicio" class="form-text text-muted">Fecha Inicio</label>
             <input type="date" name="fecha_inicio" class="form-control">
@@ -32,44 +30,26 @@
         </div>
 
         <div class="col-md-3">
-            <label for="fecha_final" class="form-text text-muted">Fecha Final</label>
-            <select name="usuario" class="form-control">
+            <label for="fecha_final" class="form-text text-muted">Mesero</label>
+            <select name="id_mesero" class="form-control">
                 <option value="0">Todos</option>
                 @foreach($meseros as $mesero)
-                    <option value="{{$mesero->id}}">{{$mesero->name}}</option>
+                    <option value="{{ $mesero->id }}">{{ $mesero->name }}</option>
                 @endforeach
             </select>
         </div>
-
-        <div class="col-md-3">
-            <button type="submit" class="btn btn-secondary" > <i class="fa fa-list-alt" aria-hidden="true"></i> Reporte Diario  </button>
-        </div>
-
     </div>
 
-    <div class="row">
-
+    <div class="row mt-3">
         <div class="col-md-3">
-            <label for="usuario" class="form-text text-muted">Selecciona un mesero de la lista</label>
-            <select name="usuario" class="form-control">
-                <option value="0">Todos</option>
-                @foreach($meseros as $mesero)
-                    <option value="{{$mesero->id}}">{{$mesero->name}}</option>
-                @endforeach
-            </select>
+            <button type="submit" name="reporte_tipo" value="diario" class="btn btn-secondary">
+                <i class="fa fa-list-alt" aria-hidden="true"></i> Reporte Diario
+            </button>
         </div>
-
         <div class="col-md-3">
-          <select name="usuario" class="form-control">
-            <option value="0">Todos</option>
-            @foreach($meseros as $mesero)
-            <option value="{{$mesero->id}}">{{$mesero->name}}</option>
-            @endforeach
-          </select>
-        </div>
-
-        <div class="col-md-3">
-            <button type="submit" class="btn btn-primary" > <i class="fa fa-search" aria-hidden="true"></i> Reporte Personalizado  </button>
+            <button type="submit" name="reporte_tipo" value="personalizado" class="btn btn-primary">
+                <i class="fa fa-search" aria-hidden="true"></i> Reporte Personalizado
+            </button>
         </div>
     </div>
 </form>

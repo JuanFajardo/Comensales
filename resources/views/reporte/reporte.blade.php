@@ -26,41 +26,36 @@
     <table>
         <thead>
             <tr>
-                
                 <th>Fecha</th>
                 <th>Cajero</th>
                 <th>Venta</th>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Precio</th>
-                <th>Total</th>
-                <th>Mesa</th>
-                <th>Mesero </th>
-                <th>Cliente </th>
+                <th>Tipo</th>
+
+                <th>Adelanto Monto</th>
+                <th>Adelanto</th>
+                <th>Comentario</th>
             </tr>
         </thead>
-        <tbody><?php $total=0;?>
+        <tbody>
+            <?php $total = 0; ?>
             @foreach($ventas as $venta)
-            <tr><?php $total=$total + $venta->total; ?>
-                <td>{{ $venta->fecha_pago }}</td>
-                <td>{{ $venta->cajero_nombre }}</td>
-                <td>{{ $venta->id_venta }}</td>
-                <td>{{ $venta->titulo }}</td>
-                <td>{{ $venta->cantidad }}</td>
-                <td>{{ $venta->precio }}</td>
-                <td>{{ $venta->total }}  Bs.</td>
-                <td>{{ $venta->mesa }}</td>
-                <td>{{ $venta->mesero }}</td>
-                <td>{{ $venta->cliente }}</td>
-            </tr>
+                <tr>
+                    <td>{{ $venta->fecha_pago }}</td>
+                    <td>{{ $venta->cajero }}</td>
+                    <td>{{ $venta->total }}</td>
+                    <td>{{ $venta->tipo_pago }}</td>
+                    <td>{{ $venta->adelanto_efectivo }}</td>
+                    <td>{{ $venta->adelanto }}</td>
+                    <td>{{ $venta->comentario }}</td>
+                    
+                </tr>
+                <?php $total += $venta->total ; ?>
             @endforeach
         </tbody>
         <tfoot>
-            <tr>    
+            <tr>
                 <th colspan="6">Total</th>
-                
-                <th colspan="4">{{$total}} Bs.</th>
-                
+                <th colspan="4">{{ $total }} Bs.</th>
             </tr>
         </tfoot>
     </table>
