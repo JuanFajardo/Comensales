@@ -61,10 +61,8 @@ class VentaController extends Controller
 
     public function reportePost(Request $request){
         $reporteTipo = $request->input('reporte_tipo');
-
         // Variable para almacenar las ventas obtenidas
         $ventas = [];
-    
         if ($reporteTipo === 'diario') {
             // Obtener las ventas del día actual
             $hoy = now()->startOfDay(); // Inicio del día
@@ -83,36 +81,29 @@ class VentaController extends Controller
                 return redirect()->back()->with('error', 'Debe seleccionar ambas fechas para el reporte personalizado.');
             }
         }
-
         return view('reporte.reporte', compact('ventas', 'fechaInicio', 'fechaFinal'));        
     }
 
     public function cierre(){
         $id = Venta::max('id_cierre') + 1;
-
         $mesas = Mesa::where('id_mesero', '!=', '0')->count();
         if( $mesas!=0 )
                 return "<script>
                     alert('Existe una mesa que no cerró.');
                     window.location.href = '" . asset('index.php/ventas') . "';
                         </script>";
-
         $datos = Venta::where('cierre', '--')->get();
-        
         $cajero = auth()->user()->name; // Nombre del cajero actual
         $fecha = date('Y-m-d'); // Fecha actual
-
         // Sumas según las condiciones
         $sumaEfectivoNormal = Venta::Where('cierre', '--')
             ->where('pago', 'normal')
             ->where('tipo_pago', 'efectivo')
             ->sum('total');
-
         $sumaTarjetaNormal = Venta::Where('cierre', '--')
             ->where('pago', 'normal')
             ->where('tipo_pago', 'tarjeta')
             ->sum('total');
-
         $sumaEspecialSinPago = Venta::where('cierre', '--')
             ->where('pago', 'especial')
             ->where('tipo_pago', 'Sin pago')
@@ -135,30 +126,21 @@ class VentaController extends Controller
     }
 
     public function registro(Request $request){
-        echo "ss";
-        
-        return $request->all();
-
+        //return $request->all();
         $venta = new Venta();
-
         $venta->fecha_pedido = date('Y-m-d H:i:s');
         $venta->fecha_pago =  date('Y-m-d H:i:s');
-            
         $venta->id_mesero = auth()->user()->id;
         $venta->mesero =  auth()->user()->name;
         $venta->id_cajero = auth()->user()->id;
         $venta->cajero = auth()->user()->name;
-
         $venta->cliente = "0";
         $venta->id_cliente = 0;
         $venta->pago = "0";
-
-                                
         $venta->comensales = 0;
         $venta->total = 0;
         $venta->ip = $request->ip();
         $venta->tipo_pago = "0";
-        
         $venta->registro = date('Y-m-d H:i:s');
         $venta->registro_efectivo = $request->efectivo;
         $venta->registro_tarjeta = $request->tarjet;
@@ -166,6 +148,8 @@ class VentaController extends Controller
         $venta->adelanto = $request->descripcionAdelanto;
         $venta->comentario = $request->comentario;
         $venta->save();
+        
+        return redirect()->route('ventas.index');
 
     }
 }

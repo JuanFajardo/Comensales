@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('menus', MenuController::class);
     Route::resource('mesas', MesaController::class);
     Route::resource('clientes', ClienteController::class);
+    Route::get('clientes/baja/{id}', [ClienteController::class, 'baja'])->name('cliente.baja');
     Route::resource('submenus', SubmenuController::class);
     Route::resource('productos', ProductoController::class);
     Route::resource('ventas', VentaController::class);

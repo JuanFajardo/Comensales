@@ -59,6 +59,18 @@ class ClienteController extends Controller
     }
 
     // Eliminar un cliente
+    public function baja($id)
+    {   
+        $cliente = Cliente::find($id);
+
+        if ($cliente->baja == 1) {
+            $cliente->update(['baja' => 0]);
+        } else {
+            $cliente->update(['baja' => 1]);
+        }
+        return redirect()->route('clientes.index')->with('success', 'Cliente eliminado correctamente');
+    }
+
     public function destroy(Cliente $cliente)
     {   
         if ($cliente->baja == 1) {
@@ -68,4 +80,5 @@ class ClienteController extends Controller
         }
         return redirect()->route('clientes.index')->with('success', 'Cliente eliminado correctamente');
     }
+
 }

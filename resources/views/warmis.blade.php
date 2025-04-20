@@ -164,7 +164,7 @@
                                     <div class="team-wrapper text-center">
                                         <div class="form-group">
                                             <label for="exampleSelect1">Comensales:</label>
-                                            <input type="number" class="form-control" name="comensales" id="comensales">
+                                            <input type="number" class="form-control" name="comensales" id="comensales" value="1">
                                             <br>
                                             <a href="#" class="btn btn-primary" onclick="seleccionarMesa()"> Seleccionar</a>
                                         </div>

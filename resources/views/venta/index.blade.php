@@ -44,19 +44,33 @@
                             <td>{{ $dato->fecha_pago }}</td>
                             <td>{{ $dato->mesero }}</td>
                             <td>{{ $dato->cajero }}</td>
-                            <td>{{ $dato->cliente }}<br>
-                                @if( $dato->pago == "normal" )
-                                <b class="badge badge-info">{{$dato->pago}}</b>
+                            <td>
+                                @if( $dato->registro ) 
+                                    Efectivo: {{ $dato->registro_efectivo }}
+                                    <br>
+                                    Tarjeta: {{ $dato->registro_tarjeta }}
                                 @else
-                                <b class="badge badge-primary">{{$dato->pago}}</b>
+
+                                    {{ $dato->cliente }}<br>
+                                    @if( $dato->pago == "normal" )
+                                    <b class="badge badge-info">{{$dato->pago}}</b>
+                                    @else
+                                    <b class="badge badge-primary">{{$dato->pago}}</b>
+                                    @endif
                                 @endif
                             </td>
-                            <td>{{ $dato->total }} Bs<br>
-                                @if( $dato->pago == "normal" )
-                                    <b class="badge badge-success">{{$dato->tipo_pago}}</b>
+                            <td>
+                                @if( $dato->registro ) 
+                                    {{ $dato->adelanto_efectivo }} Bs. <br><small>{{ $dato->adelanto }}</small>
                                 @else
-                                    <b class="badge badge-warning">{{$dato->tipo_pago}}</b>
+                                    {{ $dato->total }} Bs<br>
+                                    @if( $dato->pago == "normal" )
+                                        <b class="badge badge-success">{{$dato->tipo_pago}}</b>
+                                    @else
+                                        <b class="badge badge-warning">{{$dato->tipo_pago}}</b>
+                                    @endif
                                 @endif
+                            </td>
                             </td>
                             <td>
                                 <a href="javascript:void(0);" class="mostrar-detalles btn btn-primary" data-id="{{ $dato->id }}"> <i class="fa fa-eye"></i> </a>

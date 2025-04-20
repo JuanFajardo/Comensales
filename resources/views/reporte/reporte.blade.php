@@ -31,7 +31,7 @@
                 <th>Venta</th>
                 <th>Tipo</th>
 
-                <th>Adelanto Monto</th>
+                <th>Caja</th>
                 <th>Adelanto</th>
                 <th>Comentario</th>
             </tr>
@@ -44,8 +44,16 @@
                     <td>{{ $venta->cajero }}</td>
                     <td>{{ $venta->total }}</td>
                     <td>{{ $venta->tipo_pago }}</td>
-                    <td>{{ $venta->adelanto_efectivo }}</td>
-                    <td>{{ $venta->adelanto }}</td>
+                    <td> @if( $venta->registro ) 
+                        Efectivo: {{ $venta->registro_efectivo }}
+                        <br>
+                        Tarjeta: {{ $venta->registro_tarjeta }}
+                        @endif
+                    </td>
+                    <td> @if( $venta->registro ) 
+                            {{ $venta->adelanto_efectivo }} Bs. <br><small>{{ $venta->adelanto }}</small>
+                        @endif
+                    </td>
                     <td>{{ $venta->comentario }}</td>
                     
                 </tr>

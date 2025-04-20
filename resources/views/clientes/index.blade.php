@@ -47,18 +47,19 @@
                             
                             <td>{{ $cliente->extra }}</td>
                             <td>
-                                <form action="{{ route('clientes.destroy', $cliente->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    @if( $cliente->baja == '1' )
-                                    <button type="submit" class="btn btn-success"><i class="fa fa-eye"></i></button>
-                                    @else
-                                    <button type="submit" class="btn btn-danger"><i class="fa fa-eye-slash"></i></button>
-                                    @endif
-                                </form>
+                                @if( $cliente->baja == '1' )
+                                <a href="{{ route('cliente.baja', $cliente->id) }}" class="btn btn-success"><i class="fa fa-eye"></i></a>
+                                @else
+                                <a href="{{ route('cliente.baja', $cliente->id) }}" class="btn btn-danger"><i class="fa fa-eye"></i></a>
+                                @endif
                             </td>    
                             <td>
                                 <a href="{{ route('clientes.edit', $cliente->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                                <form action="{{ route('clientes.destroy', $cliente->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este cliente?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                </form>
                             </td>
                         </tr>
                         @endforeach
