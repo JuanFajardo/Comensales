@@ -148,8 +148,21 @@ class VentaController extends Controller
         $venta->adelanto = $request->descripcionAdelanto;
         $venta->comentario = $request->comentario;
         $venta->save();
-        
         return redirect()->route('ventas.index');
-
     }
+
+    public function reporteCierreGet(){
+        $datos = Venta::groupBy('cierre', 'id_cierre', 'fecha_cierre')
+                        ->select('cierre', 'id_cierre', 'fecha_cierre')
+                        ->get();
+        return view('venta.cierreindex', compact('datos'));
+    }
+    public function reporteCierreId($id){
+        $dato = Venta::groupBy('cierre', 'id_cierre', 'fecha_cierre')
+                        ->select('cierre', 'id_cierre', 'fecha_cierre')
+                        ->where('id_cierre', $id)
+                        ->first();
+        return view('venta.cierreid', compact('dato'));
+    }
+
 }

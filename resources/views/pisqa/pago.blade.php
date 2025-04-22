@@ -54,7 +54,7 @@
                 </tr>
                 <tr>
                     <td>Hora: {{ date('H:i') }}</td>
-                    <td> &nbsp;</td>
+                    <td>Cliente: {{ $clientePago }}</td>
                 </tr>
             </table>
             <div class="separator"></div>

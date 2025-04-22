@@ -38,6 +38,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('reporte', [VentaController::class, 'reporteGet'])->name('ventas.reporteGet');
     Route::post('reporte', [VentaController::class, 'reportePost'])->name('ventas.reportePost');
+    Route::get('reporteCierre', [VentaController::class, 'reporteCierreGet'])->name('ventas.reporteCierre');
+    Route::get('reporteCierre/{id}', [VentaController::class, 'reporteCierreId'])->name('ventas.reporteCierreId');
 
     Route::get('librerarmesa/{id}', [MesaController::class, 'liberar'])->name('mesas.liberar');
 

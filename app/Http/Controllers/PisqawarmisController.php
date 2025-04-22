@@ -269,6 +269,7 @@ class PisqawarmisController extends Controller
     
     public function pagar($id, $tipo, Request $request){
         $mesa = Mesa::find($id);
+        $clientePago = $mesa->cliente;
         $venta = "";
         $productos = $request->productos;
         //return $productos;
@@ -365,7 +366,7 @@ class PisqawarmisController extends Controller
                 ]);
             }
         $ventas = $ventasDetalles;
-        return view('pisqa.pago',compact('mesa', 'ventas', 'venta'));
+        return view('pisqa.pago',compact('mesa', 'ventas', 'venta', 'clientePago'));
     }
 
 }
