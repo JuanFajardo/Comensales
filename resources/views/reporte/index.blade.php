@@ -30,12 +30,20 @@
         </div>
 
         <div class="col-md-3">
-            <label for="fecha_final" class="form-text text-muted">Mesero</label>
+            <label for="id_mesero" class="form-text text-muted">Mesero</label>
             <select name="id_mesero" class="form-control">
                 <option value="0">Todos</option>
                 @foreach($meseros as $mesero)
                     <option value="{{ $mesero->id }}">{{ $mesero->name }}</option>
                 @endforeach
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="tipo" class="form-text text-muted">Tipo</label>
+            <select name="tipo" class="form-control">
+                <option value="0">General</option>
+                <option value="1">Detallado</option>
+                    
             </select>
         </div>
     </div>

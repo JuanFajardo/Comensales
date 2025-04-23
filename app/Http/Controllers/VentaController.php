@@ -60,8 +60,11 @@ class VentaController extends Controller
     }
 
     public function reportePost(Request $request){
+        
         $reporteTipo = $request->input('reporte_tipo');
         // Variable para almacenar las ventas obtenidas
+        $tipo = $request->tipo;
+        
         $ventas = [];
         if ($reporteTipo === 'diario') {
             // Obtener las ventas del día actual
@@ -74,14 +77,14 @@ class VentaController extends Controller
             // Obtener las ventas entre dos fechas proporcionadas
             $fechaInicio = $request->input('fecha_inicio');
             $fechaFinal = $request->input('fecha_final');
-    
             if ($fechaInicio && $fechaFinal) {
                 $ventas = Venta::whereBetween('fecha_pedido', [$fechaInicio, $fechaFinal])->get();
             } else {
                 return redirect()->back()->with('error', 'Debe seleccionar ambas fechas para el reporte personalizado.');
             }
         }
-        return view('reporte.reporte', compact('ventas', 'fechaInicio', 'fechaFinal'));        
+        $datos = Ventadetalle::whereIn('id_venta', $ventas->pluck('id'))->get();
+        return view('reporte.reporte', compact('ventas', 'fechaInicio', 'fechaFinal', 'tipo', 'datos'));
     }
 
     public function cierre(){
@@ -116,13 +119,8 @@ class VentaController extends Controller
             $venta->id_cierre = $id;
             $venta->save();
         }
-        return view('venta.cierre', [
-            'id' => $id,
-            'cajero' => $cajero,
-            'sumaEfectivoNormal' => $sumaEfectivoNormal,
-            'sumaTarjetaNormal' => $sumaTarjetaNormal,
-            'sumaEspecialSinPago' => $sumaEspecialSinPago,
-        ]);
+
+        return redirect()->route('ventas.reporteCierreId', ['id' => $id]);
     }
 
     public function registro(Request $request){
@@ -154,6 +152,7 @@ class VentaController extends Controller
     public function reporteCierreGet(){
         $datos = Venta::groupBy('cierre', 'id_cierre', 'fecha_cierre')
                         ->select('cierre', 'id_cierre', 'fecha_cierre')
+                        ->orderBy('id_cierre','desc')
                         ->get();
         return view('venta.cierreindex', compact('datos'));
     }
@@ -162,7 +161,16 @@ class VentaController extends Controller
                         ->select('cierre', 'id_cierre', 'fecha_cierre')
                         ->where('id_cierre', $id)
                         ->first();
-        return view('venta.cierreid', compact('dato'));
+        $efectivo = Venta::where('tipo_pago', 'efectivo')
+                        ->where('id_cierre', $id)
+                        ->selectRaw('COUNT(*) as cantidad, SUM(total) as suma')
+                        ->first();
+        $tarjeta = Venta::where('tipo_pago', 'tarjeta')
+                        ->where('id_cierre', $id)
+                        ->selectRaw('COUNT(*) as cantidad, SUM(total) as suma')
+                        ->first();
+        $datos = Venta::Where('id_cierre', $id)->get();
+        return view('venta.cierreid', compact('dato','efectivo','tarjeta', 'datos'));
     }
 
 }
