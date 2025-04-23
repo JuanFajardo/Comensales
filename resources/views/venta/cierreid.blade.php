@@ -86,23 +86,34 @@
             </div>
         </div>
 
-        <hr>
         <div class="row">
             <div class="col-md-7">
-                <h3 >Clientes con Pagos Especiales</h3>
-                <table class="table table-striped text-center">
+                <h3 >Pagos Especiales/Adelantos</h3>
+                <table border="1" style="width:100%">
                     <thead>
                         <tr>
+                            <th>Tipo</th>
                             <th>Monto (Bs)</th>
-                            <th>Adelante </th>
+                            <th>Comentario </th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($datos as $dato)
                             @if( $dato->adelanto_efectivo !="" && $dato->adelanto !="" )
                             <tr>
-                                <td> {{ $dato->adelanto_efectivo }} </td>
+                                <td> Adelanto </td>
+                                <td> {{ $dato->adelanto_efectivo }} Bs. </td>
                                 <td> {{ $dato->adelanto }} </td>
+                            </tr>
+                            @endif
+                        @endforeach
+                        @foreach ($datos as $dato)
+                            @if( $dato->tipo_pago == "Sin pago")
+                            <tr>
+                                <td> Especial </td>
+                                <td> {{ $dato->total }} Bs. </td>
+                                <td> {{ $dato->cliente }} </td>
+                                
                             </tr>
                             @endif
                         @endforeach
