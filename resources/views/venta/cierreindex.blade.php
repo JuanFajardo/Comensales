@@ -35,6 +35,7 @@
                             <td>{{ $dato->fecha_cierre }}</td>
                             <td>
                                 <a href="{{asset('index.php/reporteCierre/'.$dato->id_cierre)}}" class="mostrar-detalles btn btn-primary" > <i class="fa fa-eye"></i> </a>
+                                <a href="{{asset('index.php/reporteCierreMenu/'.$dato->id_cierre)}}" class="mostrar-detalles btn btn-success" > <i class="fa fa-bars"></i> </a>
                             </td>
                         </tr>
                         @endforeach

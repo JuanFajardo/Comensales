@@ -173,4 +173,15 @@ class VentaController extends Controller
         return view('venta.cierreid', compact('dato','efectivo','tarjeta', 'datos'));
     }
 
+    public function reporteCierreMenu($i){
+        $lista = Venta::where('id_cierre', $i)->get();
+
+        $datos = Ventadetalle::join('menus', 'menus.id', '=', 'ventadetalles.id_menu')
+                     ->whereIn('ventadetalles.id_venta', $lista->pluck('id'))
+                     ->groupBy('ventadetalles.id_menu', 'menus.menu')
+                     ->selectRaw('COUNT(ventadetalles.id_menu) as contador, SUM(ventadetalles.total) as total, ventadetalles.id_menu, menus.menu')
+                     ->get();
+        return view('venta.cierreMenu', compact('lista','datos'));
+    }
+
 }
