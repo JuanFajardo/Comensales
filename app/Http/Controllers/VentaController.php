@@ -177,11 +177,24 @@ class VentaController extends Controller
         $lista = Venta::where('id_cierre', $i)->get();
 
         $datos = Ventadetalle::join('menus', 'menus.id', '=', 'ventadetalles.id_menu')
-                     ->whereIn('ventadetalles.id_venta', $lista->pluck('id'))
-                     ->groupBy('ventadetalles.id_menu', 'menus.menu')
-                     ->selectRaw('COUNT(ventadetalles.id_menu) as contador, SUM(ventadetalles.total) as total, ventadetalles.id_menu, menus.menu')
-                     ->get();
-        return view('venta.cierreMenu', compact('lista','datos'));
+                    ->where('cantidad', '>', 0)
+                    ->whereIn('ventadetalles.id_venta', $lista->pluck('id'))
+                    ->groupBy('ventadetalles.id_menu', 'menus.menu')
+                    ->selectRaw('COUNT(ventadetalles.id_menu) as contador, SUM(ventadetalles.total) as total, ventadetalles.id_menu, menus.menu')
+                    ->get();
+
+        $detalles = Ventadetalle::whereIn('ventadetalles.id_venta', $lista->pluck('id'))
+                    ->where('cantidad', '>', 0)
+                    ->groupBy('ventadetalles.titulo', 'ventadetalles.id_menu')
+                    ->selectRaw('ventadetalles.id_menu, ventadetalles.titulo, SUM(ventadetalles.cantidad) as suma_cantidad, SUM(ventadetalles.total) as suma_total')
+                    ->get();
+        $detalles = Ventadetalle::whereIn('ventadetalles.id_venta', $lista->pluck('id'))
+                     ->where('cantidad', '>', 0)
+                     ->orderBy('titulo')->get();
+
+                                  
+
+        return view('venta.cierreMenu', compact('lista','datos','detalles'));
     }
 
 }

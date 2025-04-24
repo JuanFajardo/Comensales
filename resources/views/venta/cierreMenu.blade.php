@@ -35,7 +35,7 @@
         <hr>
         <div class="row">
             <div class="col-md-12">
-                <table class="table table-bordered">
+                <table class="table table-bordered ">
                     <thead>
                         <tr>
                             <th>Menu</th>
@@ -49,6 +49,21 @@
                             <td>{{$dato->menu}}</td>
                             <td>{{$dato->contador}}</td>
                             <td>{{$dato->total}}  Bs.</td>
+                        </tr>
+                        <tr><td></td>
+                            <td colspan="2">
+                                <table border="1">
+                                @foreach($detalles as $detalle)
+                                    @if($dato->id_menu == $detalle->id_menu)
+                                     <tr>
+                                        <td>{{strtoupper($detalle->titulo)}}</td>
+                                        <td>{{$detalle->cantidad}} Cant.</td>
+                                        <td>{{$detalle->total}}  Bs.</td>
+                                    </tr>
+                                    @endif
+                                @endforeach
+                                </table>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
