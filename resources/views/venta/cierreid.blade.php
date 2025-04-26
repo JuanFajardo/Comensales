@@ -63,7 +63,7 @@
                 </table>
 
                 <table class="table table-bordered text-center">
-                    <tbody>
+                    <tbody><?php $total =0; ?>
                         @foreach($datos as $dato)
                         @if( $dato->registro_efectivo !=0 || $dato->registro_tarjeta !=0  )
                         <tr>
@@ -74,12 +74,26 @@
                             <td>TARJETAS MANUAL</td>
                             <td>{{$dato->registro_tarjeta}}  Bs.</td>
                         </tr>
+                        <tr><?php $total =$dato->registro_efectivo + $dato->registro_tarjeta; ?>
+                            <th> Total </th>
+                            <th> {{$total}}</th>
+                        </tr>
                         <tr>
-                            <td colspan="2"><b>Comentario:</b> {{$dato->comentario}}</td>
-                            
+                            <td colspan="2" style="text-align:left;">
+                                @php
+                                    // Dividir el comentario usando el separador ";"
+                                    $comentarios = explode('|', $dato->comentario);
+                                @endphp
+                                {{-- Mostrar el primer comentario --}}
+                                <b>Comentario:</b> {{ htmlspecialchars($comentarios[0] ?? 'No disponible') }}
+                                <br/>
+                                {{-- Mostrar el segundo comentario si existe, o "No disponible" si no existe --}}
+                                <b>Rotatorio:</b> {{ htmlspecialchars($comentarios[1] ?? 'No disponible') }}
+                            </td>
                         </tr>
                         @endif
                         @endforeach
+                        
                     </tbody>
                 </table>
 
@@ -97,26 +111,35 @@
                             <th>Comentario </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody><?php $total=0;?>
                         @foreach ($datos as $dato)
                             @if( $dato->adelanto_efectivo !="" && $dato->adelanto !="" )
                             <tr>
                                 <td> Adelanto </td>
                                 <td> {{ $dato->adelanto_efectivo }} Bs. </td>
                                 <td> {{ $dato->adelanto }} </td>
-                            </tr>
+                            </tr><?php $total = $total + $dato->adelanto_efectivo; ?>
                             @endif
                         @endforeach
+                        <tr>
+                            <th>Total</th>
+                            <th>{{$total}}</th>
+                            <th></th>
+                        </tr>
                         @foreach ($datos as $dato)
                             @if( $dato->tipo_pago == "Sin pago")
                             <tr>
                                 <td> Especial </td>
                                 <td> {{ $dato->total }} Bs. </td>
                                 <td> {{ $dato->cliente }} </td>
-                                
-                            </tr>
+                            </tr><?php $total = $total + $dato->total; ?>
                             @endif
                         @endforeach
+                        <tr>
+                            <th>Total</th>
+                            <th>{{$total}}</th>
+                            <th></th>
+                        </tr>
                     </tbody>
                 </table>
             </div>

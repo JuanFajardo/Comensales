@@ -89,12 +89,16 @@ class VentaController extends Controller
 
     public function cierre(){
         $id = Venta::max('id_cierre') + 1;
-        $mesas = Mesa::where('id_mesero', '!=', '0')->count();
-        if( $mesas!=0 )
+
+        $mesas = Mesa::where('id_mesero', '!=', '0')->get();
+
+        if( count( $mesas ) !=0 ){
                 return "<script>
-                    alert('Existe una mesa que no cerró.');
+                    alert('Existe una mesa abiert. \n" + $mesas[0]->mesa + " \n "+$mesas[0]->mesero+"');
                     window.location.href = '" . asset('index.php/ventas') . "';
-                        </script>";
+                    </script>";
+        }
+
         $datos = Venta::where('cierre', '--')->get();
         $cajero = auth()->user()->name; // Nombre del cajero actual
         $fecha = date('Y-m-d'); // Fecha actual
@@ -156,6 +160,7 @@ class VentaController extends Controller
                         ->get();
         return view('venta.cierreindex', compact('datos'));
     }
+
     public function reporteCierreId($id){
         $dato = Venta::groupBy('cierre', 'id_cierre', 'fecha_cierre')
                         ->select('cierre', 'id_cierre', 'fecha_cierre')
@@ -180,18 +185,24 @@ class VentaController extends Controller
                     ->where('cantidad', '>', 0)
                     ->whereIn('ventadetalles.id_venta', $lista->pluck('id'))
                     ->groupBy('ventadetalles.id_menu', 'menus.menu')
-                    ->selectRaw('COUNT(ventadetalles.id_menu) as contador, SUM(ventadetalles.total) as total, ventadetalles.id_menu, menus.menu')
+                    ->selectRaw('ventadetalles.id_menu, menus.menu')
                     ->get();
-
-        $detalles = Ventadetalle::whereIn('ventadetalles.id_venta', $lista->pluck('id'))
-                    ->where('cantidad', '>', 0)
-                    ->groupBy('ventadetalles.titulo', 'ventadetalles.id_menu')
-                    ->selectRaw('ventadetalles.id_menu, ventadetalles.titulo, SUM(ventadetalles.cantidad) as suma_cantidad, SUM(ventadetalles.total) as suma_total')
-                    ->get();
-        $detalles = Ventadetalle::whereIn('ventadetalles.id_venta', $lista->pluck('id'))
-                     ->where('cantidad', '>', 0)
-                     ->orderBy('titulo')->get();
-
+        
+        $detalles = Ventadetalle::select('id_menu', 'titulo', 'cantidad', 'total') // Mover select al inicio
+                 ->whereIn('ventadetalles.id_venta', $lista->pluck('id'))
+                 ->where('cantidad', '>', 0)
+                 ->orderBy('titulo')
+                 ->get();
+        
+        $detallesAgrupados = $detalles->groupBy('titulo')->map(function ($group) {
+            $first = $group->first();
+            $first->cantidad = $group->sum('cantidad');
+            $first->total = $group->sum('total');
+            return $first;
+        })->values();
+        //return $detallesAgrupados;
+        
+        $detalles = $detallesAgrupados;
                                   
 
         return view('venta.cierreMenu', compact('lista','datos','detalles'));

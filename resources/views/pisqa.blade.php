@@ -90,7 +90,7 @@
                           <div class="icon"><i class="fa fa-shopping-cart"></i>
                           </div>
                           <div class="count">
-                            {{ \App\Models\Venta::whereDate('fecha_pago', \Carbon\Carbon::today())->sum('total') }} Bs.
+                            {{ \App\Models\Venta::where('id_cierre', '=', '0')->sum('total') }} Bs.
                           </div>
                           <h3>Total Ventas</h3>
                         </div>
@@ -100,7 +100,7 @@
                           <div class="icon"><i class="fa fa-cutlery"></i>
                           </div>
                           <div class="count">
-                            {{ \App\Models\Venta::whereDate('fecha_pago', \Carbon\Carbon::today())->count() }}
+                            {{ \App\Models\Venta::where('id_cierre', '=', '0')->count() }}
                           </div>
                           <h3>Cantidad de Ventas</h3>
                         </div>

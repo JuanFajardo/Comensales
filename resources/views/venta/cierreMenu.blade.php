@@ -18,9 +18,6 @@
             <div class="col-md-4">
             </div>    
         </div>
-        
-        <hr>
-
         <div class="row">
             <div class="col-md-6">
                 <p><strong>N° de Cierre:</strong> {{ $lista[0]->id_cierre }}</p>
@@ -31,37 +28,32 @@
                 <p><strong>Fecha Impresion :</strong> {{ date('Y-m-d H:i:s') }}</p>
             </div>
         </div>
-
-        <hr>
         <div class="row">
             <div class="col-md-12">
-                <table class="table table-bordered ">
-                    <thead>
-                        <tr>
-                            <th>Menu</th>
-                            <th>Cantidad</th>
-                            <th>Monto (Bs)</th>
-                        </tr>
-                    </thead>
+                <table border="1">
                     <tbody>
                         @foreach($datos as $dato)
                         <tr>
-                            <td>{{$dato->menu}}</td>
-                            <td>{{$dato->contador}}</td>
-                            <td>{{$dato->total}}  Bs.</td>
+                            <th>{{$dato->menu}}</th>
                         </tr>
-                        <tr><td></td>
-                            <td colspan="2">
-                                <table border="1">
+                        <tr>
+                            <td colspan="3">
+                                <table border="0" width="100%">
+                                    <?php $cant=$total=0;?>
                                 @foreach($detalles as $detalle)
                                     @if($dato->id_menu == $detalle->id_menu)
                                      <tr>
+                                        <td style="text-align:center;">{{$detalle->cantidad}}</td>
                                         <td>{{strtoupper($detalle->titulo)}}</td>
-                                        <td>{{$detalle->cantidad}} Cant.</td>
-                                        <td>{{$detalle->total}}  Bs.</td>
-                                    </tr>
+                                        <td style="text-align:right;">{{$detalle->total}}  Bs.</td>
+                                    </tr><?php $cant=$cant + $detalle->cantidad; $total = $total + $detalle->total;?>
                                     @endif
                                 @endforeach
+                                    <tr>
+                                        <th> {{$cant}} </th>
+                                        <th></th>
+                                        <th style="text-align:right;"> {{$total}} Bs. </th>
+                                    </tr>
                                 </table>
                             </td>
                         </tr>

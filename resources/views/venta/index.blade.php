@@ -121,7 +121,7 @@
                     </div>
                     <div class="form-group">
                         <label for="comentario">Comentario</label>
-                        <textarea class="form-control" id="comentario" name="comentario" rows="3" placeholder="Ingrese un comentario">-</textarea>
+                        <textarea class="form-control" id="comentario" name="comentario" rows="3" placeholder="Ingrese un comentario"> | </textarea>
                     </div>
             </div>
             <div class="modal-footer">
