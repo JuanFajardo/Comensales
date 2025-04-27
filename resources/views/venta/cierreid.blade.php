@@ -125,7 +125,7 @@
                             <th>Total</th>
                             <th>{{$total}}</th>
                             <th></th>
-                        </tr>
+                        </tr><?php $total=0;?>
                         @foreach ($datos as $dato)
                             @if( $dato->tipo_pago == "Sin pago")
                             <tr>

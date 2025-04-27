@@ -36,6 +36,7 @@
                             <td>
                                 <a href="{{asset('index.php/reporteCierre/'.$dato->id_cierre)}}" class="mostrar-detalles btn btn-primary" > <i class="fa fa-eye"></i> </a>
                                 <a href="{{asset('index.php/reporteCierreMenu/'.$dato->id_cierre)}}" class="mostrar-detalles btn btn-success" > <i class="fa fa-bars"></i> </a>
+                                <a href="{{asset('index.php/reporteCierreMenu/'.$dato->id_cierre.'?detalle=1')}}" class="mostrar-detalles btn btn-info" > <i class="fa fa-file-o"></i> </a>
                             </td>
                         </tr>
                         @endforeach

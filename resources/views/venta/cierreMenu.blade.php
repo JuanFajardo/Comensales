@@ -28,13 +28,58 @@
                 <p><strong>Fecha Impresion :</strong> {{ date('Y-m-d H:i:s') }}</p>
             </div>
         </div>
+
+        @if( isset($_GET['detalle']))
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Rubro</th>
+                            <th>Cantidad</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $sumaTotal = $contTotal = 0; ?>
+                        @foreach($datos as $dato)
+                        <tr>
+                            <td>    {{$dato->menu}} </td>
+                            <?php $cant=$total=0;?>
+                                @foreach($detalles as $detalle)
+                                    @if($dato->id_menu == $detalle->id_menu)
+                                     <?php 
+                                        $cant=$cant + $detalle->cantidad;
+                                        $total = $total + $detalle->total;
+                                        $sumaTotal = $sumaTotal + $detalle->total;
+                                        $contTotal = $contTotal + $detalle->cantidad;
+                                     ?>
+                                    @endif
+                                @endforeach
+                            <td>    {{$cant}} </td>
+                            <td style="text-align:right;"> {{$total}} Bs. </td>
+                        </tr>
+                        @endforeach
+                        <tr>  
+                            <td></td>
+                            <th> {{$contTotal}}</th>
+                            <td>
+                                <div style="text-align:right;"> <b> {{$sumaTotal}} Bs. </b>  </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @else
         <div class="row">
             <div class="col-md-12">
                 <table border="1">
-                    <tbody>
+                    <tbody><?php $sumaTotal=0;?>
                         @foreach($datos as $dato)
                         <tr>
-                            <th>{{$dato->menu}}</th>
+                            <th>{{$dato->menu}} </th>
                         </tr>
                         <tr>
                             <td colspan="3">
@@ -46,7 +91,7 @@
                                         <td style="text-align:center;">{{$detalle->cantidad}}</td>
                                         <td>{{strtoupper($detalle->titulo)}}</td>
                                         <td style="text-align:right;">{{$detalle->total}}  Bs.</td>
-                                    </tr><?php $cant=$cant + $detalle->cantidad; $total = $total + $detalle->total;?>
+                                    </tr><?php $cant=$cant + $detalle->cantidad; $total = $total + $detalle->total; $sumaTotal=$sumaTotal+$detalle->total;?>
                                     @endif
                                 @endforeach
                                     <tr>
@@ -58,8 +103,14 @@
                             </td>
                         </tr>
                         @endforeach
+                        <tr>  
+                            <td>
+                                <div style="text-align:center;"> <b> {{$sumaTotal}} Bs. </b>  </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-                </div>
-                </div>
+            </div>
+        </div>
+        @endif
 </div>
