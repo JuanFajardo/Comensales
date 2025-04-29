@@ -26,6 +26,7 @@
       <li><a><i class="fa fa-bar-chart-o"></i> Reporte<span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="{{asset('index.php/reporte')}}">Reportes</a></li>
+          <li><a href="{{asset('index.php/reporteMesa')}}">Mesas</a></li>
           <li><a href="{{asset('index.php/reporteCierre')}}">Cierres</a></li>
         </ul>
       </li>

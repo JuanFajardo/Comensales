@@ -19,10 +19,14 @@
                     </thead>
                     <tbody>
                         @foreach ($datos as $dato)
-                        <tr>
+                        @if($dato->cantidad > 0)
+                        <tr style="background-color:red;color:white;">{{ $dato->cantidad }}
+                        @else
+                        <tr>    
+                        @endif
                             <td>{{ $dato->id }}</td>
                             <td>{{ $dato->mesa }}</td>
-                            <td>{{ $dato->cantidad }}</td>
+                            <td>{{ $dato->cantidad }}</td>    
                         </tr>
                         @endforeach
                     </tbody>
