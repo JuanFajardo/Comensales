@@ -4,27 +4,35 @@
     <meta charset="UTF-8">
     <title>Venta por Rubros</title>
     <link href="{{asset('assets/vendors/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
+    <style>
+        * {
+            font-size:9px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
 
-        <div class="row">
-            <div class="col-md-4">
-                <b> <a href="{{asset('index.php/reporteCierre')}}">PISQA WARMIS</a></b>
+        <div class="row" >
+            <div class="col-md-3">
+                <p style="font-size:14px;"><strong>N° de Cierre:</strong> {{ $lista[0]->id_cierre }}</p>
             </div>
-            <div class="col-md-4">
-                <b style="text-align:center; font-size:26px;">Venta por Rubros</b>
-            </div>
-            <div class="col-md-4">
-            </div>    
-        </div>
-        <div class="row">
             <div class="col-md-6">
-                <p><strong>N° de Cierre:</strong> {{ $lista[0]->id_cierre }}</p>
+                <b style="font-size:14px;">Venta por Rubros</b>
+            </div>
+            <div class="col-md-3">
+                <b style="font-size:14px;"> <a href="{{asset('index.php/reporteCierre')}}">PISQA WARMIS</a></b>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
                 <p><strong>Usuario:</strong> {{ $lista[0]->cierre }}</p>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <p><strong>Fecha Cierra:</strong> {{  $lista[0]->updated_at }}</p>
+            </div>
+            <div class="col-md-4">
                 <p><strong>Fecha Impresion :</strong> {{ date('Y-m-d H:i:s') }}</p>
             </div>
         </div>

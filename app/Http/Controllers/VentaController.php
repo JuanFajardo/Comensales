@@ -180,32 +180,45 @@ class VentaController extends Controller
 
     public function reporteCierreMenu($i){
         $lista = Venta::where('id_cierre', $i)->get();
-
         $datos = Ventadetalle::join('menus', 'menus.id', '=', 'ventadetalles.id_menu')
                     ->where('cantidad', '>', 0)
                     ->whereIn('ventadetalles.id_venta', $lista->pluck('id'))
                     ->groupBy('ventadetalles.id_menu', 'menus.menu')
                     ->selectRaw('ventadetalles.id_menu, menus.menu')
                     ->get();
-        
-        $detalles = Ventadetalle::select('id_menu', 'titulo', 'cantidad', 'total') // Mover select al inicio
+        $detalles = Ventadetalle::select('id_menu', 'titulo', 'cantidad', 'total')
                  ->whereIn('ventadetalles.id_venta', $lista->pluck('id'))
                  ->where('cantidad', '>', 0)
                  ->orderBy('titulo')
                  ->get();
-        
         $detallesAgrupados = $detalles->groupBy('titulo')->map(function ($group) {
             $first = $group->first();
             $first->cantidad = $group->sum('cantidad');
             $first->total = $group->sum('total');
             return $first;
         })->values();
-        //return $detallesAgrupados;
-        
         $detalles = $detallesAgrupados;
-                                  
-
         return view('venta.cierreMenu', compact('lista','datos','detalles'));
+    }
+
+    public function reporteMesa(){
+        $datos = DB::table('mesas')
+        ->leftJoin('ventadetalles', function($join) {
+            $join->on('mesas.id', '=', 'ventadetalles.id_mesa')
+                 ->where('ventadetalles.id_venta', '=', 0)
+                 ->where('ventadetalles.cantidad', '>', 0)
+                 ->where('ventadetalles.total', '>', 0);
+        })
+        ->select(
+            'mesas.id',
+            'mesas.mesa',
+            DB::raw('COUNT(ventadetalles.id) as cantidad')
+        )
+        ->groupBy('mesas.id', 'mesas.mesa')
+        ->orderBy('mesas.mesa')
+        ->get();
+
+        return view('venta.reporteMesa', compact('datos'));
     }
 
 }

@@ -31,8 +31,9 @@
             </a>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                  <button class="btn btn-primary circle" data-toggle="modal" data-target="#mesasModal" ><i class="ti-layout-grid2-alt"></i>  
-                </button>
+                    <button class="btn btn-primary circle" data-toggle="modal" data-target="#mesasModal" >
+                        <i class="ti-layout-grid2-alt"></i>  
+                    </button>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -56,7 +57,7 @@
 
     <section class="has-img-bg">
         <div class="container">
-            @yield('logo')
+            <!-- yield('logo') -->
             <h3 class="section-title mb-6 text-center">@yield('titulo')</h3>
             @yield('cuerpo')
         </div>
@@ -133,42 +134,45 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12">
-                                <form autocomplete="off" id="seleccionMesa">
-                                    <div class="team-wrapper text-center">
-                                        <div class="form-group">
-                                            <label for="exampleSelect1">Mesa:</label>
-                                            <input type="text" class="form-control" name="mesa" id="mesa" list="lista_mesa" >
-                                            <datalist id="lista_mesa">
-                                                @foreach($mesas as $mesa)
-                                                    @if($mesa->ocupado == "0")
-                                                        <option value="{{$mesa->mesa}}, {{$mesa->codigo}}"></option>
-                                                    @else
-                                                        <option value="{{$mesa->mesa}}, {{$mesa->codigo}}, {{$mesa->ocupado}}"></option>
-                                                    @endif
-                                                @endforeach
-                                            </datalist>
+                                    <form autocomplete="off" id="seleccionMesa">
+                                        <div class="team-wrapper text-center">
+                                            <div class="form-group">
+                                                <label for="exampleSelect1">Mesa:</label>
+                                                <input type="text" class="form-control" name="mesa" id="mesa" list="lista_mesa" required>
+                                                <datalist id="lista_mesa">
+                                                    @foreach($mesas as $mesa)
+                                                        @if($mesa->ocupado == "0")
+                                                            <option value="{{$mesa->mesa}}, {{$mesa->codigo}}"></option>
+                                                        @else
+                                                            <option value="{{$mesa->mesa}}, {{$mesa->codigo}}, {{$mesa->ocupado}}"></option>
+                                                        @endif
+                                                    @endforeach
+                                                </datalist>
+                                                <div id="mesa-error" class="text-danger" style="display: none;">Por favor seleccione una mesa</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="team-wrapper text-center">
-                                        <div class="form-group">
-                                            <label for="exampleSelect1">Cliente:</label>
-                                            <input type="text" class="form-control" name="cliente" id="cliente" list="lista_cliente" >
-                                            <datalist id="lista_cliente">
-                                                @foreach($clientes as $cliente)
-                                                    <option value="{{$cliente->cliente}}, {{$cliente->nit}}"></option>
-                                                @endforeach
-                                            </datalist>
+                                        <div class="team-wrapper text-center">
+                                            <div class="form-group">
+                                                <label for="exampleSelect1">Cliente:</label>
+                                                <input type="text" class="form-control" name="cliente" id="cliente" list="lista_cliente" required>
+                                                <datalist id="lista_cliente">
+                                                    @foreach($clientes as $cliente)
+                                                        <option value="{{$cliente->cliente}}, {{$cliente->nit}}"></option>
+                                                    @endforeach
+                                                </datalist>
+                                                <div id="cliente-error" class="text-danger" style="display: none;">Por favor seleccione un cliente</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="team-wrapper text-center">
-                                        <div class="form-group">
-                                            <label for="exampleSelect1">Comensales:</label>
-                                            <input type="number" class="form-control" name="comensales" id="comensales" value="1">
-                                            <br>
-                                            <a href="#" class="btn btn-primary" onclick="seleccionarMesa()"> Seleccionar</a>
+                                        <div class="team-wrapper text-center">
+                                            <div class="form-group">
+                                                <label for="exampleSelect1">Comensales:</label>
+                                                <input type="number" class="form-control" name="comensales" id="comensales" value="1" required>
+                                                <div id="comensales-error" class="text-danger" style="display: none;">Por favor ingrese el número de comensales</div>
+                                                <br>
+                                                <a href="#" class="btn btn-primary" onclick="seleccionarMesa()"> Seleccionar</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -214,8 +218,6 @@
             </div>
         </div>
 
-
-
     <script src="{{asset('assets/vendors/jquery/jquery-3.4.1.js')}}"></script>
     <script src="{{asset('assets/vendors/bootstrap/bootstrap.bundle.js')}}"></script>
     <script src="{{asset('assets/vendors/bootstrap/bootstrap.affix.js')}}"></script>
@@ -225,31 +227,70 @@
     </script>
     @yield('script')
     <script>
-    function seleccionarMesa(){
-        var mesa = $('#mesa').val();
-        var cliente = $('#cliente').val();
-        var comensales = $('#comensales').val();
-        
-        if ( cliente.length < 1 ){
+    function seleccionarMesa() {
+        var mesa = $('#mesa').val().trim();
+        var cliente = $('#cliente').val().trim();
+        var comensales = $('#comensales').val().trim();
+        $('#mesa-error').hide();
+        $('#cliente-error').hide();
+        $('#comensales-error').hide();
+        var isValid = true;
+        if (mesa === "") {
+            $('#mesa-error').show();
+            isValid = false;
+        }
+        if (cliente === "") {
+            $('#cliente-error').show();
+            isValid = false;
+        }
+        if (comensales === "" || comensales === "0") {
+            $('#comensales-error').show();
+            isValid = false;
+        }
+        if (!isValid) {
+            return false;
+        }
+        if (cliente.length < 1) {
             cliente = "0";
             comensales = "0";
         }
-        
         $.ajax({
             url: "{{asset('index.php/PhisqaSession/setMesa/')}}/"+mesa+";"+cliente+";"+comensales,
             type: 'GET',
-            success: function(response) {        
-                console.log( response );
+            success: function(response) {
+                setTimeout(function() {
+                    location.reload();
+                }, 1000);
             },
             error: function(xhr, status, error) {
                 console.error(xhr, status, error);
+                alert('Ocurrió un error al asignar la mesa');
             }
         });
-
-        setTimeout(function() {
-            location.reload(); }, 1000); 
-
     }
+    </script>
+    <script>
+        let inactivityTimer;
+        const inactivityTimeout = 60000;
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                if(alert('La pestaña se cerrará por inactividad. ¿Deseas continuar?')) {
+                    window.close();
+                } else {
+                    window.close();
+                }
+            }, inactivityTimeout);
+        }
+        ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(event => {
+            window.addEventListener(event, resetInactivityTimer);
+        });
+        document.addEventListener('DOMContentLoaded', resetInactivityTimer);
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                resetInactivityTimer();
+            }
+        });
     </script>
 </body>
 </html>

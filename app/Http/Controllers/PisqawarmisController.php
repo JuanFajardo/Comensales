@@ -44,7 +44,6 @@ class PisqawarmisController extends Controller
     }
 
     public function getMesa(){
-        //"cliente":"Juan Fajardo, 123456789","id":"1","id_mesa":1,"mesa":"Mesa 01, m1","id_cliente":1,"comenzales":"100"}*/
         return Session::get('mesa');
     }
 
@@ -188,8 +187,6 @@ class PisqawarmisController extends Controller
     }
 
     public function actualizarPedido(Request $request){
-        //return $request->all();
-        //{"_token":"z6zfPx5qkfY6IZTu0QgqVLhCYjyFEFHUd8jVxBMa","cantidad":"5","id_mesa":"2","id_venta":"14","ruta":"factura"}
         $venta = Ventadetalle::find($request->id_venta);
         $venta->cantidad = $request->cantidad;
         $venta->precio   = $venta->precio;
@@ -261,11 +258,9 @@ class PisqawarmisController extends Controller
             'mesa' => $mesa,
             'ventas' => $ventas,
             'comanda' => $tipoComanda,
-        ];
-        
+        ];        
         return view('pisqa.comanda', $data);
     }
-
     
     public function pagar($id, $tipo, Request $request){
         $mesa = Mesa::find($id);
