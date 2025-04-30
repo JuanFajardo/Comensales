@@ -43,8 +43,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('reporteCierreMenu/{id}', [VentaController::class, 'reporteCierreMenu'])->name('ventas.reporteCierreMenu');
     Route::get('reporteMesa', [VentaController::class, 'reporteMesa'])->name('ventas.reporteMesa');
     
-    
-
+    Route::get('limpiarcookies', [PisqawarmisController::class, 'limpiarcookies'])->name('pisqa.limpiarcookies');
+    Route::get('cargarcookies/{id}', [PisqawarmisController::class, 'cargarcookies'])->name('pisqa.cargarcookies');
     Route::get('librerarmesa/{id}', [MesaController::class, 'liberar'])->name('mesas.liberar');
 
     Route::get('PhisqaWarmis', [PisqawarmisController::class, 'index']);

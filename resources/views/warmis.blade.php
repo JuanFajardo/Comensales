@@ -227,6 +227,16 @@
     </script>
     @yield('script')
     <script>
+    $('#mesa').on('change', function() {
+        var mesa = $('#mesa').val();
+        var id = mesa.split(',')[1]?.trim();
+        var url = "{{ route('pisqa.cargarcookies', ':id') }}".replace(':id', id);
+        $.get(url, function(response) {
+            $('#cliente').val(response.cliente);
+            $('#comensales').val(response.comensales);
+        });
+    });
+
     function seleccionarMesa() {
         var mesa = $('#mesa').val().trim();
         var cliente = $('#cliente').val().trim();
@@ -275,11 +285,12 @@
         function resetInactivityTimer() {
             clearTimeout(inactivityTimer);
             inactivityTimer = setTimeout(() => {
-                if(alert('La pestaña se cerrará por inactividad. ¿Deseas continuar?')) {
-                    window.close();
-                } else {
-                    window.close();
-                }
+                alert('Actualice los datos de mesa, cliente, comenzales')
+                var url = "{{ route('pisqa.limpiarcookies') }}";
+                $.get(url, function(response) {
+                    location.reload();
+                });
+                
             }, inactivityTimeout);
         }
         ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(event => {

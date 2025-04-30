@@ -95,14 +95,14 @@ class PisqawarmisController extends Controller
             Session::put('comenzales', $comenzal);
             Session::put('ocupado', $ocupado);
         }
-        //return Session::all(); 
         return $id;
     }
 
-
     public function comprasSet(Request $request){
-        //return $request->all();
-        
+        if (!Session::has('mesa') && !Session::has('cliente') && !Session::has('comenzales')) {
+            return response()->json(['respuesta' => 'no']);
+        }
+
         $datos = json_decode($request->json, true)[0];
         $idproducto = $datos['id'];
 
@@ -148,8 +148,6 @@ class PisqawarmisController extends Controller
             $venta->cantidad_comensales = (isset($mesa) && is_object($mesa)) ? ($mesa->cantidad_comensales ?? 0) : 0;
             $venta->ocupado    = $mesa->ocupado;
             $venta->ip         = $ip;
-
-            // Corregido
             $venta->tipo_pedido = $request->tipo_pedido;
             $venta->comentario_pedido = $request->comentario_pedido;
 
@@ -158,7 +156,6 @@ class PisqawarmisController extends Controller
             $venta->eliminacion = '';
             $venta->save();
         }
-
         return $venta;
     }
 
@@ -201,7 +198,6 @@ class PisqawarmisController extends Controller
     public function actualizarMesa(Request $request, $id){
         $viejo = Mesa::find($id);
         $nuevo = Mesa::find( $request->mesa );
-
         $nuevo->id_mesero   = $viejo->id_mesero;
         $nuevo->mesero      = $viejo->mesero;
         $nuevo->id_cliente  = $viejo->id_cliente;
@@ -209,7 +205,6 @@ class PisqawarmisController extends Controller
         $nuevo->cantidad_comensales = $viejo->cantidad_comensales;
         $nuevo->ocupado     = $viejo->ocupado;
         $nuevo->save();
-
         $viejo->id_mesero   = "0";
         $viejo->mesero      = "0";
         $viejo->id_cliente  = "0";
@@ -241,12 +236,10 @@ class PisqawarmisController extends Controller
     public function comanda($id)
     {
         [$mesaId, $tipoComanda] = explode(';', $id);
-
         $mesa = Mesa::find($mesaId);
         if (!$mesa) {
             return redirect()->back()->with('error', 'Mesa no encontrada.');
         }
-
         $query = Ventadetalle::where('id_mesa', $mesaId)
             ->where('fecha_pago', '1900-01-01 01:01:01.000');
 
@@ -362,6 +355,22 @@ class PisqawarmisController extends Controller
             }
         $ventas = $ventasDetalles;
         return view('pisqa.pago',compact('mesa', 'ventas', 'venta', 'clientePago'));
+    }
+
+    public function limpiarcookies(){
+        Session::forget(['mesa', 'cliente', 'comenzales']); 
+        return "Se cerro";
+    }
+
+    public function cargarcookies($id){
+        if (!$id) {
+            return response()->json(['error' => 'Mesa no encontrada'], 404);
+        }
+        $dato = Mesa::find($id);
+        return response()->json([
+            'cliente' => $dato->cliente,
+            'comensales' => $dato->cantidad_comensales
+        ]);
     }
 
 }

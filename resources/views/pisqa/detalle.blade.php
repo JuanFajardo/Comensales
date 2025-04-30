@@ -112,15 +112,18 @@
             dataType: 'json',
             data: {
                 json: json,
-                tipo_pedido: tipo_pedido, // Agregar el tipo de pedido al envío
+                tipo_pedido: tipo_pedido,
                 comentario_pedido:comentario_pedido,
                 _token: token
             },
             success: function(response) {
-                console.log(response); // Manejar la respuesta exitosa
+                if(response.respuesta == "no"){
+                    alert("Falta la MESA CLIENTES COMENZALES")
+                }
+                console.log(response);
             },
             error: function(xhr, status, error) {
-                console.error(error); // Manejar errores
+                console.error(error);
             }
         });
         $('#exampleModalLong').modal('hide');
