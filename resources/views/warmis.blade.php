@@ -142,9 +142,9 @@
                                                 <datalist id="lista_mesa">
                                                     @foreach($mesas as $mesa)
                                                         @if($mesa->ocupado == "0")
-                                                            <option value="{{$mesa->mesa}}, {{$mesa->codigo}}"></option>
+                                                            <option value="{{$mesa->mesa}}, {{$mesa->id}}"></option>
                                                         @else
-                                                            <option value="{{$mesa->mesa}}, {{$mesa->codigo}}, {{$mesa->ocupado}}"></option>
+                                                            <option value="{{$mesa->mesa}}, {{$mesa->id}}, {{$mesa->ocupado}}"></option>
                                                         @endif
                                                     @endforeach
                                                 </datalist>
