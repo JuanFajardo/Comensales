@@ -1,3 +1,6 @@
+@php
+$config = \App\Models\Config::first(); // Asume que solo hay un registro
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +10,7 @@
     <meta name="author" content="Juan Fajardo, Elena Taboada">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <title>Phisqa Warmis</title>
+    <title> {{$config->titulo}} </title>
     <link rel="stylesheet" href="{{asset('assets/vendors/themify-icons/css/themify-icons.css')}}">
 	<link rel="stylesheet" href="{{asset('assets/css/pigga.css')}}">
     <style>
@@ -57,7 +60,6 @@
 
     <section class="has-img-bg">
         <div class="container">
-            <!-- yield('logo') -->
             <h3 class="section-title mb-6 text-center">@yield('titulo')</h3>
             @yield('cuerpo')
         </div>
@@ -78,7 +80,7 @@
                         <div class="col-md-12 ">
                             <div class="team-wrapper text-center">
                                 <form>
-                                    <img src="{{asset('assets/imgs/t4.jpg')}}" class="circle-120 rounded-circle mb-3 shadow" alt="PisqWarmis" id="pedidoImg">
+                                    <img src="{{asset('assets/imgs/t4.jpg')}}" class="circle-120 rounded-circle mb-3 shadow"  id="pedidoImg">
                                     <h5 class="my-3" id="pedidoTitulo">Titulo</h5>
                                     <h6 id="pedidoPrecio">Precio</h6>
                                     <p id="pedidoTotal">Total </p>

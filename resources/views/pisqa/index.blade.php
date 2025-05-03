@@ -1,7 +1,11 @@
+@php
+$config = \App\Models\Config::first();
+@endphp
+
 @extends('warmis')
 
 @section('titulo')
-Phisqa Warmis
+{{$config->titulo}}
 @stop
 
 @section('fondo')

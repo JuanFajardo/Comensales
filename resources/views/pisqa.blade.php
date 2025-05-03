@@ -1,3 +1,6 @@
+@php
+$config = \App\Models\Config::first(); // Asume que solo hay un registro
+@endphp
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,11 +8,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
-    <title>Phisqa Warmis - @yield('title')</title>
-
+    <title> {{$config->titulo}} </title>
     <!-- CSS -->
     <link href="{{asset('assets/vendors/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets/vendors/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
@@ -17,35 +17,30 @@
     <link href="{{asset('assets/vendors/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet">
     <link href="{{asset('assets/build/css/custom.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
-
-    <!-- <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script> -->
-
   </head>
 
 
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
+
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="#" class="site_title">
-                <span> <b>Phisqa Warmis</b> </span>
+              <a href="{{asset('/index.php')}}" class="site_title">
+                <span> <b>{{$config->titulo}}</b> </span>
               </a>
             </div>
-
-            <div class="clearfix"></div>
-
-            <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_info" style="text-align:center;">
+                <a href="{{asset('/index.php')}}" >
+                  <img src="{{asset('/'.$config->logo)}}" alt="{{$config->titulo}}" class="rounded-circle" width="100">
+                </a>
                 <h2>{{ auth()->user()->name }}</h2>
                 <h6> <b> {{ strtoupper(auth()->user()->tipo) }} </b></h6>
               </div>
             </div>
-            <!-- /menu profile quick info -->
             <br />
-            <!-- sidebar menu -->
             @include('menu')
           </div>
         </div>
@@ -97,7 +92,7 @@
                           <div class="count">
                             {{ \App\Models\Venta::where('id_cierre', '=', '0')->sum('total') }} Bs.
                           </div>
-                          <h3>Total Ventas</h3>
+                          <h3>Monto en Ventas</h3>
                         </div>
                       </div>
                       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
@@ -110,23 +105,6 @@
                           <h3>Cantidad de Ventas</h3>
                         </div>
                       </div>
-                      
-                      <!--<div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
-                        <div class="tile-stats">
-                          <div class="icon"><i class="fa fa-cutlery"></i>
-                          </div>
-                          <div class="count">14</div>
-                          <h3>Bubble Tea</h3>
-                        </div>
-                      </div>
-                      <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
-                        <div class="tile-stats">
-                          <div class="icon"><i class="fa fa-cutlery"></i>
-                          </div>
-                          <div class="count">9</div>
-                          <h3>Topping´s </h3>
-                        </div>
-                      </div>-->
                     </div>
                   </div>
                 </div>

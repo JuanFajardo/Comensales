@@ -1,29 +1,44 @@
+@php
+$config = \App\Models\Config::first(); // Asume que solo hay un registro
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporte de Ventas</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-    </style>
+    <title>{{$config->titulo}}- Reporte de Ventas</title>
+    <link href="http://127.0.0.1/pisqa/es/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Reporte de Ventas</h1>
-    <p><strong>Fecha de inicio:</strong> {{ $fechaInicio }}</p>
-    <p><strong>Fecha final:</strong> {{ $fechaFinal }}</p>
 
-    <table>
+<div class="container">
+    <div class="row" >
+        <div class="col-md-4">
+            <p><strong>Fecha Impresion:</strong> {{ date('Y-m-d H:i:s') }} </p>
+        </div>
+        <div class="col-md-4">
+            <b style="font-size:18px;">Reporte de Ventas </b>
+        </div>
+        <div class="col-md-4">
+            <b> <a href="{{asset('index.php/reporte')}}"> {{ strtoupper($config->titulo) }} </a></b>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <p><strong>Usuario:</strong> {{ \Auth()->user()->name }}</p>
+        </div>
+        <div class="col-md-4">
+            <p><strong>Fecha Inicio:</strong> {{ $fechaInicio }}</p>
+        </div>
+        <div class="col-md-4">
+            <p><strong>Fecha Fin:</strong> {{ $fechaFinal }}</p>
+        </div>
+    </div>
+
+
+
+    <table class="table">
         <thead>
             <tr>
                 <th>Fecha</th>

@@ -1,3 +1,7 @@
+
+@php
+$config = \App\Models\Config::first(); // Asume que solo hay un registro
+@endphp
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,7 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <title>Bubble Tea</title>
+    <title> {{$config->titulo}} </title>
     <link href="{{asset('assets/vendors/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets/vendors/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets/vendors/nprogress/nprogress.css')}}" rel="stylesheet">
@@ -25,7 +29,7 @@
           <section class="login_content">
             <div>
               <span class="image">
-                <img src="{{asset('assets/images/img11.png')}}" alt="img" />
+                <img src="{{asset('/'.$config->logo)}}" alt="img" />
               </span>
             </div>
                     <form method="POST" action="{{ route('login') }}">

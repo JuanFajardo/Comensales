@@ -1,3 +1,6 @@
+@php
+$config = \App\Models\Config::first(); // Asume que solo hay un registro
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +13,7 @@
 
         <div class="row">
             <div class="col-md-4">
-                <b> <a href="{{asset('index.php/reporteCierre')}}">PISQA WARMIS</a></b>
+                <b> <a href="{{asset('index.php/reporteCierre')}}"> {{ strtoupper($config->titulo) }}</a></b>
             </div>
             <div class="col-md-4">
                 <b style="text-align:center; font-size:26px;">Arqueo de Caja</b>

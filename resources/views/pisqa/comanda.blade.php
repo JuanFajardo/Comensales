@@ -1,3 +1,7 @@
+@php
+$config = \App\Models\Config::first();
+@endphp
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,9 +45,8 @@
 <body>
     <div class="ticket">
         <div class="center">
-            PHISQA CAFE PUB RESTAURANTE<br>
+            {{$config->titulo}} PUB RESTAURANTE<br>
             <b>{{ strtoupper($comanda) }}</b>
-            
         </div>
         <div>
             <table>
