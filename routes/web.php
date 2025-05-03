@@ -23,6 +23,9 @@ Route::middleware(['auth'])->group(function () {
         }
     });
 
+    Route::get('change', [UserController::class, 'change'])->name('user.change');
+    Route::post('change', [UserController::class, 'changePost'])->name('user.changePost');
+    
     Route::resource('usuarios', UserController::class);
     Route::resource('almacen', AlmacenController::class);
     Route::resource('menus', MenuController::class);

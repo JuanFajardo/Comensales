@@ -63,10 +63,15 @@
                       <img src="{{asset('/assets/images/user.png')}}" alt="">{{ auth()->user()->name }}
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item"  href="{{asset('index.php/logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-sign-out pull-right"></i> Cerrar Sesion</a>
-                        <form id="logout-form" action="{{asset('index.php/logout')}}" method="POST" class="d-none">
-                          @csrf 
-                        </form>
+                      <a class="dropdown-item"  href="{{asset('index.php/logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i> Cerrar Sesion
+                      </a>
+                      <form id="logout-form" action="{{asset('index.php/logout')}}" method="POST" class="d-none">
+                        @csrf 
+                      </form>
+                      <a class="dropdown-item"  href="{{asset('index.php/change')}}" >
+                        <i class="fa fa-key" aria-hidden="true"></i>Cambiar Clave
+                      </a>
                     </div>
                   </li>
                 </ul>

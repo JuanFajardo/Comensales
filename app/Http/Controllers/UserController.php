@@ -30,11 +30,9 @@ class UserController extends Controller
             'tipo' => 'required',
             'baja' => 'required',
         ]);
-
         $request['password'] = Hash::make($request->password) ;
         $request['id_mesa'] = 0;
-        $request['id_cliente'] = 0;
-        
+        $request['id_cliente'] = 0;        
         User::create($request->all());
         return redirect()->route('usuarios.index')
             ->with('success', 'Usuario creado exitosamente.');
@@ -47,27 +45,20 @@ class UserController extends Controller
     }
 
     public function update(Request $request, $id){
-        
-
-        if ($request->has('password')) {
+        if ( $request->has('password') &&  strlen($request->password) > 0) {
             $request->merge(['password' => bcrypt($request->password)]);
         } else {
             $request->request->remove('password');
         }
-
-        //return $id;
         $user = User::find($id);
         $user->update($request->all());
         $user->save();
-
         return redirect()->route('usuarios.index')
                 ->with('success', 'Usuario actualizado exitosamente.');
     }
 
     public function destroy(User $user, Request $request)
     {
-        //$producto->delete();
-        //return $request->all();
         $user = User::find($request->id);
         if ($request->baja == 1) {
             $user->update(['baja' => 0]);
@@ -77,5 +68,16 @@ class UserController extends Controller
         return redirect()->route('usuarios.index')
             ->with('success', 'Actualizacion del estado del usuario');
     }
-    
+
+    public function change(){
+        return view('users.change');
+    }
+
+    public function changePost(Request $request)
+    {
+        $user = User::find( \Auth()->user()->id );
+        $user->update(['password' => Hash::make($request->password) ]);
+        return redirect()->route('user.change')->with('success', 'Contraseña Actualizada');
+
+    }  
 }
