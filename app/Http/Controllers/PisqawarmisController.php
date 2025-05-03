@@ -50,15 +50,14 @@ class PisqawarmisController extends Controller
     public function setMesa($id){
         $vector = explode(";", $id);
         $mesas = explode(",", $vector[0]);
-        $mesa = Mesa::Where('mesa', trim($mesas[0]))->where('codigo', trim($mesas[1]))->get();
-        
+        $mesa = Mesa::Where('id', trim($mesas[1]))->get();
+                    //->where('codigo', trim($mesas[1]))
+        //return $mesa;
         if (  $vector[1] == "0" ) {
-            echo "verdad";
             $activar = Mesa::find( $mesa[0]->id );
             $activar->id_mesero = Auth::id();
             $activar->mesero = Auth::user()->name;
             $activar->save();
-            //'id', 'mesa', 'codigo', 'descripcion', 'id_mesero', 'mesero', 'id_cliente', 'cliente', 'cantidad_comensales', 'ocupado', 'baja',
             Session::put('id', '1');
             Session::put('id_mesa', $activar->id);
             Session::put('mesa', $activar->mesa);
@@ -69,12 +68,9 @@ class PisqawarmisController extends Controller
             Session::put('comenzales', $activar->comenzales);
             Session::put('ocupado', $activar->ocupado);
         }else{
-            echo "falso";            
             $clientes = explode(",", $vector[1]);
             $comenzal =  $vector[2];
-
             $cliente = Cliente::Where('cliente',  trim($clientes[0]))->where('nit', trim($clientes[1]))->get();
-            
             $ocupado = date('Y-m-d H:i:s');
             $activar = Mesa::find($mesa[0]->id);
             $activar->id_mesero = Auth::id();
