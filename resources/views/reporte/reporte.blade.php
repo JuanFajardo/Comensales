@@ -56,10 +56,12 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
             @if($tipo == 1)
                 @foreach($ventas as $venta)
                     <tr>
-                        <td>{{ $venta->fecha_pago }}</td>
-                        <td>{{ $venta->cajero }}</td>
-                        <td>{{ $venta->total }}</td>
-                        <td>{{ $venta->tipo_pago }}</td>
+                        <td>{{ $venta->fecha_pago }}
+                            <br> Cierre {{ $venta->id_cierre }} 
+                        </td>
+                        <td>{{ $venta->cajero }} </td>
+                        <td>{{ $venta->total }} Bs.</td>
+                        <td> <b>{{ $venta->tipo_pago }}</b> </td>
                         <td> @if( $venta->registro ) 
                             Efectivo: {{ $venta->registro_efectivo }}
                             <br>
@@ -72,18 +74,17 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
                         </td>
                         <td>{{ $venta->comentario }}</td>
                     </tr>
-
                     <tr><td colspan="1"></td>
                         <td colspan="6">
-                        <table>
+                        <table border="1">
                         @foreach($datos as $dato)
                             @if( $venta->id == $dato->id_venta)
                             <tr>
-                                <td> {{$dato->tipo_comanda}} </td>
+                                <td> <b> {{$dato->id_venta}} </b> {{$dato->tipo_comanda}}  </td>
                                 <td> {{$dato->titulo}} </td>
-                                <td> {{$dato->cantidad}} </td>
-                                <td> {{$dato->precio}} </td>
-                                <td> {{$dato->total}} </td>
+                                <td> {{$dato->cantidad}} Cant.</td>
+                                <td> {{$dato->precio}} Bs. </td>
+                                <td> {{$dato->total}} Bs. </td>
                                 <td> {{$dato->mesa}} </td>
                                 <td> {{$dato->mesero}} </td>
                             </tr>
@@ -92,16 +93,17 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
                         </table>
                         </td>
                     </tr>
-                    
                     <?php $total += $venta->total ; ?>
                 @endforeach
             @else
                 @foreach($ventas as $venta)
                     <tr>
-                        <td>{{ $venta->fecha_pago }}</td>
-                        <td>{{ $venta->cajero }}</td>
-                        <td>{{ $venta->total }}</td>
-                        <td>{{ $venta->tipo_pago }}</td>
+                        <td>{{ $venta->fecha_pago }} 
+                            <br> Cierre {{ $venta->id_cierre }} 
+                        </td>
+                        <td>{{ $venta->cajero }} <br> Cierre: {{ $venta->id_cierre }}  </td>
+                        <td>{{ $venta->total }} Bs.</td>
+                        <td> <b>{{ $venta->tipo_pago }}</b> </td>
                         <td> @if( $venta->registro ) 
                             Efectivo: {{ $venta->registro_efectivo }}
                             <br>
@@ -112,7 +114,8 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
                                 {{ $venta->adelanto_efectivo }} Bs. <br><small>{{ $venta->adelanto }}</small>
                             @endif
                         </td>
-                        <td>{{ $venta->comentario }}</td>
+                        <td>{{ $venta->comentario }}
+                        </td>
                         
                     </tr>
                     <?php $total += $venta->total ; ?>
@@ -122,7 +125,7 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
         <tfoot>
             <tr>
                 <th colspan="6">Total</th>
-                <th colspan="4">{{ $total }} Bs.</th>
+                <th colspan="4">{{ $total }} Bs. </th>
             </tr>
         </tfoot>
     </table>

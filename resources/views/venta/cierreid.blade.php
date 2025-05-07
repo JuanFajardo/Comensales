@@ -96,7 +96,6 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
                         </tr>
                         @endif
                         @endforeach
-                        
                     </tbody>
                 </table>
 

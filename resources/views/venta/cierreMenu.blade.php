@@ -58,7 +58,7 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
                             <td>    {{$dato->menu}} </td>
                             <?php $cant=$total=0;?>
                                 @foreach($detalles as $detalle)
-                                    @if($dato->id_menu == $detalle->id_menu)
+                                    @if($dato->id_menu == $detalle->id_menu && $detalle->cantidad > 0)
                                      <?php 
                                         $cant=$cant + $detalle->cantidad;
                                         $total = $total + $detalle->total;
@@ -67,7 +67,8 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
                                      ?>
                                     @endif
                                 @endforeach
-                            <td>    {{$cant}} </td>
+                            <td> {{$cant}} 
+                            </td>
                             <td style="text-align:right;"> {{$total}} Bs. </td>
                         </tr>
                         @endforeach
@@ -75,14 +76,13 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
                             <td></td>
                             <th> {{$contTotal}}</th>
                             <td>
-                                <div style="text-align:right;"> <b> {{$sumaTotal}} Bs. </b>  </div>
+                                <div style="text-align:right;"> <b> {{$sumaTotal}} Bs. Resumen </b>  </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-
         @else
         <div class="row">
             <div class="col-md-12">
@@ -97,7 +97,7 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
                                 <table border="0" width="100%">
                                     <?php $cant=$total=0;?>
                                 @foreach($detalles as $detalle)
-                                    @if($dato->id_menu == $detalle->id_menu)
+                                    @if($dato->id_menu == $detalle->id_menu && $detalle->cantidad > 0)
                                      <tr>
                                         <td style="text-align:center;">{{$detalle->cantidad}}</td>
                                         <td>{{strtoupper($detalle->titulo)}}</td>
@@ -107,7 +107,7 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
                                 @endforeach
                                     <tr>
                                         <th> {{$cant}} </th>
-                                        <th></th>
+                                        <th> </th>
                                         <th style="text-align:right;"> {{$total}} Bs. </th>
                                     </tr>
                                 </table>
@@ -116,7 +116,7 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
                         @endforeach
                         <tr>  
                             <td>
-                                <div style="text-align:center;"> <b> {{$sumaTotal}} Bs. </b>  </div>
+                                <div style="text-align:center;"> <b> {{$sumaTotal}} Bs.  Detallado </b>  </div>
                             </td>
                         </tr>
                     </tbody>
