@@ -29,7 +29,7 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
           <section class="login_content">
             <div>
               <span class="image">
-                <img src="{{asset('/'.$config->logo)}}" alt="img" />
+                <img src="{{asset('/'.$config->logo)}}" alt="img" width="300" />
               </span>
             </div>
                     <form method="POST" action="{{ route('login') }}">
