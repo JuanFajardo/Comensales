@@ -57,10 +57,12 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
                 @foreach($ventas as $venta)
                     <tr>
                         <td>{{ $venta->fecha_pago }}
-                            <br> Cierre {{ $venta->id_cierre }} 
+                            <br> <b> Cierre {{ $venta->id_cierre }} </b>
                         </td>
                         <td>{{ $venta->cajero }} </td>
-                        <td>{{ $venta->total }} Bs.</td>
+                        <td style="background-color:#c69b0a;">
+                            <b> {{ $venta->total }} Bs. </b>
+                        </td>
                         <td> <b>{{ $venta->tipo_pago }}</b> </td>
                         <td> @if( $venta->registro ) 
                             Efectivo: {{ $venta->registro_efectivo }}
@@ -76,7 +78,7 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
                     </tr>
                     <tr><td colspan="1"></td>
                         <td colspan="6">
-                        <table border="1">
+                        <table border="1"><?php $sumaventa= 0;?>
                         @foreach($datos as $dato)
                             @if( $venta->id == $dato->id_venta)
                             <tr>
@@ -87,9 +89,19 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
                                 <td> {{$dato->total}} Bs. </td>
                                 <td> {{$dato->mesa}} </td>
                                 <td> {{$dato->mesero}} </td>
-                            </tr>
+                            </tr> <?php $sumaventa = $sumaventa + $dato->total; ?>
                             @endif
                         @endforeach
+                            <tr> 
+                                <td colspan="3"></td>
+                                @if($sumaventa == $venta->total )
+                                    <td colspan="4" style="background-color:#c69b0a;">
+                                @else
+                                    <td colspan="4" style="background-color:#e9391a;">
+                                @endif
+                                    <b> {{$sumaventa}} Bs.</b>
+                                </td>
+                            </tr>
                         </table>
                         </td>
                     </tr>
@@ -99,9 +111,9 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
                 @foreach($ventas as $venta)
                     <tr>
                         <td>{{ $venta->fecha_pago }} 
-                            <br> Cierre {{ $venta->id_cierre }} 
+                            <br> <b> Cierre {{ $venta->id_cierre }} </b>
                         </td>
-                        <td>{{ $venta->cajero }} <br> Cierre: {{ $venta->id_cierre }}  </td>
+                        <td>{{ $venta->cajero }}  </td>
                         <td>{{ $venta->total }} Bs.</td>
                         <td> <b>{{ $venta->tipo_pago }}</b> </td>
                         <td> @if( $venta->registro ) 
@@ -116,7 +128,6 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
                         </td>
                         <td>{{ $venta->comentario }}
                         </td>
-                        
                     </tr>
                     <?php $total += $venta->total ; ?>
                 @endforeach
