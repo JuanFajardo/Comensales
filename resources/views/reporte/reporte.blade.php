@@ -96,10 +96,12 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
                                 <td colspan="3"></td>
                                 @if($sumaventa == $venta->total )
                                     <td colspan="4" style="background-color:#c69b0a;">
+                                    <b> {{$sumaventa}} Bs.</b>
                                 @else
                                     <td colspan="4" style="background-color:#e9391a;">
+                                    <b> {{$sumaventa}} Bs. ERROR VENTA Y DETALLES</b>
                                 @endif
-                                    <b> {{$sumaventa}} Bs.</b>
+                                    
                                 </td>
                             </tr>
                         </table>
