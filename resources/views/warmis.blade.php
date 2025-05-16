@@ -9,7 +9,7 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
     <meta name="description" content="Start your development with Pigga landing page.">
     <meta name="author" content="Juan Fajardo, Elena Taboada">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <!--- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
     <title> {{$config->titulo}} </title>
     <link rel="stylesheet" href="{{asset('assets/vendors/themify-icons/css/themify-icons.css')}}">
 	<link rel="stylesheet" href="{{asset('assets/css/pigga.css')}}">

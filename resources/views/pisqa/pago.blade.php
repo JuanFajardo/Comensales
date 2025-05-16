@@ -69,15 +69,13 @@
                 </tr>
                 <?php $total = 0; ?>
                 @foreach($ventas as $venta)
-                    @if( $venta->eliminacion_comentario == "")
-                        <tr>
-                            <?php $total += $venta->total; ?>
-                            <td>{{ strtoupper($venta->titulo) }}</td>
-                            <td>{{ $venta->cantidad }}</td>
-                            <td>{{ $venta->precio }}</td>
-                            <td>{{ $venta->total }}</td>
-                        </tr>
-                    @endif
+                    <tr>
+                        <?php $total += $venta->total; ?>
+                        <td>{{ strtoupper($venta->titulo) }}</td>
+                        <td>{{ $venta->cantidad }}</td>
+                        <td>{{ $venta->precio }}</td>
+                        <td>{{ $venta->total }}</td>
+                    </tr>
                 @endforeach
                 <tr>
                     <td colspan="3" class="total">TOTAL Bs.</td>

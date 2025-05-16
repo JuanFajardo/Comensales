@@ -21,9 +21,7 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
             <div class="col-md-4">
             </div>    
         </div>
-        
         <hr>
-
         <div class="row">
             <div class="col-md-6">
                 <p><strong>N° de Cierre:</strong> {{ $dato->id_cierre }}</p>
@@ -114,28 +112,24 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
                         </tr>
                     </thead>
                     <tbody><?php $total=0;?>
-                        @foreach ($datos as $dato)
-                            @if( $dato->adelanto_efectivo !="" && $dato->adelanto !="" )
+                        @foreach ($adelantos as $dato)
                             <tr>
                                 <td> Adelanto </td>
                                 <td> {{ $dato->adelanto_efectivo }} Bs. </td>
                                 <td> {{ $dato->adelanto }} </td>
                             </tr><?php $total = $total + $dato->adelanto_efectivo; ?>
-                            @endif
                         @endforeach
                         <tr>
                             <th>Total</th>
                             <th>{{$total}}</th>
                             <th></th>
                         </tr><?php $total=0;?>
-                        @foreach ($datos as $dato)
-                            @if( $dato->tipo_pago == "Sin pago")
+                        @foreach ($especiales as $dato)
                             <tr>
                                 <td> Especial </td>
                                 <td> {{ $dato->total }} Bs. </td>
                                 <td> {{ $dato->cliente }} </td>
                             </tr><?php $total = $total + $dato->total; ?>
-                            @endif
                         @endforeach
                         <tr>
                             <th>Total</th>

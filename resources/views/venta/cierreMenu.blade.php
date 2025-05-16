@@ -18,7 +18,7 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
 
         <div class="row" >
             <div class="col-md-3">
-                <p style="font-size:14px;"><strong>N° de Cierre:</strong> {{ $lista[0]->id_cierre }}</p>
+                <p style="font-size:14px;"><strong>N° de Cierre:</strong> {{ $info->id_cierre }}</p>
             </div>
             <div class="col-md-6">
                 <b style="font-size:14px;">Venta por Rubros</b>
@@ -30,10 +30,10 @@ $config = \App\Models\Config::first(); // Asume que solo hay un registro
 
         <div class="row">
             <div class="col-md-4">
-                <p><strong>Usuario:</strong> {{ $lista[0]->cierre }}</p>
+                <p><strong>Usuario:</strong> {{ $info->cierre }}</p>
             </div>
             <div class="col-md-4">
-                <p><strong>Fecha Cierra:</strong> {{  $lista[0]->updated_at }}</p>
+                <p><strong>Fecha Cierra:</strong> {{  $info->updated_at }}</p>
             </div>
             <div class="col-md-4">
                 <p><strong>Fecha Impresion :</strong> {{ date('Y-m-d H:i:s') }}</p>

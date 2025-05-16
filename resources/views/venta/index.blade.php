@@ -9,11 +9,9 @@
         <a href="{{asset('index.php/Cierre')}}" id="cierre" class="btn btn-warning">
             <i class="fa fa-unlock-alt"></i> Cerrar Caja
         </a>
-
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#miModal">
-    Pasar datos
-</button>
-
+        Pasar datos
+        </button>
         <h3>
             @if (session('success'))
             <div>
@@ -23,7 +21,6 @@
         </h3>
     </div>
 </div>
-
 
 <div class="row">
     <div class="col-md-12 col-sm-12 ">
@@ -120,8 +117,16 @@
                         <textarea class="form-control" id="descripcionAdelanto" name="descripcionAdelanto" rows="2" placeholder="Descripción del adelanto">-</textarea>
                     </div>
                     <div class="form-group">
-                        <label for="comentario">Comentario</label>
-                        <textarea class="form-control" id="comentario" name="comentario" rows="3" placeholder="Ingrese un comentario"> | </textarea>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <label for="comentario">Comentario Cierre</label>
+                                <textarea class="form-control" id="comentario" name="comentario" rows="3" placeholder="comentario de Cierre"> </textarea>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <label for="rotatorio">Rotatorio Cierre</label>
+                                <textarea class="form-control" id="rotatorio" name="rotatorio" rows="3" placeholder="Rotatorio de cierre"> </textarea>
+                            </div>
+                        </div>
                     </div>
             </div>
             <div class="modal-footer">
@@ -185,6 +190,5 @@
             window.location.href = $(this).attr('href');
         }
     });
-
 </script>
 @stop

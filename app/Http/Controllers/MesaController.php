@@ -43,9 +43,7 @@ class MesaController extends Controller
             'codigo' => 'required|string',
             'descripcion' => 'nullable|string',
         ]);
-
         Mesa::create($request->all());
-        
         return redirect()->route('mesas.index')->with('success', 'Mesa creada correctamente');
     }
 
@@ -54,8 +52,6 @@ class MesaController extends Controller
     {
         return view('mesas.edit', compact('mesa'));
     }
-
-    
 
     // Actualizar una mesa
     public function update(Request $request, Mesa $mesa)
@@ -84,7 +80,6 @@ class MesaController extends Controller
         ->Where("tipo_pago","NO")
         ->Where("cantidad",">","0")->count();
         
-
         if($detalles == 0){
             $mesa = Mesa::find($id);
             $mesa->id_mesero = 0;
@@ -95,31 +90,33 @@ class MesaController extends Controller
             $mesa->ocupado = "0";
             $mesa->save();
         }
-        
         return redirect()->action([MesaController::class, 'index']);
     }
 
     public function destroy(Request $request){
-        //"_method":"DELETE",
-        // "pedidoId":"77","mesaId":"1","razon":"Eliminar"}
+        return $request->all();
         $detalle = Ventadetalle::find( $request->pedidoId );
-
-        
         $detalle->update(
             [   
                 'cantidad' => -1,
                 'precio' => 0,
                 'total' => 0,
-
                 'pago_cantidad' => 0,
                 'pago_costo' => 0,
-
                 'eliminacion_comentario' => $request->razon,
                 'eliminacion' => date('Y-m-d H:i:s'),
             ]
         );
-        
         return redirect()->route('mesas.show', $request->mesaId )->with('success', 'Pedido eliminado ');
+    }
 
+    public function activar($id){
+        $mesa = Mesa::find($id);
+        if ($mesa->baja == 1) {
+            $mesa->update(['baja' => 0]);
+        } else {
+            $mesa->update(['baja' => 1]);
+        }
+        return redirect()->route('mesas.index')->with('success','_ ');
     }
 }

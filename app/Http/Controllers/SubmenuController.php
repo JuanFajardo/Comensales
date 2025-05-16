@@ -20,7 +20,6 @@ class SubmenuController extends Controller
     }
 
     public function store(Request $request){
-        
         $request->validate([
             'img' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
             'id_menu' => 'required',
@@ -33,18 +32,17 @@ class SubmenuController extends Controller
         $imageName = time() . '_submenu.' . $request->img->extension();
         $request->img->move(base_path('es\assets\img'), $imageName);
 
-        $submenu = new Submenu();
-        $submenu->img = $imageName;
-        $submenu->id_menu = $request->id_menu;
-        $submenu->submenu = $request->submenu;
-        $submenu->descripcion = $request->descripcion;
-        $submenu->tipo_comanda = $request->tipo_comanda;
-        $submenu->precio_compra = $request->precio_compra;
-        $submenu->precio_venta = $request->precio_venta;
-        $submenu->promocion = $request->promocion;
-        $submenu->baja = $request->baja;
-        $submenu->save();
-        
+        Submenu::create([
+            'img'           => $imageName,
+            'id_menu'       => $request->id_menu,
+            'submenu'       => $request->submenu,
+            'descripcion'   => $request->descripcion,
+            'tipo_comanda'  => $request->tipo_comanda,
+            'precio_compra' => $request->precio_compra,
+            'precio_venta'  => $request->precio_venta,
+            'promocion'     => $request->promocion,
+            'baja'          => '1',
+        ]);
         return redirect()->route('submenus.index')->with('success', 'Submenú creado correctamente');
     }
 
@@ -54,6 +52,7 @@ class SubmenuController extends Controller
     }
     
     public function update(Request $request, Submenu $submenu){
+        $submenu = Submenu::find($submenu->id);
         $request->validate([
             'id_menu' => 'required',
             'submenu' => 'required',
@@ -63,26 +62,15 @@ class SubmenuController extends Controller
             'promocion' => 'required|in:0,1',
             'baja' => 'required|in:0,1',
         ]);
-
         if ($request->hasFile('img')) {
             $request->validate([
                 'img' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
             $imageName = time() . '_submenu.' . $request->img->extension();
-            $request->img->move(public_path('assets/img'), $imageName);
+            $request->img->move(base_path('es/assets/img'), $imageName);
             $submenu->img = $imageName;
         }
-
-        $submenu->id_menu = $request->id_menu;
-        $submenu->submenu = $request->submenu;
-        $submenu->descripcion = $request->descripcion;
-        $submenu->tipo_comanda = $request->tipo_comanda;
-        $submenu->precio_compra = $request->precio_compra;
-        $submenu->precio_venta = $request->precio_venta;
-        $submenu->promocion = $request->promocion;
-        $submenu->baja = $request->baja;
-        $submenu->save();
-        
+        $submenu->update($request->except(['img', 'logo', 'fondo']));
         return redirect()->route('submenus.index')->with('success', 'Submenú actualizado correctamente');
     }
 

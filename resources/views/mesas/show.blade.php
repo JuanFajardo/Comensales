@@ -180,13 +180,9 @@
                                 @if( strlen($venta->eliminacion_comentario) == 0)
                                 <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#pedidoModal" onclick="actualizarPedido('{{$venta->id_mesa}}', '{{$venta->id}}')" > <b><i class="fa fa-edit" ></i></b> </a>
                                 <a href="#" class="btn btn-danger" onclick="openDeleteModal('{{$venta->id}}')"> <b><i class="fa fa-trash"></i></b> </a>
-                               
                                 <script>
                                     function openDeleteModal(pedidoId) {
-                                        // Establece el ID del pedido en el campo oculto del formulario
                                         document.getElementById('pedidoId').value = pedidoId;
-
-                                        // Abre el modal
                                         $('#deleteModal').modal('show');
                                     }
                                     function actualizarPedido(mesa, venta) {
@@ -225,27 +221,23 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
             </div>
+            <form id="deleteForm" action="{{ route('mesas.destroy', ['mesa' => 'Eliminar']) }}" method="POST">
             <div class="modal-body">
                 <p>Por favor, indica la razón para eliminar el pedido:</p>
-                
-                <form id="deleteForm" action="{{ route('mesas.destroy', ['mesa' => '1']) }}" method="POST">
                     @csrf
                     @method('DELETE')
-                    
                     <input type="hidden" id="pedidoId" name="pedidoId">
                     <input type="hidden" id="mesaId" name="mesaId" value="{{$mesa->id}}">
-                    
                     <div class="form-group">
                         <label for="razon">Razón de eliminación</label>
                         <textarea class="form-control" id="razon" name="razon" rows="3" required></textarea>
                     </div>
-                </form>
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-danger" form="deleteForm">Confirmar eliminación</button>
             </div>
+            </form>
         </div>
     </div>
 </div>

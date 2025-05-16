@@ -89,9 +89,7 @@ class VentaController extends Controller
 
     public function cierre(){
         $id = Venta::max('id_cierre') + 1;
-
         $mesas = Mesa::where('id_mesero', '!=', '0')->get();
-
         if( count( $mesas ) !=0 ){
                 return "<script>
                     alert('Existe una mesa abiert. \n" + $mesas[0]->mesa + " \n "+$mesas[0]->mesero+"');
@@ -123,12 +121,12 @@ class VentaController extends Controller
             $venta->id_cierre = $id;
             $venta->save();
         }
-
         return redirect()->route('ventas.reporteCierreId', ['id' => $id]);
     }
 
     public function registro(Request $request){
-        //return $request->all();
+        $request['comentario'] = $request->comentario."|".$request->rotatorio;
+
         $venta = new Venta();
         $venta->fecha_pedido = date('Y-m-d H:i:s');
         $venta->fecha_pago =  date('Y-m-d H:i:s');
@@ -164,37 +162,43 @@ class VentaController extends Controller
     public function reporteCierreId($id){
         $dato = Venta::groupBy('cierre', 'id_cierre', 'fecha_cierre')
                         ->select('cierre', 'id_cierre', 'fecha_cierre')
-                        ->where('id_cierre', $id)
-                        ->first();
+                        ->where('id_cierre', $id)->first();
+
         $efectivo = Venta::where('tipo_pago', 'efectivo')
                         ->where('id_cierre', $id)
-                        ->selectRaw('COUNT(*) as cantidad, SUM(total) as suma')
-                        ->first();
+                        
+                        ->selectRaw('COUNT(*) as cantidad, SUM(total) as suma')->first();
         $tarjeta = Venta::where('tipo_pago', 'tarjeta')
                         ->where('id_cierre', $id)
-                        ->selectRaw('COUNT(*) as cantidad, SUM(total) as suma')
-                        ->first();
+                        ->selectRaw('COUNT(*) as cantidad, SUM(total) as suma')->first();
+
         $datos = Venta::Where('id_cierre', $id)->get();
-        return view('venta.cierreid', compact('dato','efectivo','tarjeta', 'datos'));
+        $adelantos = Venta::Where('id_cierre', $id)
+                        ->groupBy('adelanto')
+                        ->selectRaw('adelanto, SUM(adelanto_efectivo) as adelanto_efectivo ')
+                        ->Where( 'adelanto_efectivo', '<>', '')
+                        ->Where( 'adelanto', '<>', '' )
+                        ->get();
+        $especiales = Venta::Where('id_cierre', $id)
+                        ->groupBy('cliente')
+                        ->selectRaw('cliente, SUM(total) as total ')
+                        ->Where( 'tipo_pago', 'Sin pago')
+                        ->get();
+        return view('venta.cierreid', compact('dato','efectivo','tarjeta', 'datos', 'adelantos', 'especiales'));
     }
 
     public function reporteCierreMenu( $i ){
-        
+        $info = Venta::where('id_cierre', $i)->first();
         $lista = Venta::where('id_cierre', $i)->select('id')->get();
-        
         $datos = Ventadetalle::join('menus', 'menus.id', '=', 'ventadetalles.id_menu')
                     ->where('ventadetalles.cantidad', '>', '0')
                     ->whereIn('ventadetalles.id_venta', $lista->pluck('id'))
                     ->groupBy('ventadetalles.id_menu', 'menus.menu')
-                    ->selectRaw('ventadetalles.id_menu, menus.menu')
-                    ->get();
-        
+                    ->selectRaw('ventadetalles.id_menu, menus.menu')->get();
         $detalles = Ventadetalle::select('id_menu', 'titulo', 'cantidad', 'total')
                     ->whereIn('ventadetalles.id_venta', $lista->pluck('id'))
                     ->where('ventadetalles.cantidad', '>', '0')
-                    ->orderBy('titulo')
-                    ->get();
-                    
+                    ->orderBy('titulo')->get();
         $detallesAgrupados = $detalles->groupBy('titulo')->map(function ($group) {
             $first = $group->first();
             $first->cantidad = $group->sum('cantidad');
@@ -203,7 +207,7 @@ class VentaController extends Controller
         })->values();
 
         $detalles = $detallesAgrupados;
-        return view('venta.cierreMenu', compact('lista','datos','detalles'));
+        return view('venta.cierreMenu', compact('lista','datos','detalles', 'info'));
     }
 
     public function reporteMesa(){

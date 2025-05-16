@@ -74,7 +74,9 @@ $config = \App\Models\Config::first();
                     @if($venta->cantidad > 0 && $venta->eliminacion_comentario == "")
                         <tr>
                             <?php $total += $venta->total; ?>
-                            <td>{{ strtoupper($venta->titulo) }}</td>
+                            <td>{{ strtoupper($venta->titulo) }}<br>
+                                    {{ explode(' ', $venta->created_at)[1] }}
+                            </td>
                             <td>{{ $venta->cantidad }}</td>
                             <td>{{ $venta->precio }}</td>
                             <td>{{ $venta->total }}</td>

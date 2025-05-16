@@ -40,8 +40,8 @@ class CreateVentasTable extends Migration
             $table->float('registro_efectivo', 6,2)->default(0)->nullable();
             $table->float('registro_tarjeta', 6,2)->default(0)->nullable();
             $table->float('adelanto_efectivo', 6,2)->default(0)->nullable();
-            $table->string('adelanto')->default('')->nullable();
-            $table->string('comentario')->default('')->nullable();
+            $table->text('adelanto')->default('')->nullable();
+            $table->text('comentario')->default('')->nullable();
 
             $table->timestamps();
         });
