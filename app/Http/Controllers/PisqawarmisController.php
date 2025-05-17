@@ -210,9 +210,10 @@ class PisqawarmisController extends Controller
 
     public function actualizarPedido(Request $request){
         $venta = Ventadetalle::find($request->id_venta);
+        $cantidad = str_replace(',', '.', $request->cantidad);
         $venta->cantidad = $request->cantidad;
         $venta->precio   = $venta->precio;
-        $venta->total    = ($venta->precio * $request->cantidad);
+        $venta->total    = ($venta->precio * $cantidad);
         $venta->save();
 
         if( $request->ruta == "factura")
@@ -281,6 +282,9 @@ class PisqawarmisController extends Controller
     }
     
     public function pagar($id, $tipo, Request $request){
+
+        //return $request->all();
+
         $mesa = Mesa::find($id);
         $clientePago = $mesa->cliente;
         $venta = "";

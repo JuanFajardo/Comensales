@@ -124,7 +124,6 @@
                 <tbody><?php $total = $cant = 0; ?>
                     @foreach($ventas as $venta)
                         <?php $total = $total  + $venta->total; $cant = $cant + $venta->cantidad; ?>
-                        
                         @if( $venta->cantidad != 0 )
                         <tr>
                             <td> 
@@ -136,22 +135,18 @@
                                 @elseif($venta->tipo_comanda == "postre")
                                     <small class="badge badge-info"><b>{{$venta->tipo_comanda}}</b></small>
                                 @endif
-
                                 @if  ($venta->tipo_pedido == "mesa")
                                     <small class="badge badge-warning"><b>{{$venta->tipo_pedido}}</b></small>
                                 @else
                                     <small class="badge badge-secondary"><b>{{$venta->tipo_pedido}}</b></small>
                                 @endif
                             </td>
-                            <td> 
-
+                            <td>
                                 {{ strtoupper($venta->titulo) }}<br>
                                 <small class="badge badge-info">{{$venta->comentario_pedido}}</small>
-
                                 @if( strlen($venta->eliminacion_comentario) > 0)
                                     <small class="badge badge-danger">{{$venta->eliminacion_comentario}}</small>
                                 @endif
-
                             </td>
                             <td>
                                 <div class="row"> 
@@ -159,8 +154,14 @@
                                         <input type="hidden" name="productos[{{ $venta->id }}][precio]" value="{{ $venta->precio }}">
                                         <input type="hidden" name="productos[{{ $venta->id }}][codigo]" value="{{ $venta->id }}">
                                         <input 
-                                            type="number" 
+                                            
                                             name="productos[{{ $venta->id }}][cantidad]"  
+                                                @if( $venta->id_menu == 1  )
+                                                    type="text"
+                                                @else
+                                                    type="number"
+                                                    step="1" min="1" max="100"
+                                                @endif
                                             value="{{ $venta->cantidad }}"  
                                             class="form-control cantidad-input" 
                                             data-checkbox="checkbox-{{ $venta->id }}">
@@ -206,11 +207,9 @@
             <button type="submit" class="btn btn-success" onclick="return confirmarAccion();"> <i class="fa fa-file-pdf-o"></i> Pagar en Efectivo</button>
             <button type="submit" onclick="return confirmarAccion();" formaction="{{ route('mesas.pagar', ['id' => $mesa->id, 'tipo' => 'tarjeta']) }}" class="btn btn-primary"> <i class="fa fa-file-pdf-o"></i> Pagar con Tarjeta</button>
         </form>
-
         <hr style="width: 100%px;">
     </div>                        
 </div>
-
 
 <div id="deleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
