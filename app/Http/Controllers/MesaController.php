@@ -94,7 +94,6 @@ class MesaController extends Controller
     }
 
     public function destroy(Request $request){
-        return $request->all();
         $detalle = Ventadetalle::find( $request->pedidoId );
         $detalle->update(
             [   
