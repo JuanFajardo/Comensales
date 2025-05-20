@@ -153,17 +153,13 @@
                                     <div class="col">
                                         <input type="hidden" name="productos[{{ $venta->id }}][precio]" value="{{ $venta->precio }}">
                                         <input type="hidden" name="productos[{{ $venta->id }}][codigo]" value="{{ $venta->id }}">
-                                        <input 
-                                            
-                                            name="productos[{{ $venta->id }}][cantidad]"  
-                                                @if( $venta->id_menu == 1  )
-                                                    type="text"
-                                                @else
-                                                    type="number"
-                                                    step="1" min="1" max="100"
-                                                @endif
-                                            value="{{ $venta->cantidad }}"  
-                                            class="form-control cantidad-input" 
+                                        <input name="productos[{{ $venta->id }}][cantidad]"  
+                                            @if( $venta->id_menu == 1  )
+                                                type="text"
+                                            @else
+                                                type="number" step="1" min="1" max="100"
+                                            @endif
+                                            value="{{ $venta->cantidad }}" class="form-control cantidad-input" 
                                             data-checkbox="checkbox-{{ $venta->id }}">
                                     </div>
                                     <div class="col">
